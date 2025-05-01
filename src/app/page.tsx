@@ -1,10 +1,31 @@
 "use client"
 
+import { UserContext } from "@/context/UserProvider";
+import axios from "axios";
 import { motion } from "motion/react";
 import Link from "next/link";
+import { useContext, useEffect } from "react";
 
 
 export default function Home() {
+  const { setUser, setIsAuthenticated } = useContext(UserContext)
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    const getUser = async () => {
+      const res = await axios.get(`http://localhost:8080/auth/getUser`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      const data = await res.data
+      setUser(data)
+
+    }
+    getUser()
+    setIsAuthenticated(!!token)
+  }, [])
+
   return (
     <>
       <div className="min-h-screen relative  flex justify-center items-center bg-black border-b-2 border-gray-900 w-full font-serif">

@@ -4,7 +4,7 @@ import { ProjectContext } from '@/context/ProjectProvider';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { use, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AiFillEdit, AiFillApi, AiFillFolderOpen, AiFillCaretRight, AiFillCaretLeft } from "react-icons/ai";
 
 // type Params = {
@@ -55,6 +55,8 @@ const Project = () => {
         }
         fetchProjects()
     }, [])
+
+
 
     return (
         <>
@@ -165,7 +167,7 @@ const Project = () => {
                         <div className='flex flex-row  justify-center items-center my-5'>
                             <div className='flex flex-col gap-4  ml-4 '>
                                 {/* <Link href={{ pathname: `dashboard/project/${slug}/projectpage`, query: { prop: projects } }} > */}
-                                <Link href={`dashboard/project/${slug}/projectpage`} >
+                                <Link href={`${col_id}/projectpage`} passHref >
 
                                     <button className='border-2  border-amber-400 hover:text-black hover:font-bold p-2 rounded-2xl hover:bg-amber-400 hover:scale-90'>View more projects</button>
                                 </Link>
@@ -176,13 +178,16 @@ const Project = () => {
 
                     {/* Content Cards */}
                     <div className=" flex flex-col gap-4 text-amber-400 " >
-                        <div
-                            className=" flex flex-row  hover:text-black items-center p-2  w-fit rounded-lg bg-black border-b-2 border-r-2  hover:scale-90 hover:bg-violet-300 hover:cursor-pointer transition duration-200"
-                        >
-                            <AiFillEdit className='text-xl mr-4' />
-                            <p className=" font-semibold mb-2 t capitalize text-xl ">Blogs</p>
+                        <Link href={`${col_id}/Blogs`}>
 
-                        </div>
+                            <div
+                                className=" flex flex-row  hover:text-black items-center p-2  w-fit rounded-lg bg-black border-b-2 border-r-2  hover:scale-90 hover:bg-violet-300 hover:cursor-pointer transition duration-200"
+                            >
+                                <AiFillEdit className='text-xl mr-4' />
+                                <p className=" font-semibold mb-2 t capitalize text-xl ">Blogs</p>
+
+                            </div>
+                        </Link>
                         <div
                             className="p-2 flex flex-row  bg-black hover:text-black items-center  border-b-2 border-r-2  w-fit rounded-lg hover:scale-90 hover:bg-violet-300 hover:cursor-pointer transition duration-200"
                         >
