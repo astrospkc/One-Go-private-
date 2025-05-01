@@ -3,10 +3,9 @@ import Modal from '@/components/ui/MyModal'
 // import Modal from '@/components/ui/Modal'
 import { ProjectContext } from '@/context/ProjectProvider'
 import { cn } from '@/lib/utils'
-
-
 // import { useSearchParams } from 'next/navigation'
 import React, { useContext, useState } from 'react'
+import { AiFillCaretLeft } from 'react-icons/ai'
 
 const ProjectsPage = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -31,7 +30,10 @@ const ProjectsPage = () => {
     }
     return (
         <div className='p-6 font-serif'>
-            <h2 className="text-lg md:text-2xl font-bold mb-4 "><span className='font-bold text-2xl md:text-6xl'>A</span><span>ll Projects</span></h2>
+            <div className='flex flex-row gap-2'>
+                <AiFillCaretLeft className='text-4xl hover:scale-90 hover:cursor-pointer' />
+                <h2 className="text-lg md:text-2xl font-bold mb-4 "><span className='font-bold text-2xl md:text-6xl'>A</span><span>ll Projects</span></h2>
+            </div>
             <div>
                 <div className=" w-full grid grid-cols-3 gap-4">
                     {projects && projects.length > 0 &&

@@ -62,6 +62,10 @@ const Project = () => {
         <>
             <div className='flex flex-col p-4 relative'>
                 <div className="m-6">
+
+                    <Link href={`/dashboard/collections`}>
+                        <AiFillCaretLeft className='text-4xl hover:scale-90 hover:cursor-pointer hover:text-violet-400' />
+                    </Link>
                     <label htmlFor="contentType" className="mr-2 font-medium">Select Content:</label>
                     <select
                         id="contentType"

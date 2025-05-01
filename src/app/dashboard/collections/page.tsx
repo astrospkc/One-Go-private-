@@ -7,38 +7,60 @@ import Link from 'next/link';
 import getAllCollection from '@/lib/getAllCollections';
 import { SingleCollection } from '../../../../types';
 import { CollectionContext } from '@/context/CollectionProvider';
+import {
+    useQuery,
+    useMutation,
+    useQueryClient,
+
+} from '@tanstack/react-query'
 
 
 
 
 const Collection = () => {
     const { collection, setCollection } = useContext(CollectionContext)
-    const [loading, setLoading] = useState<boolean>(false)
-    useEffect(() => {
-        const token = localStorage.getItem('token')
-        const fetchCollections = async () => {
-            setLoading(true)
-            try {
-                if (token) {
-                    const collection_data: Promise<SingleCollection[]> = getAllCollection(token)
-                    const data = await collection_data
-                    console.log("data collection: ", data)
-                    setCollection(data)
-                } else {
-                    throw new Error("token null")
-                }
+    // const [loading, setLoading] = useState<boolean>(false)
+    const token = localStorage.getItem('token')
 
-            } catch (error) {
-                console.error("Error fetching collections:", error);
-            } finally {
-                setLoading(false)
-            }
+    const query = useQuery({
+        queryKey: ['collection'],
+        queryFn: () => getAllCollection(token ? token : ""),
+    })
+    useEffect(() => {
+        if (query.data) {
+            setCollection(query.data)
         }
-        fetchCollections()
-    }, [])
+    }, [query.data])
+    if (query.isLoading) return <div>loading...</div>
+    if (query.isError) return <div>error</div>
+
+
+
+    // useEffect(() => {
+    //     const token = localStorage.getItem('token')
+    //     const fetchCollections = async () => {
+    //         setLoading(true)
+    //         try {
+    //             if (token) {
+    //                 const collection_data: Promise<SingleCollection[]> = getAllCollection(token)
+    //                 const data = await collection_data
+    //                 console.log("data collection: ", data)
+    //                 setCollection(data)
+    //             } else {
+    //                 throw new Error("token null")
+    //             }
+
+    //         } catch (error) {
+    //             console.error("Error fetching collections:", error);
+    //         } finally {
+    //             setLoading(false)
+    //         }
+    //     }
+    //     fetchCollections()
+    // }, [])
 
     console.log("collections: ", collection)
-    if (loading) return <div>loading...</div>
+    // if (loading) return <div>loading...</div>
 
     return (
         <div className="p-6 font-serif">
