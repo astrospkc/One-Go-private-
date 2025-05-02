@@ -1,6 +1,6 @@
 "use client"
-"use client";
-import React, { useContext, useState } from "react";
+
+import React, { useContext, useEffect, useState } from "react";
 import {
     Modal,
     ModalBody,
@@ -13,10 +13,18 @@ import {
 import { ModalContextapp } from "@/context/ModalProvider";
 import axios from "axios";
 import { CollectionContext } from "@/context/CollectionProvider";
+import { QueryClient, useMutation } from "@tanstack/react-query";
+import postCollection from "@/lib/postCollection";
 
 export function AnimatedModal() {
     const { open, setOpen } = useContext(ModalContextapp)
     const { collection, setCollection } = useContext(CollectionContext)
+    const [token, setToken] = useState<string | null>(null)
+    useEffect(() => {
+        const localToken = localStorage.getItem("token")
+        setToken(localToken)
+    }, [])
+
     const handleClick = () => {
         setOpen(!open)
     }
@@ -34,28 +42,43 @@ export function AnimatedModal() {
         }))
     }
 
-    const addCollection = async () => {
-        try {
-            const token = localStorage.getItem('token')
-            const createcollection = await axios.post(`http://localhost:8080/collection/createCollection`, {
-                Title: newCol.Title,
-                Description: newCol.Description
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            }
-            )
-            const data = createcollection.data
-            console.log("new Collection: ", data)
+
+    const queryClient = new QueryClient()
+    const mutation = useMutation({
+        mutationFn: ({ token, body }: { token: string; body: { Title: string; Description: string } }) => postCollection(token, body),
+        onSuccess: (data) => {
+            console.log("crate collection: ", data)
             setCollection([...collection, data])
             setOpen(!open)
-
-        } catch (error) {
+            queryClient.invalidateQueries({ queryKey: ['collection'] })
+        },
+        onError: (error) => {
             throw new Error("Failed to Create new Collection")
         }
+    })
 
-    }
+    // const addCollection = async () => {
+    //     try {
+    //         const token = localStorage.getItem('token')
+    //         const createcollection = await axios.post(`http://localhost:8080/collection/createCollection`, {
+    //             Title: newCol.Title,
+    //             Description: newCol.Description
+    //         }, {
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`,
+    //             }
+    //         }
+    //         )
+    //         const data = createcollection.data
+    //         console.log("new Collection: ", data)
+    //         setCollection([...collection, data])
+    //         setOpen(!open)
+
+    //     } catch (error) {
+    //         throw new Error("Failed to Create new Collection")
+    //     }
+
+    // }
 
     return (
         <div className="py-40   flex items-center justify-center font-serif">
@@ -97,7 +120,18 @@ export function AnimatedModal() {
                             Cancel
                         </button>
                         <button
-                            onClick={addCollection} className="bg-black text-white dark:bg-white dark:text-black text-sm px-2 py-1 rounded-md border border-black w-28">
+                            onClick={() => {
+                                mutation.mutate({
+                                    token: token ?? "",
+                                    body: {
+                                        Title: newCol.Title,
+                                        Description: newCol.Description
+                                    }
+
+                                })
+                            }}
+                            // onClick={addCollection}
+                            className="bg-black text-white dark:bg-white dark:text-black text-sm px-2 py-1 rounded-md border border-black w-28">
                             Create
                         </button>
                     </ModalFooter>

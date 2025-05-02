@@ -44,8 +44,9 @@ export default function AuthForm({ type }: AuthFormProps) {
                 })
             })
             const data = await res.json()
-            localStorage.setItem("token", data.token)
+
             if (data.token) {
+                localStorage.setItem("token", data.token)
                 setUser(data.user)
                 setIsAuthenticated(true)
                 router.push("/dashboard")
@@ -67,8 +68,9 @@ export default function AuthForm({ type }: AuthFormProps) {
                 }
             })
             const data = await res.data
-            localStorage.setItem("token", data.token)
+
             if (data.token) {
+                localStorage.setItem("token", data.token)
                 setUser(data.user)
                 setIsAuthenticated(true)
                 router.push("/dashboard")

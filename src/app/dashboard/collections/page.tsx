@@ -1,16 +1,13 @@
 "use client"
 
 import React, { useContext, useEffect, useState } from 'react';
-// import { CollectionForm } from '@/components/CollectionForm'
 import { cn } from "@/lib/utils";
 import Link from 'next/link';
 import getAllCollection from '@/lib/getAllCollections';
-import { SingleCollection } from '../../../../types';
 import { CollectionContext } from '@/context/CollectionProvider';
 import {
     useQuery,
-    useMutation,
-    useQueryClient,
+
 
 } from '@tanstack/react-query'
 
@@ -20,24 +17,31 @@ import {
 const Collection = () => {
     const { collection, setCollection } = useContext(CollectionContext)
     // const [loading, setLoading] = useState<boolean>(false)
-    const token = localStorage.getItem('token')
+    const [token, setToken] = useState<string | null>(null)
 
+    useEffect(() => {
+        const localToken = localStorage.getItem("token")
+        setToken(localToken)
+    }, [])
     const query = useQuery({
         queryKey: ['collection'],
-        queryFn: () => getAllCollection(token ? token : ""),
+        queryFn: () => getAllCollection(token ?? ""),
+        enabled: !!token
     })
     useEffect(() => {
         if (query.data) {
             setCollection(query.data)
         }
     }, [query.data])
-    if (query.isLoading) return <div>loading...</div>
+    if (query.isLoading) return <div className="flex justify-center items-center h-40">
+        <div className="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-amber-500"></div>
+    </div>
     if (query.isError) return <div>error</div>
 
 
 
     // useEffect(() => {
-    //     const token = localStorage.getItem('token')
+    //     const token = localStorage.getItem("token")
     //     const fetchCollections = async () => {
     //         setLoading(true)
     //         try {
