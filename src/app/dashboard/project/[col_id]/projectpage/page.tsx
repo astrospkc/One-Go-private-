@@ -41,8 +41,6 @@ const ProjectsPage = () => {
                             // console.log("val: ", val)
                             return (
 
-
-
                                 <div
                                     key={ind}
                                     onClick={(e) => handleOpenProject(e, val)}

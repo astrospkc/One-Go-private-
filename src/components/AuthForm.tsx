@@ -31,7 +31,7 @@ export default function AuthForm({ type }: AuthFormProps) {
         console.log("Name, Password: ", Email, Password)
         if (type === 'signin') {
             setIsUserLoading(true)
-            const res = await fetch("http://localhost:8080/auth/login", {
+            const res = await fetch("http://localhost:8000/auth/login", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -62,7 +62,7 @@ export default function AuthForm({ type }: AuthFormProps) {
             formData.append('ProfilePic', ProfilePic)
             formData.append('Role', Role)
             formData.append('Password', Password)
-            const res = await axios.post("http://localhost:6000/api/createUser", formData, {
+            const res = await axios.post("http://localhost:8000/auth/createUser", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

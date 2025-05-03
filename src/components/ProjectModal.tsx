@@ -46,7 +46,7 @@ export function ProjectModal({ props }) {
 
     const AddProject = async () => {
         const token = localStorage.getItem('token')
-        const response = await axios.post(`http://localhost:8080/project/createProject/${col_id}`,
+        const response = await axios.post(`http://localhost:8000/project/createProject/${col_id}`,
             {
                 CollectionId: newProj.CollectionId,
                 Title: newProj.Title,

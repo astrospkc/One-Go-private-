@@ -13,7 +13,7 @@ export default function Home() {
   // useEffect(() => {
   //   const token = localStorage.getItem('token')
   //   const getUser = async () => {
-  //     const res = await axios.get(`http://localhost:8080/auth/getUser`, {
+  //     const res = await axios.get(`http://ocalhost:8000/auth/getUser`, {
   //       headers: {
   //         Authorization: `Bearer ${token}`
   //       }

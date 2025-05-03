@@ -12,7 +12,7 @@ const Blogs = ({ params }) => {
     const fetchBlogs = async () => {
       try {
         const token = localStorage.getItem('token')
-        const response = await axios.get(`http://localhost:8080/blog/readAllBlog/${slug}`, {
+        const response = await axios.get(`http://ocalhost:8000/blog/readAllBlog/${slug}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           }

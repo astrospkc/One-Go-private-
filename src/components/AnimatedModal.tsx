@@ -60,7 +60,7 @@ export function AnimatedModal() {
     // const addCollection = async () => {
     //     try {
     //         const token = localStorage.getItem('token')
-    //         const createcollection = await axios.post(`http://localhost:8080/collection/createCollection`, {
+    //         const createcollection = await axios.post(`http://ocalhost:8000/collection/createCollection`, {
     //             Title: newCol.Title,
     //             Description: newCol.Description
     //         }, {

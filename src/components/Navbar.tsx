@@ -33,17 +33,28 @@ const Navbar = () => {
                 <ul className="hidden md:flex items-center space-x-6 text-gray-300 font-semibold">
                     <li><Link href="/about" className="hover:text-violet-300">About</Link></li>
                     <li><Link href="#features" className="hover:text-violet-300">Features</Link></li>
-                    <li><Link href="#pricing" className="hover:text-violet-300">Pricing</Link></li>
+                    <li><Link href="/pricing" className="hover:text-violet-300">Pricing</Link></li>
                     <li><Link href="#contact" className="hover:text-violet-300">Contact</Link></li>
                     {
                         isAuthenticated ?
                             (
-                                <li>
-                                    <button onClick={handleLogout} className="text-sm hover:cursor-pointer hover:bg-violet-300 px-4 py-2 rounded-2xl hover:text-black">Logout</button>
+                                <>
+                                    <li>
+                                        <Link href="/dashboard">
+                                            <button className="text-sm hover:cursor-pointer hover:bg-violet-300 px-4 py-2 rounded-2xl hover:text-black">Dashboard</button>
+                                        </Link>
+                                    </li>
 
-                                </li>
+                                    <li>
+
+                                        <button onClick={handleLogout} className="text-sm hover:cursor-pointer hover:bg-violet-300 px-4 py-2 rounded-2xl hover:text-black">Logout</button>
+
+                                    </li>
+                                </>
+
                             ) : (
                                 <>
+
                                     <li>
                                         <Link href="/auth/signIn">
                                             <button className="text-sm hover:cursor-pointer hover:bg-violet-300 px-4 py-2 rounded-2xl hover:text-black">Login</button>
