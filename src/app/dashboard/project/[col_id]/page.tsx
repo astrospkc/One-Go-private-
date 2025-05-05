@@ -103,9 +103,9 @@ const Project = () => {
                                         <div onClick={handleCountReverse} className='items-center mx-5 ' >
                                             <AiFillCaretLeft className='text-4xl hover:scale-90 hover:cursor-pointer' />
                                         </div>
-                                        <div className=' flex flex-col justify-center items-center text-center p-4  rounded-4xl shadow-lg  hover:border-0 hover:scale-110 hover:shadow-lg hover:shadow-violet-700 hover:cursor-pointer'>
+                                        <div className=' flex flex-col justify-center items-center text-center p-4  rounded-4xl border-2 shadow-lg  hover:border-0 hover:scale-110 hover:shadow-lg hover:shadow-violet-700 hover:cursor-pointer'>
                                             <h1 className='text-3xl font-bold '> {projects[count].title}</h1>
-                                            <div className='flex flex-col p-4  text-sm rounded-4xl bg-amber-100 w-full h-full text-black mt-5'>
+                                            <div className='flex flex-col p-4  text-sm rounded-4xl text-white w-full h-full border-2  mt-5'>
 
                                                 {/* <div
                                                 style={{

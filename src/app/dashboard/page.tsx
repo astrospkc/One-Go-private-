@@ -10,7 +10,7 @@ import { ProjectContext } from "@/context/ProjectProvider"
 import getAllCollection from "@/lib/getAllCollections"
 import getAllProjects from "@/lib/getAllProjects"
 import { useRouter } from "next/navigation"
-import { useContext, useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 
 // import { Modal } from "@/components/ui/animated-modal"
 
@@ -68,42 +68,58 @@ const Dashboard = () => {
     }
 
     return (
-        <div className="flex flex-col gap-4 justify-center items-center w-full m-auto font-serif my-10 ">
-            <div className="flex flex-row gap-4 justify-center items-center m-auto ">
-
-                <MyButton onClick={handleClick}>+ Create Collection</MyButton>
-                <MyButton pathname="/dashboard/collections"> See All Collection</MyButton>
-
+        <div
+            style={{
+                background: 'radial-gradient(circle at center, #1a0c2b, #0e0618, #090417)',
+            }}
+            className=" flex flex-row h-screen bg-gradient-to-t  from-violet-950 via-pink-700
+         to-violet-950  gap-4 justify-center items-center w-full m-auto font-serif py-10 px-10 ">
+            <div className="flex flex-col gap-4   m-auto">
+                <h1 className=" flex text-violet-600 text-4xl md:text-7xl font-bold text">
+                    Manage your content in
+                </h1>
+                <span className="text-orange-700 text-4xl md:text-7xl font-bold">ONE PLACE.</span>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-                <div
-                    onClick={handleSection}
-                    className=" text-2xl md:text-4xl hover:cursor-pointer  flex flex-col items-center shadow-sm rounded-2xl shadow-violet-400 p-4 ">
-                    <span className="font-bold text-center border-b-2"> Total Collections </span>
-                    <span className="rounded-full  p-2">{totalCollection}</span>
-                </div>
-                <div
-                    onClick={handleSection}
-                    className="hover:cursor-pointer text-2xl md:text-4xl flex flex-col items-center shadow-sm rounded-2xl shadow-violet-400 p-4 ">
-                    <span className="font-bold text-center border-b-2"> Total Projects </span>
-                    <span>{totalProjects}</span>
-                </div>
-                <div className="hover:cursor-pointer text-2xl md:text-4xl flex flex-col items-center shadow-sm rounded-2xl shadow-violet-400 p-4 ">
+            <div className="flex flex-col gap-4">
+                <div className="rounded-3xl bg-white/5 backdrop-blur-lg p-6 border border-white/10 text-white">
+                    <h2 className="text-xl font-semibold mb-2">Manage all your<span className="text-white/70"> content and APIs in one place</span></h2>
+                    <p className="text-white/60 mb-4">Create, store, and organize your projects, links, media, and custom data using One-Go. Instantly connect everything to your frontend via powerful APIs — no backend needed.</p>
 
-                    <span className="font-bold text-center border-b-2"> Total Links </span>
-                    <span>43</span>
-                </div>
-                <div className="hover:cursor-pointer text-2xl md:text-4xl flex flex-col items-center shadow-sm rounded-2xl shadow-violet-400 p-4 ">
-
-                    <span className="font-bold text-center border-b-2"> Total Media </span>
-                    <span>43</span>
                 </div>
 
-            </div>
-            <div className="my-10">
-                <span className="text-3xl md:text-4xl font-bold border-2 rounded-2xl p-2">Usage Report</span>
-            </div>
-            {/* <div>
+                <div className="grid grid-cols-2 gap-4">
+                    <div
+                        onClick={handleSection}
+                        className="rounded-3xl bg-white/5 backdrop-blur-lg p-6 border border-white/10 text-white">
+                        <span className="font-bold text-center border-b-2"> Total Collections </span>
+                        <span className="rounded-full  p-2">{totalCollection}</span>
+                    </div>
+                    <div
+                        onClick={handleSection}
+                        className="rounded-3xl bg-white/5 backdrop-blur-lg p-6 border border-white/10 text-white">
+                        <span className="font-bold text-center border-b-2"> Total Projects </span>
+                        <span>{totalProjects}</span>
+                    </div>
+                    <div className="rounded-3xl bg-white/5 backdrop-blur-lg p-6 border border-white/10 text-white">
+
+                        <span className="font-bold text-center border-b-2"> Total Links </span>
+                        <span>43</span>
+                    </div>
+                    <div className="rounded-3xl bg-white/5 backdrop-blur-lg p-6 border border-white/10 text-white">
+
+                        <span className="font-bold text-center border-b-2"> Total Media </span>
+                        <span>43</span>
+                    </div>
+
+                </div>
+                <div className="flex flex-row gap-4 justify-center items-center m-auto ">
+
+                    <MyButton onClick={handleClick}>+ Create Collection</MyButton>
+                    <MyButton pathname="/dashboard/collections"> See All Collection</MyButton>
+
+                </div>
+
+                {/* <div>
                 <Modal isOpen={isOpen} onClose={handleClick}>
                     {
                         sectionSelected === "collection" ?
@@ -112,6 +128,9 @@ const Dashboard = () => {
                     }
                 </Modal>
             </div> */}
+
+            </div>
+
         </div>
     )
 }

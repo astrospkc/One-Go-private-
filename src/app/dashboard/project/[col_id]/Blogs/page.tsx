@@ -1,7 +1,13 @@
 "use client"
+import BlogEditor from '@/components/BlogEditor';
+import MyButton from '@/components/ui/button';
+import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
 
 const Blogs = () => {
+    const [openBlog, setOpenBlog] = useState(false)
+    const params = useParams()
+    const col_id = params.col_id
     // Example blog data
     const blogData = [
         {
@@ -22,12 +28,18 @@ const Blogs = () => {
 
     const [selectedType, setSelectedType] = useState('All');
 
+
+
     return (
         <div className='text-white p-4 font-serif'>
             <h1 className='text-2xl rounded-4xl shadow-md shadow-violet-300 p-2 pl-4 text-violet-400 w-fit font-bold mb-6'>Blogs</h1>
+            <MyButton onClick={() => setOpenBlog(!openBlog)}>Create Blog</MyButton>
+            {
+                openBlog && <BlogEditor col_id={col_id} />
+            }
 
             {/* Dropdown */}
-            <div className="mb-6">
+            <div className="mb-6 mt-2">
                 <label htmlFor="contentType" className="mr-2 font-medium">Select Content:</label>
                 <select
                     id="contentType"

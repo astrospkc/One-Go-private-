@@ -8,7 +8,7 @@ interface buttonProps {
 }
 
 const MyButton = ({ children, pathname, onClick }: buttonProps) => {
-    const baseClass = 'bg-violet-400 p-2 rounded-xl mx-4 text-black font-bold hover:cursor-pointer hover:scale-75 transition-transform';
+    const baseClass = ' w-fit bg-violet-400 p-2 rounded-xl mx-4 text-black font-bold hover:cursor-pointer hover:scale-75 transition-transform';
 
     if (pathname) {
         return (
