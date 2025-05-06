@@ -12,7 +12,7 @@ const SideBar = () => {
     }
 
     return (
-        <div className="w-[20%] min-h-screen bg-transparent text-white p-6 flex flex-col gap-6 border-r-2 border-white shadow-xl shadow-slate-800 font-serif">
+        <div className="w-[20%] min-h-screen bg-transparent text-white p-6 flex flex-col gap-6 border-r-2 border-violet-500 shadow-xl shadow-slate-800 font-serif">
             <h2 className="text-xl font-bold mb-6">Dashboard</h2>
 
             <nav className="flex flex-col gap-4 text-sm">

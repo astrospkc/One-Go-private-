@@ -1,28 +1,32 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
 import TurndownService from "turndown";
 import ReactMarkdown from "react-markdown";
 import EditorJS from '@editorjs/editorjs'
 import Header from '@editorjs/header';
-// import LinkTool from '@editorjs/link';
+import LinkTool from '@editorjs/link';
 import EditorjsList from '@editorjs/list';
-// import SimpleImage from "@editorjs/simple-image";
+import SimpleImage from "@editorjs/simple-image";
 import Quote from '@editorjs/quote';
+import { BlogContext } from "@/context/BlogProvider";
+import getAllBlogs from "@/lib/getAllBlogs";
 
 
 export default function BlogEditor({ col_id }) {
-
+    const { blogs, setBlogs } = useContext(BlogContext)
+    const [blogAdded, setBlogAdded] = useState(false)
     const ejInstance = useRef()
     useEffect(() => {
         ejInstance.current = new EditorJS({
+            holder: "editorjs",
             tools: {
                 header: {
                     class: Header,
                     shortcut: 'CMD+SHIFT+H',
                 },
-                // linkTool: {
-                //     class: LinkTool,
-                //     shortcut:'CMD+SHIFT+L',
-                // },
+                linkTool: {
+                    class: LinkTool,
+                    shortcut: 'CMD+SHIFT+L',
+                },
                 list: {
                     class: EditorjsList,
                     inlineToolbar: true,
@@ -30,16 +34,16 @@ export default function BlogEditor({ col_id }) {
                         defaultStyle: 'unordered'
                     }
                 },
-                // image: SimpleImage,
-                // quote: {
-                //     class: Quote,
-                //     inlineToolbar: true,
-                //     shortcut: 'CMD+SHIFT+O',
-                //     config: {
-                //         quotePlaceholder: 'Enter a quote',
-                //         captionPlaceholder: 'Quote\'s author',
-                //     },
-                // }
+                image: SimpleImage,
+                quote: {
+                    class: Quote,
+                    inlineToolbar: true,
+                    shortcut: 'CMD+SHIFT+O',
+                    config: {
+                        quotePlaceholder: 'Enter a quote',
+                        captionPlaceholder: 'Quote\'s author',
+                    },
+                }
             },
             placeholder: "Start writing your blog post...."
         });
@@ -47,8 +51,9 @@ export default function BlogEditor({ col_id }) {
 
     }, [])
 
+
     const handleSave = async (e) => {
-        const token = localStorage.getItem('token')
+
         const outputData = await ejInstance.current.save()
         const title = document.getElementById("title").value
         const description = document.getElementById("description").value
@@ -70,6 +75,11 @@ export default function BlogEditor({ col_id }) {
             }
         }
         console.log("payload: ", payload)
+        CreateBlog(payload)
+
+    }
+    const CreateBlog = async (payload) => {
+        const token = localStorage.getItem('token')
         const res = await fetch(`http://localhost:8000/blog/createBlog/${col_id}`, {
             method: 'POST',
             headers: {
@@ -79,96 +89,35 @@ export default function BlogEditor({ col_id }) {
             body: JSON.stringify(payload)
         })
 
-        // const res = await axios.post(`http://localhost:8000/blog/createBlog/${col_id}`, {
-        //     "Title" : payload.title,
-        //     "Descrition":payload.descrition,
-        //     "Content":payload.content,
-        //     "Status":payload.status
-        // }, {
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //         Authorization: `Bearer ${localStorage.getItem('token')}`,
-        //     }
-        // })
-        const blogData = await res.json()
-        console.log("blogData: ", blogData)
+        const blogResponse = await getAllBlogs(token ?? "", col_id)
+        setBlogs(blogResponse)
+        setBlogAdded(!blogAdded)
     }
+    useEffect(() => {
+        if (blogAdded) {
+            ejInstance.current.clear()
+        }
+    }, [blogAdded])
 
-
-    // const editor = new EditorJS({
-    //     tools: {
-    //         header: {
-    //             class: Header,
-    //             shortcut: 'CMD+SHIFT+H',
-    //         },
-    //         // linkTool: {
-    //         //     class: LinkTool,
-    //         //     shortcut:'CMD+SHIFT+L',
-    //         // },
-    //         list: {
-    //             class: EditorjsList,
-    //             inlineToolbar: true,
-    //             config: {
-    //                 defaultStyle: 'unordered'
-    //             }
-    //         },
-    //         // image: SimpleImage,
-    //         quote: {
-    //             class: Quote,
-    //             inlineToolbar: true,
-    //             shortcut: 'CMD+SHIFT+O',
-    //             config: {
-    //                 quotePlaceholder: 'Enter a quote',
-    //                 captionPlaceholder: 'Quote\'s author',
-    //             },
-    //         }
-    //     }
-    // });
-    // const editorRef = useRef(null);
-    // const [markdown, setMarkdown] = useState("");
-    // const [showPreview, setShowPreview] = useState(false);
-
-    // const formatText = (command) => {
-    //     document.execCommand(command, false, null);
-    //     editorRef.current.focus();
-    // };
-
-    // const handleAction = (type) => {
-    //     const titleInput = document.getElementById("title") as HTMLInputElement;
-    //     const title = titleInput.value;
-    //     const descInput = document.getElementById("description") as HTMLInputElement;
-    //     const description = descInput.value;
-    //     const content = editorRef.current.innerHTML;
-
-    //     if (type === "markdown") {
-    //         const turndownService = new TurndownService();
-    //         const md = turndownService.turndown(content);
-    //         setMarkdown(`# ${title}\n\n${description}\n\n${md}`);
-    //         setShowPreview(true);
-    //     } else {
-    //         console.log({ type, title, description, content });
-    //         setShowPreview(false);
-    //     }
-    // };
-
+    console.log("blogs: ", blogs)
     return (
-        <div className="max-w-3xl mx-auto p-6 text-black bg-white shadow rounded-xl mt-10">
+        <div className="max-w-3xl mx-auto p-6 text-white bg-black shadow-sm shadow-violet-500 rounded-xl mt-10">
             <h1 className="text-2xl font-bold mb-4">Blog Post Title</h1>
             <input
                 id="title"
                 type="text"
                 placeholder="Enter blog title..."
-                className="w-full p-2 border border-gray-300 rounded mb-4"
+                className="w-full p-2 border border-gray-300/10 rounded mb-4"
             />
 
             <label className="font-medium">Description</label>
             <textarea
                 id="description"
                 placeholder="Write a short description..."
-                className="w-full p-2 border border-gray-300 rounded mb-4"
+                className="w-full p-2 border border-gray-300/10 rounded mb-4"
             />
 
-            <div id="editorjs" className="border min-h-[200px] p-4 mb-4"></div>
+            <div id="editorjs" className="border border-gray-300/10 min-h-[200px] p-4 mb-4"></div>
             <button
                 onClick={handleSave}
                 className="px-4 py-2 mr-2 bg-blue-600 text-white rounded"

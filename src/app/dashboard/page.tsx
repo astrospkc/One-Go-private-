@@ -9,6 +9,7 @@ import { ModalContextapp } from "@/context/ModalProvider"
 import { ProjectContext } from "@/context/ProjectProvider"
 import getAllCollection from "@/lib/getAllCollections"
 import getAllProjects from "@/lib/getAllProjects"
+import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import React, { useContext, useEffect, useState } from "react"
 
@@ -43,6 +44,7 @@ const Dashboard = () => {
     const totalCollection = collectionsList.length
     const totalProjects = projectsList.length
     const router = useRouter()
+    const baseClass = "  flex flex-col justify-center items-center  rounded-3xl hover:bg-white/10 cursor-pointer bg-white/5 backdrop-blur-lg p-6  border border-white/10 text-white/80"
 
     const handleSection = (e) => {
         const labelText = e.currentTarget.querySelector('span').innerText.trim();
@@ -67,6 +69,7 @@ const Dashboard = () => {
 
     }
 
+
     return (
         <div
             style={{
@@ -90,24 +93,26 @@ const Dashboard = () => {
                 <div className="grid grid-cols-2 gap-4">
                     <div
                         onClick={handleSection}
-                        className="rounded-3xl bg-white/5 backdrop-blur-lg p-6 border border-white/10 text-white">
-                        <span className="font-bold text-center border-b-2"> Total Collections </span>
+                        className={cn(baseClass)}>
+                        <span className="font-bold  text-center "> Total Collections </span>
                         <span className="rounded-full  p-2">{totalCollection}</span>
                     </div>
                     <div
                         onClick={handleSection}
-                        className="rounded-3xl bg-white/5 backdrop-blur-lg p-6 border border-white/10 text-white">
-                        <span className="font-bold text-center border-b-2"> Total Projects </span>
+                        className={cn(baseClass)}>
+                        <span className="font-bold text-center"> Total Projects </span>
                         <span>{totalProjects}</span>
                     </div>
-                    <div className="rounded-3xl bg-white/5 backdrop-blur-lg p-6 border border-white/10 text-white">
-
-                        <span className="font-bold text-center border-b-2"> Total Links </span>
+                    <div
+                        className={cn(baseClass)}>
+                        <span className="font-bold text-center"> Total Links </span>
                         <span>43</span>
                     </div>
-                    <div className="rounded-3xl bg-white/5 backdrop-blur-lg p-6 border border-white/10 text-white">
+                    <div
+                        className={cn(baseClass)}>
 
-                        <span className="font-bold text-center border-b-2"> Total Media </span>
+
+                        <span className="font-bold text-center "> Total Media </span>
                         <span>43</span>
                     </div>
 
