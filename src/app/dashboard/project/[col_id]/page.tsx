@@ -186,18 +186,22 @@ const Project = () => {
 
                             </div>
                         </Link>
-                        <div
-                            className="p-2 flex flex-row  bg-black hover:text-black items-center  border-b-2 border-r-2  border-orange-500 w-fit rounded-lg hover:scale-90 hover:bg-violet-300 hover:cursor-pointer transition duration-200"
-                        >
-                            <AiFillApi className='text-xl mr-4' />
-                            <p className=" font-semibold mb-2  capitalize text-xl ">Links</p>
-                        </div>
-                        <div
-                            className="p-2 flex flex-row hover:text-black items-center bg-black border-b-2 border-r-2 border-orange-500  w-fit rounded-lg hover:scale-90 hover:bg-violet-300 hover:cursor-pointer transition duration-200"
-                        >
-                            <AiFillFolderOpen className='text-xl mr-4' />
-                            <p className=" font-semibold mb-2  capitalize text-xl ">Media</p>
-                        </div>
+                        <Link href={`${col_id}/Links`}>
+                            <div
+                                className="p-2 flex flex-row  bg-black hover:text-black items-center  border-b-2 border-r-2  border-orange-500 w-fit rounded-lg hover:scale-90 hover:bg-violet-300 hover:cursor-pointer transition duration-200"
+                            >
+                                <AiFillApi className='text-xl mr-4' />
+                                <p className=" font-semibold mb-2  capitalize text-xl ">Links</p>
+                            </div>
+                        </Link>
+                        <Link href={`${col_id}/Media`}>
+                            <div
+                                className="p-2 flex flex-row hover:text-black items-center bg-black border-b-2 border-r-2 border-orange-500  w-fit rounded-lg hover:scale-90 hover:bg-violet-300 hover:cursor-pointer transition duration-200"
+                            >
+                                <AiFillFolderOpen className='text-xl mr-4' />
+                                <p className=" font-semibold mb-2  capitalize text-xl ">Media</p>
+                            </div>
+                        </Link>
                     </div>
                 </div>
             </div >

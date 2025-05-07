@@ -2,6 +2,7 @@
 
 import { BlogProvider } from "@/context/BlogProvider"
 import { CollectionProvider } from "@/context/CollectionProvider"
+import { MediaProvider } from "@/context/MediaProvider"
 import { ModalProviderapp } from "@/context/ModalProvider"
 import { ProjectProvider } from "@/context/ProjectProvider"
 import { UserProvider } from "@/context/UserProvider"
@@ -15,9 +16,13 @@ export function Providers({ children }: { children: React.ReactNode }) {
                 <CollectionProvider>
                     <ProjectProvider>
                         <BlogProvider>
-                            <ModalProviderapp>
-                                {children}
-                            </ModalProviderapp>
+                            <MediaProvider>
+
+                                <ModalProviderapp>
+                                    {children}
+                                </ModalProviderapp>
+
+                            </MediaProvider>
                         </BlogProvider>
                     </ProjectProvider>
                 </CollectionProvider>

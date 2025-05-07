@@ -39,7 +39,7 @@ const Blogs = () => {
             console.log(query.data, "in blogs query")
             setBlogs(query.data)
         }
-    }, [query.data])
+    })
 
 
     const handleDeleteBlog = async (blogid: string, col_id: string) => {
@@ -74,7 +74,7 @@ const Blogs = () => {
 
                 <div className='flex flex-row items-center '>
                     <AiFillCaretLeft className='text-4xl hover:scale-90 hover:cursor-pointer ' />
-                    <h1 className='text-2xl rounded-4xl shadow-md shadow-violet-300 p-2 pl-4 text-violet-400 w-fit font-bold mb-6 mt-4'>Blogs</h1>
+                    <h1 className='text-2xl rounded-4xl shadow-md shadow-orange-500 p-2 pl-4 text-violet-400 w-fit font-bold mb-6 mt-4'>Blogs</h1>
                 </div>
             </Link>
 
