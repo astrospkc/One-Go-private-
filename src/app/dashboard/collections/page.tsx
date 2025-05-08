@@ -68,7 +68,7 @@ const Collection = () => {
 
     return (
         <div className="p-6 font-serif">
-            <h2 className="text-lg md:text-2xl font-bold mb-4 "><span className='font-bold text-2xl md:text-6xl'>L</span><span>ist of All Collections</span></h2>
+            <h2 className="text-lg text-center shadow-md shadow-orange-500 md:text-2xl font-bold mb-4 rounded-2xl border-1 p-2 border-orange-500/40 "><span className='font-bold text-2xl md:text-6xl'>L</span><span>ist of All Collections</span></h2>
             <div>
                 <div className=" w-full grid grid-cols-3 gap-4">
                     {collection && collection.length > 0 &&

@@ -3,14 +3,21 @@ import MyButton from '@/components/ui/button'
 import { MediaContext } from '@/context/MediaProvider'
 import getAllMedia from '@/lib/getAllMedia'
 import { useQuery } from '@tanstack/react-query'
+
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import React, { useContext, useEffect, useState } from 'react'
 import { AiFillCaretLeft } from 'react-icons/ai'
 
 const Media = () => {
+
     const { media, setMedia } = useContext(MediaContext)
     const [token, settoken] = useState<string | null>(null)
+    const [clickedButton, setClickedButton] = useState(false)
+    const [title, setTitle] = useState("")
+    const [content, setContent] = useState("")
+    const [file, setFile] = useState<File | null>()
+
     const params = useParams()
     const col_id = params.col_id
     useEffect(() => {
@@ -28,17 +35,96 @@ const Media = () => {
             setMedia(query.data)
         }
     })
-    console.log("media: ", media)
+    // const queryClient = new QueryClient()
+    // const mutation = useMutation({
+    //     mutationKey: ['media'],
+    //     mutationFn: async (formData) => {
+    //         return await fetch(`http://localhost:8000/media/postmedia/${col_id}`, {
+    //             method: 'POST',
+    //             headers: {
+
+    //                 Authorization: `Bearer ${token}`,
+    //             },
+    //             body: formData
+    //         }
+    //         )
+    //     },
+    //     onSuccess: (data) => {
+    //         console.log("success:", data)
+    //         queryClient.invalidateQueries(['media'])
+    //     },
+    //     onError: (error) => {
+    //         console.log("error:", error)
+    //     }
+    // })
+
+    const handleUpload = async (e) => {
+        e.preventDefault()
+
+        const formData = new FormData()
+        formData.append('title', title)
+        formData.append('content', content)
+        if (file) {
+            formData.append('file', file)
+        }
+        // mutation.mutate(formData)
+        await fetch(`http://localhost:8000/media/postmedia/${col_id}`, {
+            method: 'POST',
+            headers: {
+
+                Authorization: `Bearer ${token}`,
+            },
+            body: formData
+        }
+        )
+        const mediaResponse = await getAllMedia(token ?? "", col_id)
+        setMedia(mediaResponse)
+
+        setClickedButton(!clickedButton)
+    }
+    console.log("media: ", media, clickedButton)
     return (
         <div className='p-4'>
             <Link href={`/dashboard/project/${col_id}`}>
 
                 <div className='flex flex-row items-center '>
                     <AiFillCaretLeft className='text-4xl hover:scale-90 hover:cursor-pointer ' />
-                    <h1 className='text-2xl rounded-4xl shadow-md shadow-orange-500 p-2 pl-4 text-violet-400 w-fit font-bold mb-6 mt-4'>Media</h1>
+                    <h1 className='text-2xl rounded-4xl shadow-md shadow-orange-500 p-2 px-4 pl-4 text-violet-400 w-fit font-bold mb-6 mt-4'>MEDIA</h1>
                 </div>
             </Link>
-            <MyButton>Add more files</MyButton>
+            {
+                !clickedButton ?
+                    <MyButton onClick={() => setClickedButton(!clickedButton)}>Add more files</MyButton>
+                    :
+                    <MyButton onClick={() => setClickedButton(!clickedButton)}> Cancel</MyButton>
+            }
+            {
+                clickedButton &&
+                <div className='flex flex-col mx-5 justify-center items-start p-4 rounded-4xl bg-black w-fit gap-2'>
+                    <input
+                        id='title'
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        className="border-2 border-violet-600/50 rounded-2xl p-2" type="text" placeholder='Title' />
+                    <textarea
+                        id="content"
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        className="border-2 border-violet-600/50 rounded-2xl p-2" placeholder='Content' />
+                    <input
+                        id='filekey'
+
+                        onChange={
+                            (e) => {
+                                setFile(e.target.files?.[0])
+                            }
+                        }
+                        className="border-2 border-violet-600/50 rounded-2xl p-2" type="file" />
+                    <MyButton
+                        onClick={handleUpload}>Upload</MyButton>
+                </div>
+            }
+
             <div
 
                 className="overflow-x-auto my-5">
@@ -58,14 +144,16 @@ const Media = () => {
 
 
                         <>
-                            <tr className="hover:bg-gray-700">
-                                <td className="px-4 py-2 border-b border-gray-600"></td>
-                                {/* <td className="px-4 py-2 border-b border-gray-600">{blog.title}</td>
-                                    <td className="px-4 py-2 border-b border-gray-600">{blog.description}</td>
-                                    <td className="px-4 py-2 border-b border-gray-600">{blog.published}</td>
-                                    <td className="px-4 py-2 border-b border-gray-600">{blog.lastedited}</td>
-                                    <td className="px-4 py-2 border-b border-gray-600">{blog.status}</td> */}
-                                {/* <td
+                            {
+                                media && media.map((media, index) => (
+                                    <tr key={index} className="hover:bg-gray-700">
+                                        <td className="px-4 py-2 border-b border-gray-600">{index + 1}</td>
+                                        <td className="px-4 py-2 border-b border-gray-600">{media.key}</td>
+                                        <td className="px-4 py-2 border-b border-gray-600">{media.title}</td>
+                                        <td className="px-4 py-2 border-b border-gray-600">{media.content}</td>
+                                        <td className="px-4 py-2 border-b border-gray-600">{media.time}</td>
+                                        {/* <td className="px-4 py-2 border-b border-gray-600">{media.status}</td> */}
+                                        {/* <td
                                         onClick={() => toggleDropdown(index)}
                                         className=" relative  ">
                                         <button className='px-4 py-2 border-b border-gray-600 hover:bg-violet-500 p-1 cursor-pointer'>
@@ -88,7 +176,10 @@ const Media = () => {
                                             </div>
                                         )}
                                     </td> */}
-                            </tr>
+                                    </tr>
+                                ))
+                            }
+
                         </>
 
                     </tbody>
