@@ -2,7 +2,7 @@
 
 One-Go — as the name suggests "at one go" — symbolizes a unified place to manage and showcase your creative content. Whether it's blogs, images, design files, or links, One-Go is designed to simplify the process of building your digital profile.
 
-Instead of rebuilding backend logic every time you start a new portfolio or side project, One-Go lets you upload your creativity and instantly get an API to use wherever you need — in a personal site, a client project, or even a mobile app.
+Instead of rebuilding backend logic every time you start a new portfolio or side project, One-Go lets you upload your creativity and instantly get an API to use wherever you need — in a personal site, a client project, or even a mobile app(soon).
 
 ## Backend of One-Go
 [One-go backend](https://github.com/astrospkc/cms_gobackend)
@@ -33,7 +33,7 @@ So we built **One-Go** — a modern CMS that takes care of all backend hurdles f
 - Each schema gets a unique endpoint.
 
 ### 🖼️ Media & Asset Upload
-- Drag-and-drop interface to upload images and files.
+
 - Store & retrieve media securely.
 
 ### 🔐 Auth & Dashboard
@@ -41,12 +41,12 @@ So we built **One-Go** — a modern CMS that takes care of all backend hurdles f
 - Intuitive dashboard to manage your content from anywhere.
 
 ### 🧩 Developer-Friendly
-- Built with modern stacks (Next.js, Express, PostgreSQL/MongoDB).
+- Built with modern stacks (Next.js, Golang,MongoDB).
 - Clean APIs and documentation.
 
 ### 🌐 Use Anywhere
 - Use with React, Next.js, Vue, or any frontend.
-- Perfect for portfolios, client sites, blogs, or even simple mobile apps.
+- Perfect for portfolios, client sites, blogs.
 
 ---
 
@@ -71,23 +71,23 @@ Make sure your `.env` variables are set properly to connect to the database and 
 
 ---
 
-## 💡 Upcoming
+<!-- ## 💡 Upcoming
 - AI-assisted content categorization
 - One-click portfolio builder templates
 - Public & private content toggles
 - Analytics Dashboard
-- Designers wait for it  we are coming up for you also to make your portfolio at one-go
+- Designers wait for it  we are coming up for you also to make your portfolio at one-go -->
 
 ---
 
-## 🧪 Demo & Feedback
-Want to try it out? Head to the demo section in the app or reach out to us. Your feedback helps shape the future of One-Go.
+## 🧪 Feedback
+Want to try it out?  
 
 ---
 
 ### 🔗 Let's Connect
 - Website: [Coming Soon]
 - LinkedIn: [Your Profile](https://punam-portfolio.vercel.app/)
-- Twitter: [@onegoCMS]
+<!-- - Twitter: [@onegoCMS] -->
 
 > Happy Building with One-Go!

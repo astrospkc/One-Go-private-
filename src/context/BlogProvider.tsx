@@ -1,11 +1,12 @@
 "use client"
 
 
-import { createContext, useState } from "react"
+import { createContext, Dispatch, SetStateAction, useState } from "react"
+import { Blog } from "../../types";
 
 interface BlogContextType {
-    blogs: any[],
-    setBlogs: (blogs: any[]) => void;
+    blogs: Blog[],
+    setBlogs: Dispatch<SetStateAction<Blog[]>>
 }
 const defaultValue: BlogContextType = {
     blogs: [],
@@ -13,8 +14,8 @@ const defaultValue: BlogContextType = {
 }
 export const BlogContext = createContext(defaultValue)
 
-export const BlogProvider = ({ children }) => {
-    const [blogs, setBlogs] = useState([])
+export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
+    const [blogs, setBlogs] = useState<Blog[]>([])
     return (
         <BlogContext.Provider value={{ blogs, setBlogs }}>
             {children}

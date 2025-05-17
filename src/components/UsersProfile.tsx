@@ -1,6 +1,14 @@
 import React from 'react'
+import { User } from '../../types'
+// import { User } from '../../types'
 
-const UsersProfile = ({ props }) => {
+interface UsersProps {
+    props: {
+        user: User
+    }
+}
+
+const UsersProfile = ({ props }: UsersProps) => {
     const { user } = props
     return (
         <div>

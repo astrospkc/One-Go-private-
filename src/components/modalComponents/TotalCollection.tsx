@@ -4,9 +4,10 @@ import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { AiFillCaretLeft } from 'react-icons/ai'
+import { SingleCollection } from '../../../types'
 
 const TotalCollection = () => {
-    const [collection, setCollection] = useState([])
+    const [collection, setCollection] = useState<SingleCollection[]>([])
     const [token, setToken] = useState<string | null>(null)
 
     useEffect(() => {

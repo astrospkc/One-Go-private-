@@ -27,11 +27,11 @@ export default function AuthForm({ type }: AuthFormProps) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // const endpoint = type === 'signin' ? '/api/login' : '/api/createUser';
-        console.log("Name, Password: ", Email, Password)
+
         if (type === 'signin') {
             setIsUserLoading(true)
-            const res = await fetch("http://localhost:8000/auth/login", {
+            // console.log("env : ", process.env.NEXT_PUBLIC_BACKEND_URL)
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -54,7 +54,6 @@ export default function AuthForm({ type }: AuthFormProps) {
             } else {
                 alert("Invalid credentials")
             }
-            console.log("data: ", data)
         } else if (type === 'signup') {
             const formData = new FormData()
             formData.append('Name', Name)
@@ -62,7 +61,7 @@ export default function AuthForm({ type }: AuthFormProps) {
             formData.append('ProfilePic', ProfilePic)
             formData.append('Role', Role)
             formData.append('Password', Password)
-            const res = await axios.post("http://localhost:8000/auth/createUser", formData, {
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/createUser`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -120,7 +119,6 @@ export default function AuthForm({ type }: AuthFormProps) {
                             onChange={(e) => {
                                 const file = e.target.files
                                 if (file) {
-                                    console.log("file: ", file)
                                     const reader = new FileReader()
                                     reader.onload = () => {
                                         setProfilePic(reader.result as string)

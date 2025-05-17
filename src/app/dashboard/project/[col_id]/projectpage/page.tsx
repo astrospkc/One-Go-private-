@@ -6,24 +6,14 @@ import { cn } from '@/lib/utils'
 // import { useSearchParams } from 'next/navigation'
 import React, { useContext, useState } from 'react'
 import { AiFillCaretLeft } from 'react-icons/ai'
+import { Project } from '../../../../../../types'
 
 const ProjectsPage = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     const { projects } = useContext(ProjectContext)
-    const [projectDetails, setProjectDetails] = useState({
-        id: "",
-        collection_id: "",
-        title: "",
-        description: "",
-        thumbnail: "",
-        liveddemolink: "",
-        githublink: "",
-        time: ""
-
-    })
-    const handleOpenProject = (e: any, val: any) => {
-        console.log(e.currentTarget.innerText, val)
+    const [projectDetails, setProjectDetails] = useState<Project>()
+    const handleOpenProject = (val: Project) => {
         setProjectDetails(val)
         setIsOpen(true)
 
@@ -31,19 +21,20 @@ const ProjectsPage = () => {
     return (
         <div className='p-6 font-serif'>
             <div className='flex flex-row gap-2'>
-                <AiFillCaretLeft className='text-4xl hover:scale-90 hover:cursor-pointer' />
+                <AiFillCaretLeft
+                    onClick={() => window.history.back()}
+                    className='text-4xl hover:scale-90 hover:cursor-pointer' />
                 <h2 className="text-lg md:text-2xl font-bold mb-4 "><span className='font-bold text-2xl md:text-6xl'>A</span><span>ll Projects</span></h2>
             </div>
             <div>
                 <div className=" w-full grid grid-cols-3 gap-4">
                     {projects && projects.length > 0 &&
                         projects.map((val, ind) => {
-                            // console.log("val: ", val)
                             return (
 
                                 <div
                                     key={ind}
-                                    onClick={(e) => handleOpenProject(e, val)}
+                                    onClick={() => handleOpenProject(val)}
                                     className={cn(
                                         "group w-full  shadow-violet-950 cursor-pointer overflow-hidden relative card h-70 rounded-md shadow-lg mx-auto flex flex-col justify-end p-4 border border-transparent dark:border-neutral-800",
                                         "bg-[url(https://images.unsplash.com/photo-1476842634003-7dcca8f832de?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80)] bg-cover",

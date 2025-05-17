@@ -1,16 +1,18 @@
 "use client"
-import React, { createContext, useEffect, useState } from "react";
-import { UserContextType } from "../../types";
-import axios from "axios";
+import React, { createContext, useState } from "react";
+import { User, UserContextType } from "../../types";
+
 const defaultValue: UserContextType = {
     setIsAuthenticated: () => { },
     isAuthenticated: false,
     user: {
-        Name: "",
-        Email: "",
-        ProfilePic: "",
-        Password: "",
-        Role: ""
+        id: "",
+        name: "",
+        email: "",
+        profile_pic: "",
+        password: "",
+        role: "",
+        api_key: ""
     },
     setUser: () => { },
     isUserLoading: false,
@@ -23,18 +25,19 @@ export const UserContext = createContext<UserContextType>(defaultValue)
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const [isUserLoading, setIsUserLoading] = useState(false)
     const [isAuthenticated, setIsAuthenticated] = useState(false)
-    const [user, setUser] = useState({
+    const [user, setUser] = useState<User>({
+        id: "",
         name: "",
         email: "",
-        profilePic: "",
+        profile_pic: "",
         password: "",
-        role: ""
+        role: "",
+        api_key: ""
     })
 
 
 
 
-    console.log("authenticated, userloading", isAuthenticated, isUserLoading)
 
 
     return (

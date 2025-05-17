@@ -1,9 +1,10 @@
 "use client"
-import axios from "axios";
+
 
 export default async function getAllProjects(token: string) {
-
-    const response = await axios.get("http://localhost:8000/project/getAllProject", {
+    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/project/getAllProject`
+    const response = await fetch(url, {
+        method: "GET",
         headers: {
             // "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -11,7 +12,7 @@ export default async function getAllProjects(token: string) {
     }
     )
     if (response.status == 200) {
-        return response.data
+        return response.json()
     }
     throw new Error("failed to fetch data")
 }

@@ -18,7 +18,6 @@ import { AiFillEdit, AiFillApi, AiFillFolderOpen, AiFillCaretRight, AiFillCaretL
 const Project = () => {
     const params = useParams()
     const col_id = params.col_id
-    console.log(col_id, "slug")
     const { projects, setProjects } = useContext(ProjectContext)
     const [selectedType, setSelectedType] = useState('All');
     const [count, setCount] = useState(0);
@@ -40,21 +39,20 @@ const Project = () => {
         const fetchProjects = async () => {
             try {
                 const token = localStorage.getItem('token')
-                const response = await axios.get(`http://localhost:8000/project/readProject/${col_id}`, {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/readProject/${col_id}`, {
                     headers: {
                         // "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`,
                     }
                 })
                 const data = await response.data
-                console.log("data: ", data)
                 setProjects(data)
             } catch (error) {
                 console.error("Error fetching projects:", error);
             }
         }
         fetchProjects()
-    }, [])
+    }, [setProjects, col_id])
 
 
 

@@ -26,40 +26,18 @@ const Media = () => {
 
     const query = useQuery({
         queryKey: ['media'],
-        queryFn: () => getAllMedia(token ?? "", col_id),
+        queryFn: () => getAllMedia(token ?? "", col_id?.toString() ?? ""),
         enabled: !!token
     })
     useEffect(() => {
         if (query.data) {
-            console.log(query.data, "in media query")
             setMedia(query.data)
         }
     })
-    // const queryClient = new QueryClient()
-    // const mutation = useMutation({
-    //     mutationKey: ['media'],
-    //     mutationFn: async (formData) => {
-    //         return await fetch(`http://localhost:8000/media/postmedia/${col_id}`, {
-    //             method: 'POST',
-    //             headers: {
 
-    //                 Authorization: `Bearer ${token}`,
-    //             },
-    //             body: formData
-    //         }
-    //         )
-    //     },
-    //     onSuccess: (data) => {
-    //         console.log("success:", data)
-    //         queryClient.invalidateQueries(['media'])
-    //     },
-    //     onError: (error) => {
-    //         console.log("error:", error)
-    //     }
-    // })
 
-    const handleUpload = async (e) => {
-        e.preventDefault()
+    const handleUpload = async () => {
+
 
         const formData = new FormData()
         formData.append('title', title)
@@ -68,7 +46,7 @@ const Media = () => {
             formData.append('file', file)
         }
         // mutation.mutate(formData)
-        await fetch(`http://localhost:8000/media/postmedia/${col_id}`, {
+        await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/media/postmedia/${col_id}`, {
             method: 'POST',
             headers: {
 
@@ -77,12 +55,11 @@ const Media = () => {
             body: formData
         }
         )
-        const mediaResponse = await getAllMedia(token ?? "", col_id)
+        const mediaResponse = await getAllMedia(token ?? "", col_id?.toString() ?? "")
         setMedia(mediaResponse)
 
         setClickedButton(!clickedButton)
     }
-    console.log("media: ", media, clickedButton)
     return (
         <div className='p-4'>
             <Link href={`/dashboard/project/${col_id}`}>

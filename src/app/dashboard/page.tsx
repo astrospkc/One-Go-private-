@@ -1,12 +1,9 @@
 
 "use client"
 
-import TotalCollection from "@/components/modalComponents/TotalCollection"
 import MyButton from "@/components/ui/button"
-import Modal from "@/components/ui/MyModal"
-import { CollectionContext } from "@/context/CollectionProvider"
 import { ModalContextapp } from "@/context/ModalProvider"
-import { ProjectContext } from "@/context/ProjectProvider"
+
 import getAllCollection from "@/lib/getAllCollections"
 import getAllProjects from "@/lib/getAllProjects"
 import { cn } from "@/lib/utils"
@@ -27,6 +24,7 @@ const Dashboard = () => {
     const [collectionsList, setCollectionsList] = useState([])
     const [projectsList, setProjectsList] = useState([])
     const [sectionSelected, setSectionSelected] = useState('collection')
+    console.log(isOpen, sectionSelected)
     useEffect(() => {
         const token = localStorage.getItem('token')
         const fetchCollections = async () => {
@@ -41,13 +39,13 @@ const Dashboard = () => {
         fetchProjects()
     }, [])
 
-    const totalCollection = collectionsList.length
-    const totalProjects = projectsList.length
+    const totalCollection = collectionsList ? collectionsList.length : []
+    const totalProjects = projectsList ? projectsList.length : []
     const router = useRouter()
     const baseClass = "  flex flex-col justify-center items-center  rounded-3xl hover:bg-white/10 cursor-pointer bg-white/5 backdrop-blur-lg p-6  border border-white/10 text-white/80"
 
-    const handleSection = (e) => {
-        const labelText = e.currentTarget.querySelector('span').innerText.trim();
+    const handleSection = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        const labelText = (e.currentTarget as HTMLElement).querySelector('span')?.innerText.trim();
         switch (labelText) {
             case "Total Collections":
                 router.push('/dashboard/sectionPages/TotalCollection')

@@ -1,86 +1,99 @@
-import { useRef, useState, useEffect, useContext } from "react";
-import TurndownService from "turndown";
-import ReactMarkdown from "react-markdown";
-import EditorJS from '@editorjs/editorjs'
+import React, { useRef, useState, useEffect, useContext } from "react";
+
+import EditorJS, { ToolConstructable } from '@editorjs/editorjs'
 import Header from '@editorjs/header';
 import LinkTool from '@editorjs/link';
-import EditorjsList from '@editorjs/list';
+import List from '@editorjs/list';
 import SimpleImage from "@editorjs/simple-image";
 import Quote from '@editorjs/quote';
 import { BlogContext } from "@/context/BlogProvider";
 import getAllBlogs from "@/lib/getAllBlogs";
 
+type PayloadType = {
+    title: string,
+    description: string,
+    content?: unknown,
+    status: string
+}
 
-export default function BlogEditor({ col_id }) {
-    const { blogs, setBlogs } = useContext(BlogContext)
+
+export default function BlogEditor({ col_id }: { col_id: string }) {
+    const { setBlogs } = useContext(BlogContext)
     const [blogAdded, setBlogAdded] = useState(false)
-    const ejInstance = useRef()
+    const ejInstance = useRef<EditorJS | null>(new EditorJS())
     useEffect(() => {
-        ejInstance.current = new EditorJS({
-            holder: "editorjs",
-            tools: {
-                header: {
-                    class: Header,
-                    shortcut: 'CMD+SHIFT+H',
-                },
-                linkTool: {
-                    class: LinkTool,
-                    shortcut: 'CMD+SHIFT+L',
-                },
-                list: {
-                    class: EditorjsList,
-                    inlineToolbar: true,
-                    config: {
-                        defaultStyle: 'unordered'
+        if (ejInstance.current == null) {
+            ejInstance.current = new EditorJS({
+                holder: "editorjs",
+                tools: {
+                    header: Header,
+                    // header: {
+                    //     class: Header,
+                    //     shortcut: 'CMD+SHIFT+H',
+                    // },
+                    linkTool: {
+                        class: LinkTool,
+                        shortcut: 'CMD+SHIFT+L',
+                    },
+                    list: {
+                        class: List as unknown as ToolConstructable,
+                        inlineToolbar: true,
+                        config: {
+                            defaultStyle: 'unordered'
+                        },
+                    },
+                    image: SimpleImage,
+                    quote: {
+                        class: Quote,
+                        inlineToolbar: true,
+                        shortcut: 'CMD+SHIFT+O',
+                        config: {
+                            quotePlaceholder: 'Enter a quote',
+                            captionPlaceholder: 'Quote\'s author',
+                        },
                     }
                 },
-                image: SimpleImage,
-                quote: {
-                    class: Quote,
-                    inlineToolbar: true,
-                    shortcut: 'CMD+SHIFT+O',
-                    config: {
-                        quotePlaceholder: 'Enter a quote',
-                        captionPlaceholder: 'Quote\'s author',
-                    },
-                }
-            },
-            placeholder: "Start writing your blog post...."
-        });
-
+                placeholder: "Start writing your blog post...."
+            });
+        }
 
     }, [])
 
 
-    const handleSave = async (e) => {
+    const handleSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
 
-        const outputData = await ejInstance.current.save()
-        const title = document.getElementById("title").value
-        const description = document.getElementById("description").value
-        const buttonType = e.target.innerText
+        const outputData = await ejInstance.current?.save()
+        const title = (document.getElementById("title") as HTMLInputElement)?.value ?? ""
+        const description = (document.getElementById("description") as HTMLInputElement)?.value
+        const buttonType = (e.target as HTMLElement).innerText
         let payload
         if (buttonType === 'Publish') {
             payload = {
                 title,
                 description,
-                content: outputData,
+                content: outputData ?? "",
                 status: 'Publish'
             }
         } else if (buttonType === 'Save as Draft') {
             payload = {
                 title,
                 description,
-                content: outputData,
+                content: outputData ?? "",
                 status: 'Draft'
             }
         }
-        console.log("payload: ", payload)
-        CreateBlog(payload)
+
+        if (payload) {
+            CreateBlog(payload)
+        } else {
+            console.error("Invalid button type")
+        }
+
 
     }
-    const CreateBlog = async (payload) => {
+    const CreateBlog = async (payload: PayloadType) => {
         const token = localStorage.getItem('token')
-        const res = await fetch(`http://localhost:8000/blog/createBlog/${col_id}`, {
+        await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blog/createBlog/${col_id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -95,11 +108,10 @@ export default function BlogEditor({ col_id }) {
     }
     useEffect(() => {
         if (blogAdded) {
-            ejInstance.current.clear()
+            ejInstance.current?.clear()
         }
     }, [blogAdded])
 
-    console.log("blogs: ", blogs)
     return (
         <div className="max-w-3xl mx-auto p-6 text-white bg-black shadow-sm shadow-violet-500 rounded-xl mt-10">
             <h1 className="text-2xl font-bold mb-4">Blog Post Title</h1>
@@ -130,47 +142,6 @@ export default function BlogEditor({ col_id }) {
             >
                 Save as Draft
             </button>
-
-
-            {/* <div className="mb-2 space-x-2">
-                <button onClick={() => formatText("bold")} className=" hover:cursor-pointer font-bold px-2">B</button>
-                <button onClick={() => formatText("italic")} className="hover:cursor-pointer italic px-2">I</button>
-                <button onClick={() => formatText("underline")} className=" hover:cursor-pointer underline px-2">U</button>
-                <button onClick={() => formatText("insertUnorderedList")} className="hover:cursor-pointer px-2">• List</button>
-                <button onClick={() => formatText("justifyLeft")} className="hover:cursor-pointer px-2">Left</button>
-            </div> */}
-
-            {/* <div
-                ref={editorRef}
-                contentEditable
-                className="w-full min-h-[150px] border border-gray-300 p-3 rounded mb-4 focus:outline-none"
-            >
-                Start writing your blog post here...
-            </div>
-
-            <div className="flex flex-wrap gap-3 mb-6">
-                <button onClick={() => handleAction("draft")} className="px-4 py-2 border rounded hover:bg-gray-100">
-                    Save as Draft
-                </button>
-                <button onClick={() => handleAction("publish")} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                    Publish
-                </button>
-                <button onClick={() => handleAction("discard")} className="px-4 py-2 border rounded hover:bg-gray-100">
-                    Discard
-                </button>
-                <button onClick={() => handleAction("markdown")} className="px-4 py-2 border border-green-500 text-green-600 rounded hover:bg-green-50">
-                    Export as Markdown
-                </button>
-            </div> */}
-
-            {/* {showPreview && (
-                <div className="mt-6">
-                    <h2 className="text-xl font-semibold mb-2">Markdown Preview</h2>
-                    <div className="prose border border-gray-200 rounded p-4 bg-gray-50">
-                        <ReactMarkdown>{markdown}</ReactMarkdown>
-                    </div>
-                </div>
-            )} */}
         </div>
     );
 }

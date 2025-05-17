@@ -1,7 +1,15 @@
 "use client"
 import React, { useState } from 'react'
+import { User } from '../../types'
 
-const ApiKeyPage = ({ props }) => {
+interface ApiKeyPageProps {
+    props: {
+        user: User
+    }
+
+}
+
+const ApiKeyPage = ({ props }: ApiKeyPageProps) => {
 
     const { user } = props
     const [hide, setHide] = useState(true)
@@ -22,7 +30,7 @@ const ApiKeyPage = ({ props }) => {
                 <div>
                     {hide ? <></> :
                         <input
-                            defaultValue={user.apiKey}
+                            defaultValue={user.api_key}
                             type="text" className='p-2 border-2 border-gray-600 rounded-xl' />
                     }
 

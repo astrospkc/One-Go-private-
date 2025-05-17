@@ -1,6 +1,6 @@
-"use client"
+
 "use client";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
     Modal,
     ModalBody,
@@ -11,16 +11,13 @@ import {
 
 
 import { ModalContextapp } from "@/context/ModalProvider";
-import { UserContext } from "@/context/UserProvider";
 import axios from "axios";
 import { ProjectContext } from "@/context/ProjectProvider";
 
-export function ProjectModal({ props }) {
+export function ProjectModal({ props }: { props: { col_id: string } }) {
     const { col_id } = props
     const { openProjectModal, setOpenProjectModal } = useContext(ModalContextapp)
-    const { user } = useContext(UserContext)
     const { projects, setProjects } = useContext(ProjectContext)
-    console.log("user: ", user)
     const [newProj, setNewProj] = useState({
         CollectionId: col_id,
         Title: "",
@@ -30,13 +27,14 @@ export function ProjectModal({ props }) {
         GithubLink: "",
         LiveDemoLink: ""
     })
-    const handleAddProject = (e) => {
+    const handleAddProject = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         e.preventDefault()
-        const { name, value } = e.target
+        const { name, value } = e.target as HTMLInputElement
         setNewProj((prev) => ({
             ...prev,
             [name]: value,
         }))
+        AddProject()
     }
 
 
@@ -46,7 +44,7 @@ export function ProjectModal({ props }) {
 
     const AddProject = async () => {
         const token = localStorage.getItem('token')
-        const response = await axios.post(`http://localhost:8000/project/createProject/${col_id}`,
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/createProject/${col_id}`,
             {
                 CollectionId: newProj.CollectionId,
                 Title: newProj.Title,

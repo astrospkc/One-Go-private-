@@ -17,11 +17,9 @@ const Navbar = () => {
     }
 
 
-    console.log("isAuthenticated in navbar: ", isAuthenticated)
     useEffect(() => {
-        console.log("Navbar: Auth changed →", isAuthenticated)
         setIsAuthenticated(!!localStorage.getItem('token'))
-    }, [isAuthenticated])
+    })
 
     return (
         <div>

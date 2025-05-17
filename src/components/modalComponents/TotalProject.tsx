@@ -5,9 +5,10 @@ import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { AiFillCaretLeft } from 'react-icons/ai'
+import { Project } from '../../../types'
 
 const TotalProject = () => {
-    const [projects, setProjects] = useState([])
+    const [projects, setProjects] = useState<Project[]>([])
     const [token, setToken] = useState<string | null>(null)
 
     useEffect(() => {

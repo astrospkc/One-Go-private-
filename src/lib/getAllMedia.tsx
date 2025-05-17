@@ -1,7 +1,7 @@
 import axios from "axios"
 
 export default async function getAllMedia(token: string, col_id: string) {
-    const response = await axios.get(`http://localhost:8000/media/getALlMediaFiles/${col_id}`, {
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/media/getALlMediaFiles/${col_id}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         }

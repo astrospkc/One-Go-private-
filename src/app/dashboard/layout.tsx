@@ -3,7 +3,6 @@ import { AnimatedModal } from "@/components/AnimatedModal";
 
 import SideBar from "@/components/SideBar";
 import { ModalContextapp } from "@/context/ModalProvider";
-import { UserContext } from "@/context/UserProvider";
 import { useContext } from "react";
 
 
@@ -14,9 +13,7 @@ export default function DashboardLayout({
     children: React.ReactNode;
 }>) {
 
-    const { isAuthenticated } = useContext(UserContext)
     const { open } = useContext(ModalContextapp)
-    console.log("isAuthenticated in dashboard: ", isAuthenticated)
     return (
         <>
             <div className="min-h-screen flex items-center justify-center relative w-full">

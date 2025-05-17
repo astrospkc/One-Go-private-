@@ -32,39 +32,12 @@ const Collection = () => {
         if (query.data) {
             setCollection(query.data)
         }
-    }, [query.data])
+    })
     if (query.isLoading) return <div className="flex justify-center items-center h-40">
         <div className="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-amber-500"></div>
     </div>
     if (query.isError) return <div>error</div>
 
-
-
-    // useEffect(() => {
-    //     const token = localStorage.getItem("token")
-    //     const fetchCollections = async () => {
-    //         setLoading(true)
-    //         try {
-    //             if (token) {
-    //                 const collection_data: Promise<SingleCollection[]> = getAllCollection(token)
-    //                 const data = await collection_data
-    //                 console.log("data collection: ", data)
-    //                 setCollection(data)
-    //             } else {
-    //                 throw new Error("token null")
-    //             }
-
-    //         } catch (error) {
-    //             console.error("Error fetching collections:", error);
-    //         } finally {
-    //             setLoading(false)
-    //         }
-    //     }
-    //     fetchCollections()
-    // }, [])
-
-    console.log("collections: ", collection)
-    // if (loading) return <div>loading...</div>
 
     return (
         <div className="p-6 font-serif">

@@ -11,7 +11,7 @@ import {
 
 
 import { ModalContextapp } from "@/context/ModalProvider";
-import axios from "axios";
+
 import { CollectionContext } from "@/context/CollectionProvider";
 import { QueryClient, useMutation } from "@tanstack/react-query";
 import postCollection from "@/lib/postCollection";
@@ -33,9 +33,10 @@ export function AnimatedModal() {
         Description: ""
     })
 
-    const handleCreateCol = (e) => {
+    const handleCreateCol = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         e.preventDefault()
-        const { name, value } = e.target
+
+        const { name, value } = e.target as HTMLInputElement
         setNewCol((prev) => ({
             ...prev,
             [name]: value
@@ -47,38 +48,16 @@ export function AnimatedModal() {
     const mutation = useMutation({
         mutationFn: ({ token, body }: { token: string; body: { Title: string; Description: string } }) => postCollection(token, body),
         onSuccess: (data) => {
-            console.log("crate collection: ", data)
             setCollection([...collection, data])
             setOpen(!open)
             queryClient.invalidateQueries({ queryKey: ['collection'] })
         },
         onError: (error) => {
-            throw new Error("Failed to Create new Collection")
+            throw new Error("Failed to Create new Collection", error)
         }
     })
 
-    // const addCollection = async () => {
-    //     try {
-    //         const token = localStorage.getItem('token')
-    //         const createcollection = await axios.post(`http://ocalhost:8000/collection/createCollection`, {
-    //             Title: newCol.Title,
-    //             Description: newCol.Description
-    //         }, {
-    //             headers: {
-    //                 Authorization: `Bearer ${token}`,
-    //             }
-    //         }
-    //         )
-    //         const data = createcollection.data
-    //         console.log("new Collection: ", data)
-    //         setCollection([...collection, data])
-    //         setOpen(!open)
 
-    //     } catch (error) {
-    //         throw new Error("Failed to Create new Collection")
-    //     }
-
-    // }
 
     return (
         <div className="py-40   flex items-center justify-center font-serif">
@@ -129,9 +108,10 @@ export function AnimatedModal() {
                                     }
 
                                 })
+
                             }}
                             // onClick={addCollection}
-                            className="bg-black text-white dark:bg-white dark:text-black text-sm px-2 py-1 rounded-md border border-black w-28">
+                            className="bg-black cursor-pointer text-white dark:bg-white dark:text-black text-sm px-2 py-1 rounded-md border border-black w-28">
                             Create
                         </button>
                     </ModalFooter>

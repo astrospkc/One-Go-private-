@@ -4,7 +4,7 @@ import axios from "axios"
 export default async function postCollection(token: string, body: { Title: string; Description: string }) {
     try {
 
-        const response = await axios.post(`http://ocalhost:8000/collection/createCollection`, body, {
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/collection/createCollection`, body, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -13,6 +13,7 @@ export default async function postCollection(token: string, body: { Title: strin
         const info = await response.data
         return info
     } catch (error) {
-        throw new Error("Failed to Create new Collection")
+        return error
+        // throw new Error("Failed to Create new Collection",error)
     }
 }

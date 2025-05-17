@@ -1,6 +1,6 @@
 "use client"
 
-import { CollectionContextType } from "../../types";
+import { CollectionContextType, SingleCollection } from "../../types";
 import { createContext, useState } from "react";
 
 const defaultValue: CollectionContextType = {
@@ -11,7 +11,7 @@ const defaultValue: CollectionContextType = {
 export const CollectionContext = createContext<CollectionContextType>(defaultValue);
 
 export const CollectionProvider = ({ children }: { children: React.ReactNode }) => {
-    const [collection, setCollection] = useState([])
+    const [collection, setCollection] = useState<SingleCollection[]>([])
 
 
 

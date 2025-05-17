@@ -24,9 +24,8 @@ const settingSections = [
 const UsersPage = () => {
     const { user } = useContext(UserContext)
     const [openedSection, setOpenedSection] = useState(settingSections[0].title)
-    console.log("user: ", user)
-    const handleSection = (e: any) => {
-        setOpenedSection(e.target.innerText)
+    const handleSection = (e: React.MouseEvent<HTMLDivElement>) => {
+        setOpenedSection((e.target as HTMLElement).innerText)
     }
 
 

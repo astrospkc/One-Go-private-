@@ -4,7 +4,6 @@ import MyButton from '@/components/ui/button';
 import { BlogContext } from '@/context/BlogProvider';
 import getAllBlogs from '@/lib/getAllBlogs';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
@@ -14,13 +13,12 @@ const Blogs = () => {
     const [openBlog, setOpenBlog] = useState(false)
     const { blogs, setBlogs } = useContext(BlogContext)
     const [selectedType, setSelectedType] = useState('All');
-    const [openIndex, setOpenIndex] = useState(null)
+    const [openIndex, setOpenIndex] = useState<string | number | undefined | null>(null)
 
 
     const params = useParams()
-    const col_id = params.col_id
-    console.log("params in blogs: ", col_id)
-    const toggleDropdown = (index) => {
+    const col_id = params.col_id as string
+    const toggleDropdown = (index: string | number | undefined | null) => {
         setOpenIndex(openIndex == index ? null : index)
     }
 
@@ -29,14 +27,14 @@ const Blogs = () => {
         setToken(localStorage.getItem("token"))
     }, [])
 
+    // col_id?.toString() ?? "" converted from col_id
     const query = useQuery({
         queryKey: ['blogs'],
-        queryFn: () => getAllBlogs(token ?? "", col_id),
+        queryFn: () => getAllBlogs(token ?? "", col_id?.toString() ?? ""),
         enabled: !!token
     })
     useEffect(() => {
         if (query.data) {
-            console.log(query.data, "in blogs query")
             setBlogs(query.data)
         }
     })
@@ -44,7 +42,7 @@ const Blogs = () => {
 
     const handleDeleteBlog = async (blogid: string, col_id: string) => {
 
-        const res = await fetch(`http://localhost:8000/blog/deleteBlog/${blogid}`, {
+        await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blog/deleteBlog/${blogid}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -80,7 +78,7 @@ const Blogs = () => {
 
             <MyButton onClick={() => setOpenBlog(!openBlog)}>Create Blog</MyButton>
             {
-                openBlog && <BlogEditor col_id={col_id} />
+                openBlog && col_id && <BlogEditor col_id={col_id} />
             }
 
             {/* Dropdown */}
@@ -124,39 +122,39 @@ const Blogs = () => {
                                 <tbody className='bg-black border-2 border-violet-500/40'>
 
                                     {blogs.map((blog, index) => (
-                                        <>
-                                            <tr key={index} className="hover:bg-gray-700">
-                                                <td className="px-4 py-2 border-b border-gray-600">{index + 1}</td>
-                                                <td className="px-4 py-2 border-b border-gray-600">{blog.title}</td>
-                                                <td className="px-4 py-2 border-b border-gray-600">{blog.description}</td>
-                                                <td className="px-4 py-2 border-b border-gray-600">{blog.published}</td>
-                                                <td className="px-4 py-2 border-b border-gray-600">{blog.lastedited}</td>
-                                                <td className="px-4 py-2 border-b border-gray-600">{blog.status}</td>
-                                                <td
-                                                    onClick={() => toggleDropdown(index)}
-                                                    className=" relative  ">
-                                                    <button className='px-4 py-2 border-b border-gray-600 hover:bg-violet-500 p-1 cursor-pointer'>
-                                                        ...
-                                                    </button>
-                                                    {openIndex === index && (
-                                                        <div className="absolute right-0 mt-2 w-24 bg-white text-black rounded shadow-lg z-10">
-                                                            <button
-                                                                onClick={() => handleEditBlog(blog.id, blog.collection_id)}
-                                                                className="block w-full text-left px-4 py-2 hover:bg-gray-200"
-                                                            >
-                                                                Edit
-                                                            </button>
-                                                            <button
-                                                                onClick={() => handleDeleteBlog(blog.id, blog.collection_id)}
-                                                                className="block w-full text-left px-4 py-2 hover:bg-gray-200"
-                                                            >
-                                                                Delete
-                                                            </button>
-                                                        </div>
-                                                    )}
-                                                </td>
-                                            </tr>
-                                        </>
+
+                                        <tr key={index} className="hover:bg-gray-700">
+                                            <td className="px-4 py-2 border-b border-gray-600">{index + 1}</td>
+                                            <td className="px-4 py-2 border-b border-gray-600">{blog.title}</td>
+                                            <td className="px-4 py-2 border-b border-gray-600">{blog.description}</td>
+                                            <td className="px-4 py-2 border-b border-gray-600">{blog.published}</td>
+                                            <td className="px-4 py-2 border-b border-gray-600">{blog.lastedited}</td>
+                                            <td className="px-4 py-2 border-b border-gray-600">{blog.status}</td>
+                                            <td
+                                                onClick={() => toggleDropdown(index)}
+                                                className=" relative  ">
+                                                <button className='px-4 py-2 border-b border-gray-600 hover:bg-violet-500 p-1 cursor-pointer'>
+                                                    ...
+                                                </button>
+                                                {openIndex === index && (
+                                                    <div className="absolute right-0 mt-2 w-24 bg-white text-black rounded shadow-lg z-10">
+                                                        <button
+                                                            onClick={() => handleEditBlog(blog.id ?? "", blog.collection_id)}
+                                                            className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                                                        >
+                                                            Edit
+                                                        </button>
+                                                        <button
+                                                            onClick={() => handleDeleteBlog(blog.id ?? "", blog.collection_id)}
+                                                            className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                                                        >
+                                                            Delete
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            </td>
+                                        </tr>
+
                                     ))}
                                 </tbody>
 

@@ -14,7 +14,7 @@ export default function ProjectLayout({
     children: React.ReactNode;
 }>) {
     const params = useParams()
-    const col_id = params.col_id
+    const col_id = params.col_id as string
 
 
     const { openProjectModal } = useContext(ModalContextapp)
