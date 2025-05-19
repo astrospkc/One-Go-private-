@@ -20,7 +20,7 @@ const SideBar = () => {
                     <FaFolder />
                     <span>CMS Section</span>
                 </div>
-                <Link href="dashboard/userpage">
+                <Link href="/dashboard/userpage" >
                     <div className="flex items-center gap-3 cursor-pointer hover:text-violet-400">
                         <FaUserCog />
                         <span>User Settings</span>
