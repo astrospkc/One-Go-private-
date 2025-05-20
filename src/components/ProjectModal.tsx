@@ -1,6 +1,6 @@
 
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import {
     Modal,
     ModalBody,
@@ -10,14 +10,18 @@ import {
 } from "./ui/animated-modal";
 
 
+
 import { ModalContextapp } from "@/context/ModalProvider";
-import axios from "axios";
+
 import { ProjectContext } from "@/context/ProjectProvider";
+// import debounce from "@/lib/debounce";
 
 export function ProjectModal({ props }: { props: { col_id: string } }) {
     const { col_id } = props
     const { openProjectModal, setOpenProjectModal } = useContext(ModalContextapp)
     const { projects, setProjects } = useContext(ProjectContext)
+    // const [titleValue, setTitleValue] = useState("")
+    // const [descriptionValue, setDescriptionValue] = useState("")
     const [newProj, setNewProj] = useState({
         CollectionId: col_id,
         Title: "",
@@ -27,6 +31,38 @@ export function ProjectModal({ props }: { props: { col_id: string } }) {
         GithubLink: "",
         LiveDemoLink: ""
     })
+    const titleRef = useRef<HTMLInputElement>(null)
+    const descRef = useRef<HTMLTextAreaElement>(null)
+    // const debounceFieldChange = useCallback(
+    //     debounce((fieldName: string, value: string) => {
+    //         if (fieldName === "Title") {
+    //             setTitleValue(value)
+    //             setNewProj((prev) => ({
+    //                 ...prev,
+    //                 Title: value
+    //             }))
+    //         } else if (fieldName === "Description") {
+    //             setDescriptionValue(value)
+    //             setNewProj((prev) => ({
+    //                 ...prev,
+    //                 Description: value
+    //             }))
+
+    //         }
+    //     }, 800),
+    //     [setTitleValue, setDescriptionValue, setNewProj]
+    // )
+
+
+
+
+
+    // const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    //     e.preventDefault()
+    //     const { name, value } = e.target as HTMLInputElement
+    //     debounceFieldChange(name, value)
+    // }
+
     const handleAddProject = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         e.preventDefault()
         const { name, value } = e.target as HTMLInputElement
@@ -34,38 +70,50 @@ export function ProjectModal({ props }: { props: { col_id: string } }) {
             ...prev,
             [name]: value,
         }))
-        AddProject()
+
     }
+
+    // console.log("new project: ", newProj)
 
 
     const handleCancel = () => {
         setOpenProjectModal(!openProjectModal)
+        window.location.reload()
     }
 
     const AddProject = async () => {
         const token = localStorage.getItem('token')
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/createProject/${col_id}`,
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/createProject/${col_id}`,
             {
-                CollectionId: newProj.CollectionId,
-                Title: newProj.Title,
-                Description: newProj.Description,
-                Thumbnail: newProj.Thumbnail,
-                Tags: newProj.Thumbnail,
-                GithubLink: newProj.GithubLink,
-                LiveDemoLink: newProj.LiveDemoLink
-
-            },
-            {
+                method: 'POST',
                 headers: {
+                    'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
-                }
+                },
+                body: JSON.stringify({
+                    CollectionId: newProj.CollectionId,
+                    Title: newProj.Title,
+                    Description: newProj.Description,
+                    Thumbnail: newProj.Thumbnail,
+                    Tags: newProj.Thumbnail,
+                    GithubLink: newProj.GithubLink,
+                    LiveDemoLink: newProj.LiveDemoLink
+                })
             })
-        const data = await response.data
+
+        const data = await response.json()
         setProjects([...projects, data])
         setOpenProjectModal(!openProjectModal)
-
-
+        window.location.reload()
     }
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         console.log("title and description: ", titleRef.current?.value, ` ${titleRef.current?.value.length}`, "  \n", descRef.current?.value)
+    //     }, 3000)
+    // }, [titleRef.current?.value, descRef.current?.value])
+
+    // const handledebounce=
+    // console.log("title and description: ", titleRef.current?.value, ` ${titleRef.current?.value.length}`, "  \n", descRef.current?.value)
 
 
 
@@ -96,15 +144,17 @@ export function ProjectModal({ props }: { props: { col_id: string } }) {
                                 name="CollectionId"
                                 type="text" placeholder="CollectionId" className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 w-full" />
                             <input
+                                ref={titleRef}
                                 value={newProj.Title}
                                 onChange={handleAddProject}
                                 name="Title"
                                 type="text" placeholder="Title" className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 w-full" />
-                            <input
+                            <textarea
+                                ref={descRef}
                                 value={newProj.Description}
                                 onChange={handleAddProject}
                                 name="Description"
-                                type="text" placeholder="Description" className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 w-full" />
+                                placeholder="Description" className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 w-full" />
                             <input
                                 value={newProj.Tags}
                                 onChange={handleAddProject}

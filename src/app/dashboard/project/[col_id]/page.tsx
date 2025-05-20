@@ -166,7 +166,9 @@ const Project = () => {
 
                                     <button className='border-2  border-amber-400 hover:text-black hover:font-bold p-2 rounded-2xl hover:bg-amber-400 hover:scale-90'>View more projects</button>
                                 </Link>
-                                <button className='border-2  border-amber-400 p-2 hover:text-black hover:font-bold rounded-2xl hover:bg-amber-400 hover:scale-90'> + Add more projects</button>
+                                <button
+                                    onClick={handleClick}
+                                    className='border-2  border-amber-400 p-2 hover:text-black hover:font-bold rounded-2xl hover:bg-amber-400 hover:scale-90'> + Add more projects</button>
                             </div>
                         </div>
 
