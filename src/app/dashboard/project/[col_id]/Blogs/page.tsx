@@ -42,15 +42,18 @@ const Blogs = () => {
 
     const handleDeleteBlog = async (blogid: string, col_id: string) => {
 
-        await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blog/deleteBlog/${blogid}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blog/deleteBlog/${blogid}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             }
         })
+        const data = await res.json()
+        console.log("deleted data: ", data)
         const blogResponse = await getAllBlogs(token ?? "", col_id)
         setBlogs(blogResponse)
+        window.location.reload()
     }
     const handleEditBlog = async (blogid: string, col_id: string) => {
         // const res = await axios.put(`http://localhost:8000/blog/updateBlog/${blogid}`, {
@@ -62,7 +65,6 @@ const Blogs = () => {
         console.log("blogid: ", blogid, 'col_id: ', col_id)
 
     }
-
 
 
 
@@ -106,7 +108,7 @@ const Blogs = () => {
                         blogs &&
                         <div
 
-                            className="overflow-x-auto">
+                            className="">
                             <table className="min-w-full border border-gray-700 text-sm">
                                 <thead className="bg-gray-800">
                                     <tr>

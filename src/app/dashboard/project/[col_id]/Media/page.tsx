@@ -17,6 +17,7 @@ const Media = () => {
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
     const [file, setFile] = useState<File | null>()
+    const [clickedDots, setClickedDots] = useState(false)
 
     const params = useParams()
     const col_id = params.col_id
@@ -37,8 +38,6 @@ const Media = () => {
 
 
     const handleUpload = async () => {
-
-
         const formData = new FormData()
         formData.append('title', title)
         formData.append('content', content)
@@ -49,7 +48,6 @@ const Media = () => {
         await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/media/postmedia/${col_id}`, {
             method: 'POST',
             headers: {
-
                 Authorization: `Bearer ${token}`,
             },
             body: formData
@@ -57,8 +55,11 @@ const Media = () => {
         )
         const mediaResponse = await getAllMedia(token ?? "", col_id?.toString() ?? "")
         setMedia(mediaResponse)
-
         setClickedButton(!clickedButton)
+    }
+
+    const handleDots = () => {
+        setClickedDots(!clickedDots)
     }
     return (
         <div className='p-4'>
@@ -77,7 +78,7 @@ const Media = () => {
             }
             {
                 clickedButton &&
-                <div className='flex flex-col mx-5 justify-center items-start p-4 rounded-4xl bg-black w-fit gap-2'>
+                <div className='flex flex-col m-5 justify-center items-start p-4 rounded-4xl bg-black w-fit gap-2 shadow-sm shadow-orange-500'>
                     <input
                         id='title'
                         value={title}
@@ -113,8 +114,7 @@ const Media = () => {
                             <th className="px-4 py-2 border-b border-gray-600 text-left">Content</th>
                             <th className="px-4 py-2 border-b border-gray-600 text-left">Key</th>
                             <th className="px-4 py-2 border-b border-gray-600 text-left">Created</th>
-                            {/* <th className="px-4 py-2 border-b border-gray-600 text-left">Status</th> */}
-                            <th className="px-4 py-2 border-b border-gray-600 text-left"></th>
+                            <th onClick={handleDots} className="px-4 py-2 border-b border-gray-600 text-left">...</th>
                         </tr>
                     </thead>
                     <tbody className='bg-black border-2 border-violet-500/40'>

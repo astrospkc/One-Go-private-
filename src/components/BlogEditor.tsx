@@ -1,3 +1,4 @@
+"use client"
 import React, { useRef, useState, useEffect, useContext } from "react";
 
 import EditorJS, { ToolConstructable } from '@editorjs/editorjs'
@@ -63,6 +64,7 @@ export default function BlogEditor({ col_id }: { col_id: string }) {
     const handleSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
 
         const outputData = await ejInstance.current?.save()
+
         const title = (document.getElementById("title") as HTMLInputElement)?.value ?? ""
         const description = (document.getElementById("description") as HTMLInputElement)?.value
         const buttonType = (e.target as HTMLElement).innerText
@@ -105,6 +107,7 @@ export default function BlogEditor({ col_id }: { col_id: string }) {
         const blogResponse = await getAllBlogs(token ?? "", col_id)
         setBlogs(blogResponse)
         setBlogAdded(!blogAdded)
+        window.location.reload()
     }
     useEffect(() => {
         if (blogAdded) {

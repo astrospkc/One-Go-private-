@@ -66,7 +66,7 @@ const Project = () => {
                 <div className="m-6">
 
                     <Link href={`/dashboard/collections`}>
-                        <AiFillCaretLeft className='text-4xl hover:scale-90 hover:cursor-pointer hover:text-violet-400' />
+                        <AiFillCaretLeft className='text-4xl  hover:scale-90 hover:cursor-pointer hover:text-violet-400' />
                     </Link>
                     <label htmlFor="contentType" className="mr-2 font-medium">Select Content:</label>
                     <select
@@ -102,20 +102,20 @@ const Project = () => {
 
                                 <div className="flex flex-col rounded-4xl w-96 h-96 justify-center items-center">
                                     <div className='text-2xl  font-semibold my-3 text-orange-500'>
-                                        Blogs
+                                        Projects
                                     </div>
 
 
 
                                     <div
 
-                                        className='flex flex-row    '>
+                                        className='flex flex-row  justify-center items-center   '>
 
-                                        <AiFillCaretLeft onClick={handleCountReverse} className='text-4xl hover:scale-90 hover:cursor-pointer' />
+                                        <AiFillCaretLeft onClick={handleCountReverse} className='text-4xl hover:text-orange-500 hover:scale-90 hover:cursor-pointer' />
 
                                         <div
 
-                                            className='flex flex-col   h-80 w-80 text-center p-4 items-center justify-center  rounded-4xl border-2 shadow-lg border-orange-500/40  hover:border-2 hover:border-orange-500/60 hover:scale-110 hover:shadow-lg  hover:shadow-violet-700 hover:cursor-pointer'>
+                                            className='flex flex-col   h-80 w-80 text-center p-4 items-center justify-center  rounded-4xl border-2 shadow-lg border-orange-500/40  hover:border-2 hover:border-orange-500/60 hover:scale-90 hover:shadow-lg  hover:shadow-violet-700 hover:cursor-pointer'>
                                             <h1 className='text-3xl font-bold '> {projects[count].title}</h1>
                                             <div className=''>
                                                 <p className='text-xl '>{projects[count].description}</p>
@@ -124,7 +124,7 @@ const Project = () => {
                                             </div>
                                         </div>
 
-                                        <AiFillCaretRight onClick={handleCount} className='text-4xl hover:scale-90 hover:cursor-pointer' />
+                                        <AiFillCaretRight onClick={handleCount} className='text-4xl hover:text-orange-500 hover:scale-90 hover:cursor-pointer' />
 
                                     </div>
                                 </div>
@@ -138,13 +138,13 @@ const Project = () => {
                                             Add Projects
                                         </span>
                                         <div onClick={handleCount} className='items-center mx-5' >
-                                            <AiFillCaretRight className='text-4xl hover:scale-90 hover:cursor-pointer' />
+                                            <AiFillCaretRight className='text-4xl hover:text-orange-500 hover:scale-90 hover:cursor-pointer' />
                                         </div>
                                     </div>
                                     :
                                     <div className='flex flex-row '>
                                         <div onClick={handleCountReverse} className='items-center mx-5' >
-                                            <AiFillCaretLeft className='text-4xl hover:scale-90 hover:cursor-pointer' />
+                                            <AiFillCaretLeft className='text-4xl hover:text-orange-500 hover:scale-90 hover:cursor-pointer' />
                                         </div>
                                         <span
                                             onClick={handleClick}
@@ -200,6 +200,14 @@ const Project = () => {
                             >
                                 <AiFillFolderOpen className='text-xl mr-4' />
                                 <p className=" font-semibold mb-2  capitalize text-xl ">Media</p>
+                            </div>
+                        </Link>
+                        <Link href={`${col_id}/BlogTipTap`}>
+                            <div
+                                className="p-2 flex flex-row hover:text-black items-center bg-black border-b-2 border-r-2 border-orange-500  w-fit rounded-lg hover:scale-90 hover:bg-violet-300 hover:cursor-pointer transition duration-200"
+                            >
+                                <AiFillFolderOpen className='text-xl mr-4' />
+                                <p className=" font-semibold mb-2  capitalize text-xl ">BlogTipTap</p>
                             </div>
                         </Link>
                     </div>
