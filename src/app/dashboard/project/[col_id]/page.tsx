@@ -62,8 +62,8 @@ const Project = () => {
                 style={{
                     background: 'radial-gradient(circle at center, #1a0c2b, #0e0618, #090417)',
                 }}
-                className='flex flex-col p-4 relative'>
-                <div className="m-6">
+                className='flex flex-col p-4 relative '>
+                {/* <div className="m-6">
 
                     <Link href={`/dashboard/collections`}>
                         <AiFillCaretLeft className='text-4xl  hover:scale-90 hover:cursor-pointer hover:text-violet-400' />
@@ -80,7 +80,7 @@ const Project = () => {
                         <option value="Links">Links</option>
                         <option value="Media">Media</option>
                     </select>
-                </div>
+                </div> */}
                 <div className='text-white h-full  flex flex-col  font-serif'>
                     {/* Dropdown */}
                     <div className='flex flex-col justify-center items-center'>
@@ -160,7 +160,7 @@ const Project = () => {
                         </div>
 
                         <div className='flex flex-row  justify-center items-center my-5'>
-                            <div className='flex flex-col gap-4  ml-4 '>
+                            <div className='flex flex-row gap-4  ml-4 '>
                                 {/* <Link href={{ pathname: `dashboard/project/${slug}/projectpage`, query: { prop: projects } }} > */}
                                 <Link href={`${col_id}/projectpage`} passHref >
 
@@ -175,7 +175,8 @@ const Project = () => {
                     </div>
 
                     {/* Content Cards */}
-                    <div className=" flex flex-col gap-4 text-amber-400 " >
+                    <h1 className='text-2xl mx-2 font-bold mt-4 border-b-2 border-orange-500 w-fit '> Other contents : </h1>
+                    <div className=" grid grid-cols-2 gap-4 text-amber-400 my-5  " >
                         <Link href={`${col_id}/Blogs`}>
 
                             <div

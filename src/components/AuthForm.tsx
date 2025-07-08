@@ -56,17 +56,17 @@ export default function AuthForm({ type }: AuthFormProps) {
             }
         } else if (type === 'signup') {
             const formData = new FormData()
-            formData.append('Name', Name)
-            formData.append('Email', Email)
-            formData.append('ProfilePic', ProfilePic)
-            formData.append('Role', Role)
-            formData.append('Password', Password)
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/createUser`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
+            formData.append('name', Name)
+            formData.append('email', Email)
+            formData.append('file', ProfilePic)
+            formData.append('role', Role)
+            formData.append('password', Password)
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/createUser`, {
+                method: "POST",
+                body: formData
             })
-            const data = await res.data
+            const data = await res.json()
+            console.log("data: ", data)
 
             if (data.token) {
                 localStorage.setItem("token", data.token)

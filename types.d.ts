@@ -73,7 +73,7 @@ export interface Project {
 }
 
 export interface Media {
-    id?: string;             // MongoDB ObjectID comes as string
+    id: string;             // MongoDB ObjectID comes as string
     user_id: string;
     collection_id: string;   // also ObjectID as string
     key: string;

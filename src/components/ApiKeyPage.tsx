@@ -22,6 +22,12 @@ const ApiKeyPage = ({ props }: ApiKeyPageProps) => {
         }
     }
 
+    const handleCopy = async (text: string) => {
+        navigator.clipboard.writeText(text).then(() => {
+            alert("Copied")
+        })
+    }
+
     return (
         <div>
             <div className='flex flex-col w-fit '>
@@ -35,14 +41,26 @@ const ApiKeyPage = ({ props }: ApiKeyPageProps) => {
                     }
 
                     {hide ?
+                        <>
+                            <button
+                                onClick={handleHide}
+                                className='bg-violet-400 p-2 rounded-xl mx-4 text-black font-bold hover:scale-90 hover:cursor-pointer' > Show API key</button>
 
-                        <button
-                            onClick={handleHide}
-                            className='bg-violet-400 p-2 rounded-xl mx-4 text-black font-bold hover:scale-90 hover:cursor-pointer' > Show API key</button>
+                        </>
+
                         :
-                        <button
-                            onClick={handleHide}
-                            className='bg-violet-400 p-2 rounded-xl mx-4 text-black font-bold hover:scale-90 hover:cursor-pointer' > Hide API key</button>
+                        <>
+                            <button
+                                onClick={handleHide}
+                                className='bg-violet-400 p-2 rounded-xl mx-4 text-black font-bold hover:scale-90 hover:cursor-pointer' > Hide API key</button>
+                            <button
+                                onClick={() => handleCopy(user.api_key)}
+                                className='bg-violet-400 p-2 rounded-xl mx-4 text-black font-bold hover:scale-90 hover:cursor-pointer'
+                            >
+                                Copy
+                            </button>
+                        </>
+
                     }
 
                 </div>
