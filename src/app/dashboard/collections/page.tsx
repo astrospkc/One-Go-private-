@@ -51,7 +51,9 @@ const Collection = () => {
 
                                 <Link
                                     key={ind}
-                                    href={`/dashboard/project/${val.id}`}
+                                    href={{ pathname: `/dashboard/project/${val.id}`, query: { title: `${val.title.toUpperCase()}` } }}
+
+                                // href={`/dashboard/project/${val.id}`}
                                 >
                                     <div
 

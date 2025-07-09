@@ -188,12 +188,12 @@ const Dashboard = () => {
                         </div>
 
                         <div className="mt-auto flex flex-col gap-2">
-                            <button onClick={handleClick} className="bg-white text-black px-4 py-2 rounded-lg font-semibold hover:bg-violet-200 transition">
-                                See All Collections
+                            <button onClick={handleClick} className="hover:cursor-pointer bg-white text-black px-4 py-2 rounded-lg font-semibold hover:bg-violet-200 transition">
+                                Create New Collection
                             </button>
                             <Link href={"/dashboard/collections"}>
                                 <button className="bg-gray-800 w-full text-white px-4 py-2 rounded-lg border border-gray-600 hover:border-violet-500 transition">
-                                    Create new Collection
+                                    See All Collections
                                 </button>
                             </Link>
 

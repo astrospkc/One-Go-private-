@@ -2,10 +2,18 @@
 import { ModalContextapp } from '@/context/ModalProvider';
 import { ProjectContext } from '@/context/ProjectProvider';
 import axios from 'axios';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useContext, useEffect, useState } from 'react';
 import { AiFillEdit, AiFillApi, AiFillFolderOpen, AiFillCaretRight, AiFillCaretLeft } from "react-icons/ai";
+import { UserContext } from '@/context/UserProvider';
+import { RocketIcon, LayoutGrid, Lock, Activity, BarChart2, Zap, Settings } from 'lucide-react';
+import ProjectOverview from '@/components/Project/ProjectOverview';
+import ProjectAPI from '@/components/Project/ProjectAPI';
+import ProjectActivity from '@/components/Project/ProjectActivity';
+import ProjectUsage from '@/components/Project/ProjectUsage';
+import ProjectSettings from '@/components/Project/ProjectSettings';
+import ProjectPlan from '@/components/Project/ProjectPlan';
 
 // type Params = {
 //     params: {
@@ -15,9 +23,78 @@ import { AiFillEdit, AiFillApi, AiFillFolderOpen, AiFillCaretRight, AiFillCaretL
 
 // const contentData = ['Blogs', 'Links', 'Media'];
 
+const tabs = [
+    { label: "Getting started", icon: <RocketIcon className="w-4 h-4" />, active: true },
+    { label: "Overview", icon: <LayoutGrid className="w-4 h-4" />, component: <ProjectOverview /> },
+    // { label: "Members", icon: <Users className="w-4 h-4" /> },
+    // { label: "Studios", icon: <LayoutGrid className="w-4 h-4" /> },
+    { label: "API", icon: <Zap className="w-4 h-4 rotate-45" />, component: <ProjectAPI /> },
+
+    // { label: "Access", icon: <Lock className="w-4 h-4" />, component: <ProjectAPI /> },
+    { label: "Activity", icon: <Activity className="w-4 h-4" />, component: <ProjectActivity /> },
+    { label: "Usage", icon: <BarChart2 className="w-4 h-4" />, component: <ProjectUsage /> },
+    { label: "Plan", icon: <Zap className="w-4 h-4" />, component: <ProjectPlan /> },
+    { label: "Settings", icon: <Settings className="w-4 h-4" />, component: <ProjectSettings />, button: true },
+];
+
+
+function TopNavigation() {
+    const [activeTab, setActiveTab] = useState("Getting started");
+
+
+    return (
+        <div className="bg-[#0f0f12] w-full flex flex-col">
+          <div className="w-full px-6 py-2 flex items-center gap-4 overflow-x-auto justify-around">
+            {tabs.map((tab) => {
+              const isActive = activeTab === tab.label;
+              const commonStyles = "flex items-center gap-2 px-4 py-1.5 rounded-md text-sm font-medium";
+      
+              return tab.button ? (
+                <button
+                  key={tab.label}
+                  onClick={() => setActiveTab(tab.label)}
+                  className={`${commonStyles} ${isActive ? "bg-indigo-900 text-white" : "text-gray-400 hover:text-white"}`}
+                >
+                  {tab.icon}
+                  {tab.label}
+                </button>
+              ) : (
+                <div
+                  key={tab.label}
+                  onClick={() => setActiveTab(tab.label)}
+                  className={`cursor-pointer flex items-center gap-1 text-sm font-medium ${isActive ? "text-green-400" : "text-gray-400 hover:text-white"}`}
+                >
+                  {tab.icon}
+                  {tab.label}
+                </div>
+              );
+            })}
+          </div>
+      
+          {/* Conditional content rendering */}
+          {
+            activeTab === "Getting started" ? <ProjectActivity />
+            : activeTab === "Overview" ? <ProjectOverview />
+            : activeTab === "API" ? <ProjectAPI />
+            : activeTab === "Activity" ? <ProjectActivity />
+            : activeTab === "Usage" ? <ProjectUsage />
+            : activeTab === "Plan" ? <ProjectPlan />
+            : activeTab === "Settings" ? <ProjectSettings />
+            : <div className="text-white p-4">Tab not found</div>
+          }
+        </div>
+      );
+      
+}
+
 const Project = () => {
+
+    const { user } = useContext(UserContext)
     const params = useParams()
     const col_id = params.col_id
+    const searchParams = useSearchParams()
+    const title = searchParams.get('title')
+    console.log("title: ", title)
     const { projects, setProjects } = useContext(ProjectContext)
     const [selectedType, setSelectedType] = useState('All');
     const [count, setCount] = useState(0);
@@ -63,27 +140,62 @@ const Project = () => {
                     background: 'radial-gradient(circle at center, #1a0c2b, #0e0618, #090417)',
                 }}
                 className='flex flex-col p-4 relative '>
-                {/* <div className="m-6">
 
-                    <Link href={`/dashboard/collections`}>
-                        <AiFillCaretLeft className='text-4xl  hover:scale-90 hover:cursor-pointer hover:text-violet-400' />
-                    </Link>
-                    <label htmlFor="contentType" className="mr-2 font-medium">Select Content:</label>
-                    <select
-                        id="contentType"
-                        className="border rounded px-3 py-1 bg-black"
-                        value={selectedType}
-                        onChange={(e) => setSelectedType(e.target.value)}
-                    >
-                        <option value="All">All</option>
-                        <option value="Blogs">Blogs</option>
-                        <option value="Links">Links</option>
-                        <option value="Media">Media</option>
-                    </select>
-                </div> */}
                 <div className='text-white h-full  flex flex-col  font-serif'>
+
+                    <div className="bg-[#0f0f12] text-white p-6 rounded-xl w-full max-w-full shadow-md">
+                        <div className="flex items-start gap-6">
+                            {/* Logo Circle */}
+                            <div className="w-16 h-16 rounded-md bg-yellow-600 flex items-center justify-center text-3xl font-bold text-black">
+                                {title?.slice(0, 1)}
+                            </div>
+
+                            {/* Text Info */}
+                            <div className="flex-1">
+                                <h1 className="text-lg text-gray-300">{user?.name.toUpperCase()}</h1>
+                                <h2 className="text-2xl font-semibold text-white">{title}</h2>
+
+                                <div className="flex flex-wrap gap-4 mt-4 text-sm">
+                                    {/* Plan */}
+                                    <div className="flex gap-1 items-center">
+                                        <span className="bg-purple-700 text-white px-2 py-1 rounded-full text-xs font-medium">Growth Trial</span>
+                                    </div>
+
+                                    {/* Status */}
+                                    <div className="flex gap-1 items-center">
+                                        <span className="bg-green-700 text-white px-2 py-1 rounded-full text-xs font-medium">Active</span>
+                                    </div>
+
+                                    {/* Project ID */}
+                                    <div className="flex gap-1 items-center text-gray-400">
+                                        <span className="font-medium text-white">PROJECT ID</span>:
+                                        <span className="font-mono">4s3wn7gi</span>
+                                        <button title="Copy Project ID">
+                                            📋
+                                        </button>
+                                    </div>
+
+                                    {/* Organization ID */}
+                                    <div className="flex gap-1 items-center text-gray-400">
+                                        <span className="font-medium text-white">ORGANIZATION ID</span>:
+                                        <span className="font-mono">opCMmUbeG</span>
+                                        <button title="Copy Org ID">
+                                            📋
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <TopNavigation />
+                    {/* <ProjectSettings /> */}
+
+
+
+
+
                     {/* Dropdown */}
-                    <div className='flex flex-col justify-center items-center'>
+                    {/* <div className='flex flex-col justify-center items-center'>
                         <div className='  flex flex-col w-fit p-4 rounded-2xl '>
                             <span className='text-4xl md:text-7xl text-orange-500/70 font-bold border-b-2 border-orange-500/50 w-fit'>
                                 PROJECTS</span>
@@ -92,13 +204,11 @@ const Project = () => {
                             </span>
 
                         </div>
-                        {/* <div className='  flex flex-row  bg- text-2xl shadow-md shadow-violet-300 m-4  p-4 rounded-2xl'></div> */}
                         <div
                             className='w-2/3 h-150 bg-black flex justify-center items-center m-auto  rounded-4xl'>
 
                             {projects &&
                                 projects.length > count && count >= 0 ?
-                                // project model opening
 
                                 <div className="flex flex-col rounded-4xl w-96 h-96 justify-center items-center">
                                     <div className='text-2xl  font-semibold my-3 text-orange-500'>
@@ -161,7 +271,6 @@ const Project = () => {
 
                         <div className='flex flex-row  justify-center items-center my-5'>
                             <div className='flex flex-row gap-4  ml-4 '>
-                                {/* <Link href={{ pathname: `dashboard/project/${slug}/projectpage`, query: { prop: projects } }} > */}
                                 <Link href={`${col_id}/projectpage`} passHref >
 
                                     <button className='border-2  border-amber-400 hover:text-black hover:font-bold p-2 rounded-2xl hover:bg-amber-400 hover:scale-90'>View more projects</button>
@@ -172,10 +281,10 @@ const Project = () => {
                             </div>
                         </div>
 
-                    </div>
+                    </div> */}
 
                     {/* Content Cards */}
-                    <h1 className='text-2xl mx-2 font-bold mt-4 border-b-2 border-orange-500 w-fit '> Other contents : </h1>
+                    {/* <h1 className='text-2xl mx-2 font-bold mt-4 border-b-2 border-orange-500 w-fit '> Other contents : </h1>
                     <div className=" grid grid-cols-2 gap-4 text-amber-400 my-5  " >
                         <Link href={`${col_id}/Blogs`}>
 
@@ -211,7 +320,7 @@ const Project = () => {
                                 <p className=" font-semibold mb-2  capitalize text-xl ">BlogTipTap</p>
                             </div>
                         </Link>
-                    </div>
+                    </div> */}
                 </div>
             </div >
 
