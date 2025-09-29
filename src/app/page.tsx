@@ -127,7 +127,7 @@ export default function Home() {
           </motion.p>
           <div className="flex justify-center gap-4">
             <Link href="/dashboard" className="">
-              <button className="rounded-2xl px-6 py-3 text-lg shadow-xl shadow-violet-400 hover:cursor-pointer hover:bg-violet-700">
+              <button className="rounded-2xl px-6 py-3 text-lg shadow-sm shadow-violet-400 hover:cursor-pointer hover:bg-violet-700">
                 Get Started
               </button>
             </Link>
