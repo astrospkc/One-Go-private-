@@ -40,6 +40,7 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
             const data = await res.data
             console.log(data)
             alert("project created successfully")
+
         } catch (error) {
             console.error("Error creating project:", error);
             alert("Error creating project")
