@@ -55,6 +55,7 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
     }
     return (<>
         <div className='bg-black w-full h-screen justify-center items-center p-4 '>
+            <Template />
             <h1 className='text-blue-900'>For developer</h1>
             <h1 className='text-3xl text-white'> You&apos;re just few steps away from uploading projects. </h1>
             <div className='w-full justify-center items-center m-auto my-5'>
@@ -95,9 +96,6 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
                             <button onClick={handleSubmit} className='bg-[#5D3871] p-2 rounded-2xl hover:bg-[#846794] hover:scale-95 cursor-pointer'>Submit</button>
                             <button className='bg-red-900 hover:bg-red-700 p-2 rounded-2xl hover:scale-95 cursor-pointer'>Discard</button>
                         </div>
-
-
-
                     </div>
                 }
 
@@ -113,3 +111,87 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
 export default ProjectGettingStarted
 
 
+const Template = () => {
+    return (
+        <>
+            <div>
+                <section className="getting-started bg-[#0a0a0a] text-gray-200 p-8 rounded-2xl border border-purple-900 shadow-[0_0_25px_rgba(155,55,255,0.2)] leading-relaxed font-inter">
+                    <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 mb-4">
+                        🚀 Getting Started with JINO Portfolio Project
+                    </h1>
+
+                    <p className="text-gray-300 mb-6">
+                        Welcome to <span className="text-purple-400 font-semibold">JINO</span>, your developer-friendly space to upload, manage, and showcase your portfolio projects.
+                        Follow these steps to get started 👇
+                    </p>
+
+                    <hr className="border-purple-700/50 mb-6" />
+
+                    <h2 className="text-xl font-semibold text-purple-300 mb-2">🧩 Step 1: Set Up Your Project</h2>
+                    <ol className="list-decimal list-inside space-y-2 mb-6 text-gray-300">
+                        <li>Click on <span className="text-purple-400 font-medium">“Setting up your project”</span>.</li>
+                        <li>Fill out the form:
+                            <ul className="list-disc list-inside ml-4 mt-1 space-y-1 text-sm text-gray-400">
+                                <li><strong>Project Name:</strong> A short, clear name for your project.</li>
+                                <li><strong>Description:</strong> Describe what your project does in one or two sentences.</li>
+                                <li><strong>Tags/Skills:</strong> Add comma-separated skills or technologies (e.g., <code>React, Node.js, MongoDB</code>).</li>
+                            </ul>
+                        </li>
+                        <li>Upload related <span className="text-purple-300">files</span>, <span className="text-purple-300">screenshots</span>, or <span className="text-purple-300">demo videos</span>.</li>
+                    </ol>
+
+                    <hr className="border-purple-700/50 mb-6" />
+
+                    <h2 className="text-xl font-semibold text-purple-300 mb-2">⚙️ Step 2: Connect Your Account</h2>
+                    <p className="text-gray-400 mb-6">
+                        Optionally link your <strong>GitHub</strong> or <strong>Project Repository</strong> to automatically sync updates and commits.<br />
+                        <em>This keeps your portfolio live and updated without manual uploads.</em>
+                    </p>
+
+                    <hr className="border-purple-700/50 mb-6" />
+
+                    <h2 className="text-xl font-semibold text-purple-300 mb-2">💡 Step 3: Manage Your Projects</h2>
+                    <ul className="list-disc list-inside text-gray-300 mb-6 space-y-1">
+                        <li>Edit project details anytime.</li>
+                        <li>View analytics under the <em>Activity</em> tab.</li>
+                        <li>Use your API key (found in the <em>API</em> section) to integrate project data into your own site or app.</li>
+                    </ul>
+
+                    <hr className="border-purple-700/50 mb-6" />
+
+                    <h2 className="text-xl font-semibold text-purple-300 mb-2">🧠 Step 4: Use the JINO API</h2>
+                    <p className="text-gray-400 mb-2">Want to showcase your projects dynamically on your own portfolio site? Use our REST API:</p>
+                    <pre className="bg-[#1a0f24] border border-purple-700 rounded-lg p-3 text-sm text-purple-300 overflow-x-auto mb-4"><code>GET https://api.jino.io/projects/:projectId</code></pre>
+                    <p className="text-gray-400 mb-6"><em>You’ll find your API key in the <strong>API</strong> section of your dashboard.</em></p>
+
+                    <hr className="border-purple-700/50 mb-6" />
+
+                    <h2 className="text-xl font-semibold text-purple-300 mb-2">📊 Step 5: Track Your Growth</h2>
+                    <ul className="list-disc list-inside text-gray-300 mb-6 space-y-1">
+                        <li>Project views</li>
+                        <li>API requests</li>
+                        <li>File uploads</li>
+                        <li>Engagement stats</li>
+                    </ul>
+
+                    <hr className="border-purple-700/50 mb-6" />
+
+                    <h2 className="text-xl font-semibold text-purple-300 mb-2">🛠 Tips</h2>
+                    <ul className="list-disc list-inside text-gray-400 mb-6 space-y-1">
+                        <li>Keep your project details concise but descriptive.</li>
+                        <li>Add tags for better discoverability.</li>
+                        <li>Regularly update your content to reflect your latest work.</li>
+                    </ul>
+
+                    <hr className="border-purple-700/50 mb-6" />
+
+                    <h2 className="text-xl font-semibold text-purple-300 mb-2">💬 Need Help?</h2>
+                    <p className="text-gray-400">
+                        Check out the <span className="text-purple-400 font-medium">Docs</span> section or reach out to our support team via the <span className="text-purple-400 font-medium">Help Center</span>.
+                    </p>
+                </section>
+            </div>
+        </>
+    )
+
+}

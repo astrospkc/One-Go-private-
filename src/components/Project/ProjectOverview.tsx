@@ -6,6 +6,10 @@ const ProjectOverview = () => {
     return (
         <div>
             <div className='flex flex-row'>
+                {/* Project list */}
+                <div>
+
+                </div>
                 <div className='flex-1'><ProjectUsage /></div>
                 <div className='flex-1'><ProjectActivity /></div>
             </div>
