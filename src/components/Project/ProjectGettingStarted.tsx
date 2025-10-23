@@ -121,7 +121,7 @@ const Template = () => {
                     </h1>
 
                     <p className="text-gray-300 mb-6">
-                        Welcome to <span className="text-purple-400 font-semibold">JINO</span>, your developer-friendly space to upload, manage, and showcase your portfolio projects.
+                        Welcome <span className="text-purple-400 font-semibold">JINO</span>, your developer-friendly space to upload, manage, and showcase your portfolio projects.
                         Follow these steps to get started 👇
                     </p>
 

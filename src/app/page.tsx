@@ -8,23 +8,7 @@ import Link from "next/link";
 
 
 export default function Home() {
-  // const { setUser, setIsAuthenticated } = useContext(UserContext)
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem('token')
-  //   const getUser = async () => {
-  //     const res = await axios.get(`http://ocalhost:8000/auth/getUser`, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`
-  //       }
-  //     })
-  //     const data = await res.data
-  //     setUser(data)
-
-  //   }
-  //   getUser()
-  //   setIsAuthenticated(!!token)
-  // }, [])
 
   return (
     <>

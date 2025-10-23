@@ -1,7 +1,7 @@
 
 "use client"
 
-import MyButton from "@/components/ui/button"
+
 import { ModalContextapp } from "@/context/ModalProvider"
 import getAllCollection from "@/lib/getAllCollections"
 import getAllProjects from "@/lib/getAllProjects"
@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation"
 import React, { useContext, useEffect, useState } from "react"
 // import { User } from "../../../types"
 import { UserContext } from "@/context/UserProvider"
-import Image from "next/image"
+
 import { Pencil, LayoutDashboard } from "lucide-react";
 import Link from "next/link"
 
@@ -25,6 +25,7 @@ import Link from "next/link"
 
 const Dashboard = () => {
 
+    const { isAuthenticated } = useContext(UserContext)
     const { user } = useContext(UserContext)
     console.log("user:", user)
     const [isOpen, setIsOpen] = useState(false);
@@ -76,6 +77,10 @@ const Dashboard = () => {
                 break;
         }
         setIsOpen(true)
+    }
+
+    if (!isAuthenticated) {
+        router.push("/auth/signIn")
     }
 
 

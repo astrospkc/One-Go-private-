@@ -69,7 +69,7 @@ const TopNavigation = ({ col_id }: TopNavigationProps) => {
             <div className='h-full bg-black overflow-y-scroll'>
                 {
                     activeTab === "Getting started" ? <ProjectGettingStarted col_id={col_id as string} />
-                        : activeTab === "Overview" ? <ProjectOverview />
+                        : activeTab === "Overview" ? <ProjectOverview col_id={col_id as string} />
                             : activeTab === "API" ? <ProjectAPI />
                                 : activeTab === "Activity" ? <ProjectActivity />
                                     : activeTab === "Usage" ? <ProjectUsage />
@@ -92,8 +92,8 @@ const Project = () => {
     const searchParams = useSearchParams()
     const title = searchParams.get('title')
     console.log("title: ", title)
-    const { projects, setProjects } = useContext(ProjectContext)
-    const [selectedType, setSelectedType] = useState('All');
+    const { setProjects } = useContext(ProjectContext)
+
     const [count, setCount] = useState(0);
     const { openProjectModal, setOpenProjectModal } = useContext(ModalContextapp)
     const handleClick = () => {
@@ -113,7 +113,7 @@ const Project = () => {
         const fetchProjects = async () => {
             try {
                 const token = localStorage.getItem('token')
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/readProject/${col_id}`, {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/getAllProject/${col_id}`, {
                     headers: {
                         // "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`,
