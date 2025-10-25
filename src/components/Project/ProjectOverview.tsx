@@ -35,12 +35,9 @@ const ProjectList = ({ col_id }: { col_id: string }) => {
 
     useEffect(() => {
         const fetchAllProjects = async () => {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/getAllProject/${col_id}`,
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/readProject/${col_id}`,
                 {
-                    headers: {
-                        // "Content-Type": "application/json",
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
-                    }
+                    withCredentials: true
                 }
             )
             const record = await res.data
@@ -63,7 +60,7 @@ const ProjectList = ({ col_id }: { col_id: string }) => {
 
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {
+                {projects &&
                     projects.map((project: Project, index: number) => {
                         const date = new Date(project.time)
                         const formattedDate = date.toLocaleString('default', { month: 'long', day: 'numeric', year: 'numeric' });

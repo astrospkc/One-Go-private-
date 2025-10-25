@@ -1,6 +1,7 @@
 "use client"
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { User, UserContextType } from "../../types";
+import axios from "axios";
 
 const defaultValue: UserContextType = {
     setIsAuthenticated: () => { },
@@ -35,10 +36,17 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         api_key: ""
     })
 
-
-
-
-
+    useEffect(() => {
+        const getUser = async () => {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/getUser`, {
+                withCredentials: true
+            })
+            const data = await res.data
+            setUser(data)
+            setIsAuthenticated(true)
+        }
+        getUser()
+    }, [])
 
     return (
         <UserContext.Provider value={{

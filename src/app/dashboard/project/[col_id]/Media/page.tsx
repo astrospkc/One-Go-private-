@@ -3,6 +3,8 @@ import MyButton from '@/components/ui/button'
 import { MediaContext } from '@/context/MediaProvider'
 import getAllMedia from '@/lib/getAllMedia'
 import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
+import { headers } from 'next/headers'
 
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
@@ -47,13 +49,11 @@ const Media = () => {
             formData.append('file', file)
         }
         // mutation.mutate(formData)
-        await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/media/postmedia/${col_id}`, {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            body: formData
-        }
+        await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/media/postmedia/${col_id}`,
+            formData,
+            {
+                withCredentials: true
+            }
         )
         const mediaResponse = await getAllMedia(token ?? "", col_id?.toString() ?? "")
         setMedia(mediaResponse)
@@ -65,35 +65,36 @@ const Media = () => {
     }
     const handleShowFile = async (e: React.MouseEvent<HTMLButtonElement>, col_id: string, key: string) => {
         e.preventDefault()
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/media/showMediaFiles/${col_id}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-                key: key
-            })
-        })
-        const data = await res.json()
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/media/showMediaFiles/${col_id}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+
+                },
+                withCredentials: true,
+                data: { key: key }
+
+            }
+        )
+        const result = await res.data
         setOpenIndex(null)
-        router.push(data.url)
+        router.push(result.url)
 
     }
 
     const handleDeleteFile = async (media_id: string, key: string) => {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/media/deleteMedia/${media_id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-                key: key
-            })
-        })
-        const data = await res.json()
-        console.log("deleted data: ", data)
+        const res = await axios.delete(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/media/deleteMedia/${media_id}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                withCredentials: true,
+                data: { key: key } // body goes here
+            }
+        );
+        const result = await res.data
+        console.log("deleted data: ", result)
         const mediaResponse = await getAllMedia(token ?? "", col_id?.toString() ?? "")
         setMedia(mediaResponse)
 

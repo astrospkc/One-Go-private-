@@ -4,6 +4,7 @@ import MyButton from '@/components/ui/button';
 import { BlogContext } from '@/context/BlogProvider';
 import getAllBlogs from '@/lib/getAllBlogs';
 import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
@@ -42,15 +43,11 @@ const Blogs = () => {
 
     const handleDeleteBlog = async (blogid: string, col_id: string) => {
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blog/deleteBlog/${blogid}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            }
+        const res = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blog/deleteBlog/${blogid}`, {
+            withCredentials: true
         })
-        const data = await res.json()
-        console.log("deleted data: ", data)
+        const result = await res.data
+        console.log("deleted data: ", result)
         const blogResponse = await getAllBlogs(token ?? "", col_id)
         setBlogs(blogResponse)
         window.location.reload()

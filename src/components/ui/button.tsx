@@ -4,7 +4,7 @@ import React from 'react'
 interface buttonProps {
     children: React.ReactNode
     pathname?: string
-    classname: string
+    classname?: string
     onClick?: () => void
 }
 

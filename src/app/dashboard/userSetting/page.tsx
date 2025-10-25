@@ -1,7 +1,147 @@
 "use client"
-import React, { useState } from 'react'
-import { User } from '../../types'
-// import { User } from '../../types'
+
+import { UserContext } from '@/context/UserProvider'
+// import { title } from 'process'
+import React, { useContext, useState } from 'react'
+import { User } from '../../../../types'
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
+
+const settingSections = [
+    {
+        id: 1,
+        title: "User Profile",
+    },
+    {
+        id: 2,
+        title: "API Key",
+    },
+    {
+        id: 3,
+        title: "Billing",
+    },
+]
+
+const UserSetting = () => {
+    const { user, isAuthenticated } = useContext(UserContext)
+
+    const [openedSection, setOpenedSection] = useState(settingSections[0].title)
+    const handleSection = (e: React.MouseEvent<HTMLDivElement>) => {
+        setOpenedSection((e.target as HTMLElement).innerText)
+    }
+    console.log("user: ", user)
+    const router = useRouter()
+    if (user.id === "" || isAuthenticated === false) {
+        router.push("/auth/signIn")
+    }
+
+    return (
+        <>
+            <div className='flex flex-col  m-10 font-serif my-10  '>
+                <div className='flex flex-col  '>
+                    <span className='text-xl md:text-4xl font-bold'>
+                        USERS-SETTINGS
+                    </span>
+                    <div className='w-1/2 flex justify-between my-5 text-xl border-b-2 border-gray-600'>
+                        {settingSections && settingSections.map((section) => (
+                            <span
+                                onClick={handleSection}
+                                key={section.id} className='hover:bg-violet-400 hover:text-black hover:scale-75 rounded-3xl p-2 hover:cursor-pointer'>{section.title}</span>
+                        ))}
+
+                    </div>
+                    {
+                        openedSection === "User Profile" ?
+                            <UsersProfile props={{ user }} /> :
+                            (openedSection === "API Key" ? <ApiKeyPage props={{ user }} /> : <BillingPage />)
+
+                    }
+
+                </div>
+
+            </div>
+        </>
+
+    )
+}
+
+export default UserSetting
+
+interface ApiKeyPageProps {
+    props: {
+        user: User
+    }
+
+}
+
+const ApiKeyPage = ({ props }: ApiKeyPageProps) => {
+
+    const { user } = props
+    const [hide, setHide] = useState(true)
+
+    const handleHide = () => {
+        if (hide) {
+            setHide(false)
+        } else if (!hide) {
+            setHide(true)
+        }
+    }
+
+    const handleCopy = async (text: string) => {
+        navigator.clipboard.writeText(text).then(() => {
+            alert("Copied")
+        })
+    }
+
+    return (
+        <div>
+            <div className='flex flex-col w-fit '>
+                <label htmlFor="" className='font-bold'>API Key</label>
+
+                <div>
+                    {hide ? <></> :
+                        <input
+                            defaultValue={user.api_key}
+                            type="text" className='p-2 border-2 border-gray-600 rounded-xl' />
+                    }
+
+                    {hide ?
+                        <>
+                            <button
+                                onClick={handleHide}
+                                className='bg-violet-400 p-2 rounded-xl mx-4 text-black font-bold hover:scale-90 hover:cursor-pointer' > Show API key</button>
+
+                        </>
+
+                        :
+                        <>
+                            <button
+                                onClick={handleHide}
+                                className='bg-violet-400 p-2 rounded-xl mx-4 text-black font-bold hover:scale-90 hover:cursor-pointer' > Hide API key</button>
+                            <button
+                                onClick={() => handleCopy(user.api_key)}
+                                className='bg-violet-400 p-2 rounded-xl mx-4 text-black font-bold hover:scale-90 hover:cursor-pointer'
+                            >
+                                Copy
+                            </button>
+                        </>
+
+                    }
+
+                </div>
+            </div>
+        </div>
+    )
+}
+
+const BillingPage = () => {
+    return (
+        <div>
+            this is the billing page
+        </div>
+    )
+}
+
 
 interface UsersProps {
     props: {
@@ -21,21 +161,22 @@ const UsersProfile = ({ props }: UsersProps) => {
         api_key: user.api_key
     })
     const [file, setFile] = useState<File | null>()
+
     const handleEdit = async () => {
-        const token = localStorage.getItem('token')
         const formData = new FormData()
+        formData.append('id', userData.id)
+        formData.append('name', userData.name)
+        formData.append('email', userData.email)
+        formData.append('profile_pic', file ? file : userData.profile_pic)
+        formData.append('role', userData.role)
+        formData.append('api_key', userData.api_key)
 
         setEdit(edit => !edit)
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/editUser`, {
-            method: "PUT",
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                Authorization: `Bearer ${token}`
-            },
-
+        const res = await axios.put(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/editUser`, formData, {
+            withCredentials: true,
         })
-        const data =
-            console.log("edit: ", edit)
+        const data = res.data
+        console.log("edit: ", data)
     }
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault()
@@ -44,10 +185,10 @@ const UsersProfile = ({ props }: UsersProps) => {
     }
     return (
         <div>
-            <div className='flex flex-row  my-3 md:my-5 bg-black p-3 '>
-                <div className='flex-1 flex-col md:flex-row shadow-sm shadow-violet-500 mx-3 p-3 rounded-4xl'>
+            <div className='flex flex-row w-full  my-3 md:my-5 bg-black p-3 '>
+                <div className='flex flex-col md:flex-row shadow-sm shadow-violet-500 mx-3 p-3 rounded-4xl'>
                     <div className=' flex flex-col justify-center items-center px-5' >
-                        <div className=' h-40 w-40 rounded-full bg-black border-2 shadow-lg shadow-violet-400'></div>
+                        <div className='h-40 w-40 rounded-full bg-black border-2 shadow-lg shadow-violet-400'></div>
                         {!edit &&
                             <div className='mt-5 flex flex-col'>
                                 <label htmlFor="" className='text-bold text-sm md:text-lg'>Upload photo</label>
@@ -138,7 +279,7 @@ type InputFieldProps = {
 
 function InputField({ id, value, type, disabled, onChange }: InputFieldProps) {
     return (
-        <InputField
+        <input
             type={type}
             id={id}
 
@@ -153,5 +294,3 @@ function InputField({ id, value, type, disabled, onChange }: InputFieldProps) {
 
     )
 }
-
-export default UsersProfile

@@ -1,7 +1,5 @@
 
 "use client"
-
-
 import { ModalContextapp } from "@/context/ModalProvider"
 import getAllCollection from "@/lib/getAllCollections"
 import getAllProjects from "@/lib/getAllProjects"
@@ -10,18 +8,8 @@ import { useRouter } from "next/navigation"
 import React, { useContext, useEffect, useState } from "react"
 // import { User } from "../../../types"
 import { UserContext } from "@/context/UserProvider"
-
 import { Pencil, LayoutDashboard } from "lucide-react";
 import Link from "next/link"
-
-
-// import { Modal } from "@/components/ui/animated-modal"
-// interface UserProps{
-//     props: {
-//         user:User
-//     }
-// }
-
 
 const Dashboard = () => {
 
@@ -40,13 +28,12 @@ const Dashboard = () => {
     // const {user} = props 
 
     useEffect(() => {
-        const token = localStorage.getItem('token')
         const fetchCollections = async () => {
-            const collections = await getAllCollection(token ?? "")
+            const collections = await getAllCollection()
             setCollectionsList(collections)
         }
         const fetchProjects = async () => {
-            const projects = await getAllProjects(token ?? "")
+            const projects = await getAllProjects()
             setProjectsList(projects)
         }
         fetchCollections()

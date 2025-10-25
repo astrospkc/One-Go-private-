@@ -112,12 +112,9 @@ const Project = () => {
     useEffect(() => {
         const fetchProjects = async () => {
             try {
-                const token = localStorage.getItem('token')
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/getAllProject/${col_id}`, {
-                    headers: {
-                        // "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    }
+                // const token = localStorage.getItem('token')
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/readProject/${col_id}`, {
+                    withCredentials: true
                 })
                 const data = await response.data
                 setProjects(data)

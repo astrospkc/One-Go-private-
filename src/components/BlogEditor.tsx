@@ -9,6 +9,7 @@ import SimpleImage from "@editorjs/simple-image";
 import Quote from '@editorjs/quote';
 import { BlogContext } from "@/context/BlogProvider";
 import getAllBlogs from "@/lib/getAllBlogs";
+import axios from "axios";
 
 type PayloadType = {
     title: string,
@@ -95,13 +96,13 @@ export default function BlogEditor({ col_id }: { col_id: string }) {
     }
     const CreateBlog = async (payload: PayloadType) => {
         const token = localStorage.getItem('token')
-        await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blog/createBlog/${col_id}`, {
-            method: 'POST',
+        await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blog/createBlog/${col_id}`, {
+            withCredentials: true,
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
+
             },
-            body: JSON.stringify(payload)
+            data: { payload }
         })
 
         const blogResponse = await getAllBlogs(token ?? "", col_id)

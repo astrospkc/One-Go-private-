@@ -14,6 +14,7 @@ import {
 import { ModalContextapp } from "@/context/ModalProvider";
 
 import { ProjectContext } from "@/context/ProjectProvider";
+import axios from "axios";
 // import debounce from "@/lib/debounce";
 
 export function ProjectModal({ props }: { props: { col_id: string } }) {
@@ -82,15 +83,13 @@ export function ProjectModal({ props }: { props: { col_id: string } }) {
     }
 
     const AddProject = async () => {
-        const token = localStorage.getItem('token')
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/createProject/${col_id}`,
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/createProject/${col_id}`,
             {
-                method: 'POST',
+                withCredentials: true,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({
+                data: {
                     CollectionId: newProj.CollectionId,
                     Title: newProj.Title,
                     Description: newProj.Description,
@@ -98,25 +97,14 @@ export function ProjectModal({ props }: { props: { col_id: string } }) {
                     Tags: newProj.Thumbnail,
                     GithubLink: newProj.GithubLink,
                     LiveDemoLink: newProj.LiveDemoLink
-                })
+                }
             })
 
-        const data = await response.json()
+        const data = await response.data
         setProjects([...projects, data])
         setOpenProjectModal(!openProjectModal)
         window.location.reload()
     }
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         console.log("title and description: ", titleRef.current?.value, ` ${titleRef.current?.value.length}`, "  \n", descRef.current?.value)
-    //     }, 3000)
-    // }, [titleRef.current?.value, descRef.current?.value])
-
-    // const handledebounce=
-    // console.log("title and description: ", titleRef.current?.value, ` ${titleRef.current?.value.length}`, "  \n", descRef.current?.value)
-
-
-
 
     return (
         <div className="   flex items-center justify-center font-serif ">

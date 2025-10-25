@@ -33,8 +33,9 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
             const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/createProject/${col_id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
-                }
+
+                },
+                withCredentials: true
             })
 
             const data = await res.data

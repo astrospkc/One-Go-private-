@@ -1,10 +1,8 @@
 import axios from "axios"
 
-export default async function getAllMedia(token: string, col_id: string) {
+export default async function getAllMedia(col_id: string) {
     const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/media/getALlMediaFiles/${col_id}`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        }
+        withCredentials: true
     })
     if (response.status == 200) {
         return response.data

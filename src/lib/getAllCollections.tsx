@@ -1,20 +1,20 @@
 
 // import axios from "axios";
 
-export default async function getAllCollection(token: string) {
+import axios from "axios"
+
+export default async function getAllCollection() {
     const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/collection/getAllCollection`
 
 
-    const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-            Authorization: `Bearer ${token}`,
-        }
+    const response = await axios.get(url, {
+        withCredentials: true
     })
 
 
     if (response.status == 200) {
-        return response.json()
+
+        return response.data
     }
     throw new Error("failed to fetch data")
 }

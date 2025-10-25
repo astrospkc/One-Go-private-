@@ -1,13 +1,11 @@
 "use client"
 import axios from "axios"
 
-export default async function postCollection(token: string, body: { Title: string; Description: string }) {
+export default async function postCollection(body: { Title: string; Description: string }) {
     try {
 
         const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/collection/createCollection`, body, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
+            withCredentials: true
         }
         )
         const info = await response.data
