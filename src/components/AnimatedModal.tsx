@@ -11,14 +11,13 @@ import {
 
 
 import { ModalContextapp } from "@/context/ModalProvider";
-
-import { CollectionContext } from "@/context/CollectionProvider";
 import { QueryClient, useMutation } from "@tanstack/react-query";
 import postCollection from "@/lib/postCollection";
+import useCollectionStore from "@/store/collectionStore";
 
 export function AnimatedModal() {
     const { open, setOpen } = useContext(ModalContextapp)
-    const { collection, setCollection } = useContext(CollectionContext)
+    const { collection, setCollection } = useCollectionStore()
     const [token, setToken] = useState<string | null>(null)
     useEffect(() => {
         const localToken = localStorage.getItem("token")
@@ -46,7 +45,7 @@ export function AnimatedModal() {
 
     const queryClient = new QueryClient()
     const mutation = useMutation({
-        mutationFn: ({ token, body }: { token: string; body: { Title: string; Description: string } }) => postCollection(token, body),
+        mutationFn: ({ body }: { token: string; body: { Title: string; Description: string } }) => postCollection(body),
         onSuccess: (data) => {
             setCollection([...collection, data])
             setOpen(!open)

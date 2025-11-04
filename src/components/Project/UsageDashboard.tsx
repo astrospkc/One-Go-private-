@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 
 const usageData = [
@@ -15,7 +16,7 @@ const UsageDashboard = () => {
         <div className="bg-[#0D0D10] text-white p-6 rounded-lg w-full max-w-4xl mx-auto">
             <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold">Usage</h2>
-                <a href="#" className="text-sm text-blue-400 hover:underline">View more →</a>
+                <Link href="#" className="text-sm text-blue-400 hover:underline">View more →</Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {usageData.map((item, idx) => (

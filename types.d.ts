@@ -2,12 +2,12 @@ export type User = {
     id: string;
     name: string;
     email: string;
-    profile_pic: string;
+    profile_pic?: string;
     password: string;
     role: string;
     api_key: string;
 }
-interface UserContextType {
+export type UserContextType = {
     setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
     isAuthenticated: boolean;
     user: {
@@ -33,7 +33,7 @@ interface UserContextType {
 }
 
 
-interface ModalContextType {
+export type ModalContextType = {
     open: boolean,
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
     openProjectModal: boolean,
@@ -48,10 +48,39 @@ export type SingleCollection = {
     time: string
 }
 
-interface CollectionContextType {
-    collection: SingleCollection[]
-    setCollection: (collection: SingleCollection[]) => void
+export type CollectionContextType = {
+    collection: SingleCollection[] | [],
+    setCollection: (collection: SingleCollection[]) => void,
+    collectionLoading: boolean,
+    setCollectionLoading: (value: boolean) => void
 }
+
+export type Project = {
+    id?: string,
+    user_id?: string,
+    collection_id: string,
+    title: string,
+    description?: string,
+    tags?: string,
+    fileUpload?: string
+    thumbnail?: string,
+    githublink?: string,
+    demolink?: string
+    livedemolink?: string,
+    blogLink?: string,
+    teamMembers?: string,
+    time?: Date | string,
+    updated_time?: Date | string
+}
+
+export type ProjectContextType = {
+    project: Project[] | [],
+    setProject: (project: Project[]) => void,
+    projectLoading: boolean,
+    setProjectLoading: (value: boolean) => void
+}
+
+
 export type CollectionType = {
     description: string
     id: string
@@ -59,17 +88,21 @@ export type CollectionType = {
     title: string
     user_id: string
 }
-export interface Project {
-    id?: string; // corresponds to ObjectID (optional because of `omitempty`)
-    user_id: string;
-    collection_id: string;
-    title: string;
-    description?: string;
-    tags?: string;
-    thumbnail?: string;
-    githublink?: string;
-    liveddemolink?: string;
-    time: string; // or `Date` if you convert it properly
+export type Project = {
+    blogLink: string
+    collection_id: string
+    demolink?: string
+    description?: string
+    fileUpload?: string
+    githublink?: string
+    id: string
+    livedemolink?: string
+    tags?: string
+    teamMembers?: string
+    thumbnail?: string
+    time: Date
+    title: string
+    user_id: string
 }
 
 export interface Media {
@@ -97,4 +130,14 @@ export interface Blog {
     status: string;
 }
 
-export type { UserContextType, ModalContextType, CollectionContextType }
+
+export type AuthState = {
+    user: User | null,
+    isAuthenticated: boolean,
+    userLoading: boolean,
+    setUser: (user: User) => void,
+    setIsAuthenticated: (value: boolean) => void,
+    setUserLoading: (value: boolean) => void,
+    logout: () => void,
+};
+

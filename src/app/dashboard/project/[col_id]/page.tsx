@@ -1,11 +1,9 @@
 "use client"
-import { ModalContextapp } from '@/context/ModalProvider';
-import { ProjectContext } from '@/context/ProjectProvider';
+
 import axios from 'axios';
 import { useParams, useSearchParams } from 'next/navigation';
 
-import { useContext, useEffect, useState } from 'react';
-import { UserContext } from '@/context/UserProvider';
+import { useEffect, useState } from 'react';
 import { RocketIcon, LayoutGrid, Activity, BarChart2, Zap, Settings } from 'lucide-react';
 import ProjectOverview from '@/components/Project/ProjectOverview';
 import ProjectAPI from '@/components/Project/ProjectAPI';
@@ -14,25 +12,28 @@ import ProjectUsage from '@/components/Project/ProjectUsage';
 import ProjectSettings from '@/components/Project/ProjectSettings';
 import ProjectPlan from '@/components/Project/ProjectPlan';
 import ProjectGettingStarted from '@/components/Project/ProjectGettingStarted';
+import { useAuthStore } from '@/store/authStore';
+import useProjectStore from '@/store/projectStore';
+
 
 type TopNavigationProps = {
     col_id: string;
 };
 
-const tabs = [
-    { label: "Getting started", icon: <RocketIcon className="w-4 h-4" />, active: true },
-    { label: "Overview", icon: <LayoutGrid className="w-4 h-4" />, component: <ProjectOverview /> },
-
-    { label: "API", icon: <Zap className="w-4 h-4 rotate-45" />, component: <ProjectAPI /> },
-
-    { label: "Activity", icon: <Activity className="w-4 h-4" />, component: <ProjectActivity /> },
-    { label: "Usage", icon: <BarChart2 className="w-4 h-4" />, component: <ProjectUsage /> },
-    { label: "Plan", icon: <Zap className="w-4 h-4" />, component: <ProjectPlan /> },
-    { label: "Settings", icon: <Settings className="w-4 h-4" />, component: <ProjectSettings />, button: true },
-];
 
 
 const TopNavigation = ({ col_id }: TopNavigationProps) => {
+    const tabs = [
+        { label: "Getting started", icon: <RocketIcon className="w-4 h-4" />, active: true },
+        { label: "Overview", icon: <LayoutGrid className="w-4 h-4" />, component: <ProjectOverview col_id={col_id} /> },
+
+        { label: "API", icon: <Zap className="w-4 h-4 rotate-45" />, component: <ProjectAPI /> },
+
+        { label: "Activity", icon: <Activity className="w-4 h-4" />, component: <ProjectActivity /> },
+        { label: "Usage", icon: <BarChart2 className="w-4 h-4" />, component: <ProjectUsage /> },
+        { label: "Plan", icon: <Zap className="w-4 h-4" />, component: <ProjectPlan /> },
+        { label: "Settings", icon: <Settings className="w-4 h-4" />, component: <ProjectSettings />, button: true },
+    ];
     const [activeTab, setActiveTab] = useState("Getting started");
 
 
@@ -85,28 +86,13 @@ const TopNavigation = ({ col_id }: TopNavigationProps) => {
 }
 
 const Project = () => {
-
-    const { user } = useContext(UserContext)
+    const { user } = useAuthStore()
     const params = useParams()
     const col_id = params.col_id
     const searchParams = useSearchParams()
     const title = searchParams.get('title')
     console.log("title: ", title)
-    const { setProjects } = useContext(ProjectContext)
-
-    const [count, setCount] = useState(0);
-    const { openProjectModal, setOpenProjectModal } = useContext(ModalContextapp)
-    const handleClick = () => {
-        setOpenProjectModal(!openProjectModal)
-    }
-
-    const handleCount = () => {
-        setCount(count + 1)
-    }
-    const handleCountReverse = () => {
-        setCount(count - 1)
-    }
-    // };
+    const { setProject } = useProjectStore()
 
     // get all the projects
     useEffect(() => {
@@ -114,16 +100,19 @@ const Project = () => {
             try {
                 // const token = localStorage.getItem('token')
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/readProject/${col_id}`, {
-                    withCredentials: true
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
                 })
-                const data = await response.data
-                setProjects(data)
+                const data = response.data
+                setProject(data)
             } catch (error) {
                 console.error("Error fetching projects:", error);
             }
         }
         fetchProjects()
-    }, [setProjects, col_id])
+    }, [setProject, col_id])
 
 
 

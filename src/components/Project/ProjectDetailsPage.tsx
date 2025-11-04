@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 
 const ProjectDetailsPage = () => {
@@ -8,7 +9,7 @@ const ProjectDetailsPage = () => {
                     <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">
                         Portfolio Project
                     </h1>
-                    <a href="/overview" className="text-sm text-purple-400 hover:underline">← Back to Overview</a>
+                    <Link href="/overview" className="text-sm text-purple-400 hover:underline">← Back to Overview</Link>
                 </div>
 
                 <div className="bg-[#111] border border-purple-800 rounded-2xl p-6 shadow-lg mb-8">
@@ -32,19 +33,19 @@ const ProjectDetailsPage = () => {
                         <div className="bg-[#151022] border border-purple-900 rounded-xl p-4 hover:bg-[#1b1430] transition">
                             <p className="font-medium text-purple-200 mb-1">preview.png</p>
                             <p className="text-xs text-gray-500">Image • 1.2 MB</p>
-                            <a href="#" className="text-xs text-purple-400 hover:underline mt-2 block">View</a>
+                            <Link href="#" className="text-xs text-purple-400 hover:underline mt-2 block">View</Link>
                         </div>
 
                         <div className="bg-[#151022] border border-purple-900 rounded-xl p-4 hover:bg-[#1b1430] transition">
                             <p className="font-medium text-purple-200 mb-1">index.html</p>
                             <p className="text-xs text-gray-500">HTML File • 3 KB</p>
-                            <a href="#" className="text-xs text-purple-400 hover:underline mt-2 block">Open</a>
+                            <Link href="#" className="text-xs text-purple-400 hover:underline mt-2 block">Open</Link>
                         </div>
 
                         <div className="bg-[#151022] border border-purple-900 rounded-xl p-4 hover:bg-[#1b1430] transition">
                             <p className="font-medium text-purple-200 mb-1">project.zip</p>
                             <p className="text-xs text-gray-500">Archive • 8.4 MB</p>
-                            <a href="#" className="text-xs text-purple-400 hover:underline mt-2 block">Download</a>
+                            <Link href="#" className="text-xs text-purple-400 hover:underline mt-2 block">Download</Link>
                         </div>
                     </div>
                 </div>

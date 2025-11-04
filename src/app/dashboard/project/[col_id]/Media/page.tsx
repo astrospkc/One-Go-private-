@@ -52,7 +52,10 @@ const Media = () => {
         await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/media/postmedia/${col_id}`,
             formData,
             {
-                withCredentials: true
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
             }
         )
         const mediaResponse = await getAllMedia(token ?? "", col_id?.toString() ?? "")
@@ -69,9 +72,9 @@ const Media = () => {
             {
                 headers: {
                     'Content-Type': 'application/json',
-
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
-                withCredentials: true,
+
                 data: { key: key }
 
             }
@@ -88,8 +91,9 @@ const Media = () => {
             {
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
-                withCredentials: true,
+
                 data: { key: key } // body goes here
             }
         );

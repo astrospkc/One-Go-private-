@@ -1,25 +1,22 @@
 "use client"
-import { UserContext } from '@/context/UserProvider'
+import { useAuthStore } from '@/store/authStore'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { useContext, useEffect } from 'react'
-
+import React from 'react'
 const Navbar = () => {
-    const { isAuthenticated, setIsAuthenticated } = useContext(UserContext)
+    const { isAuthenticated, setIsAuthenticated } = useAuthStore()
 
     const router = useRouter()
 
     const handleLogout = () => {
         localStorage.removeItem('token')
-        setIsAuthenticated(false)
+        if (setIsAuthenticated) {
+            setIsAuthenticated(false)
+
+        }
         router.push("/auth/signIn")
 
     }
-
-
-    useEffect(() => {
-        setIsAuthenticated(!!localStorage.getItem('token'))
-    })
 
     return (
         <div>

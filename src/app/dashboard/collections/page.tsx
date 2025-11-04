@@ -1,43 +1,35 @@
 "use client"
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { } from 'react';
 import { cn } from "@/lib/utils";
 import Link from 'next/link';
-import getAllCollection from '@/lib/getAllCollections';
-import { CollectionContext } from '@/context/CollectionProvider';
-import {
-    useQuery,
 
 
-} from '@tanstack/react-query'
 
+import useCollectionStore from '@/store/collectionStore';
 
 
 
 const Collection = () => {
-    const { collection, setCollection } = useContext(CollectionContext)
-    // const [loading, setLoading] = useState<boolean>(false)
-    const [token, setToken] = useState<string | null>(null)
+    const { collection, setCollection } = useCollectionStore()
+    console.log("collection: ", collection)
+    if (!collection || collection.length == 0) {
+        const fetchCollection = async () => {
+            const token = localStorage.getItem('token')
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/collection/getAllCollection`, {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            const result = await response.json()
+            console.log("collections: ", result)
+            setCollection(result)
 
-    useEffect(() => {
-        const localToken = localStorage.getItem("token")
-        setToken(localToken)
-    }, [])
-    const query = useQuery({
-        queryKey: ['collection'],
-        queryFn: () => getAllCollection(token ?? ""),
-        enabled: !!token
-    })
-    useEffect(() => {
-        if (query.data) {
-            setCollection(query.data)
         }
-    })
-    if (query.isLoading) return <div className="flex justify-center items-center h-40">
-        <div className="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-amber-500"></div>
-    </div>
-    if (query.isError) return <div>error</div>
-
+        fetchCollection()
+    }
 
     return (
         <div className="p-6 font-serif">

@@ -44,7 +44,10 @@ const Blogs = () => {
     const handleDeleteBlog = async (blogid: string, col_id: string) => {
 
         const res = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blog/deleteBlog/${blogid}`, {
-            withCredentials: true
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
         })
         const result = await res.data
         console.log("deleted data: ", result)

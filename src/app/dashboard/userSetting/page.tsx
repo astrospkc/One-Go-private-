@@ -173,7 +173,10 @@ const UsersProfile = ({ props }: UsersProps) => {
 
         setEdit(edit => !edit)
         const res = await axios.put(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/editUser`, formData, {
-            withCredentials: true,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
         })
         const data = res.data
         console.log("edit: ", data)
@@ -270,7 +273,6 @@ type InputFieldProps = {
     id: string;
     type: string;
     className?: string;
-
     disabled: boolean;
     onChange: any;
     value: string;

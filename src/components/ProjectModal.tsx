@@ -1,36 +1,28 @@
 
 "use client";
 import React, { useContext, useRef, useState } from "react";
-import {
-    Modal,
-    ModalBody,
-    ModalContent,
-    ModalFooter,
-    ModalTrigger,
-} from "./ui/animated-modal";
-
-
-
 import { ModalContextapp } from "@/context/ModalProvider";
-
-import { ProjectContext } from "@/context/ProjectProvider";
 import axios from "axios";
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalTrigger } from "./ui/animated-modal";
+import useProjectStore from "@/store/projectStore";
 // import debounce from "@/lib/debounce";
 
 export function ProjectModal({ props }: { props: { col_id: string } }) {
     const { col_id } = props
     const { openProjectModal, setOpenProjectModal } = useContext(ModalContextapp)
-    const { projects, setProjects } = useContext(ProjectContext)
+    const { project, setProject } = useProjectStore()
     // const [titleValue, setTitleValue] = useState("")
     // const [descriptionValue, setDescriptionValue] = useState("")
     const [newProj, setNewProj] = useState({
-        CollectionId: col_id,
-        Title: "",
-        Description: "",
-        Thumbnail: "",
-        Tags: "",
-        GithubLink: "",
-        LiveDemoLink: ""
+        collection_id: col_id,
+        title: "",
+        description: "",
+        thumbnail: "",
+        tags: "",
+        githublink: "",
+        livedemolink: "",
+        bloglink: "",
+        teamMembers: "",
     })
     const titleRef = useRef<HTMLInputElement>(null)
     const descRef = useRef<HTMLTextAreaElement>(null)
@@ -85,23 +77,23 @@ export function ProjectModal({ props }: { props: { col_id: string } }) {
     const AddProject = async () => {
         const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/createProject/${col_id}`,
             {
-                withCredentials: true,
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 data: {
-                    CollectionId: newProj.CollectionId,
-                    Title: newProj.Title,
-                    Description: newProj.Description,
-                    Thumbnail: newProj.Thumbnail,
-                    Tags: newProj.Thumbnail,
-                    GithubLink: newProj.GithubLink,
-                    LiveDemoLink: newProj.LiveDemoLink
+                    CollectionId: newProj.collection_id,
+                    Title: newProj.title,
+                    Description: newProj.description,
+                    Thumbnail: newProj.thumbnail,
+                    Tags: newProj.tags,
+                    GithubLink: newProj.githublink,
+                    LiveDemoLink: newProj.livedemolink
                 }
             })
 
         const data = await response.data
-        setProjects([...projects, data])
+        setProject([...project, data])
         setOpenProjectModal(!openProjectModal)
         window.location.reload()
     }
@@ -127,39 +119,39 @@ export function ProjectModal({ props }: { props: { col_id: string } }) {
                         <div className=" flex flex-wrap gap-x-4 gap-y-6 items-start justify-start max-w-sm mx-auto">
 
                             <input
-                                value={newProj.CollectionId}
+                                value={newProj.collection_id}
                                 onChange={handleAddProject}
                                 name="CollectionId"
                                 type="text" placeholder="CollectionId" className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 w-full" />
                             <input
                                 ref={titleRef}
-                                value={newProj.Title}
+                                value={newProj.title}
                                 onChange={handleAddProject}
                                 name="Title"
                                 type="text" placeholder="Title" className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 w-full" />
                             <textarea
                                 ref={descRef}
-                                value={newProj.Description}
+                                value={newProj.description}
                                 onChange={handleAddProject}
                                 name="Description"
                                 placeholder="Description" className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 w-full" />
                             <input
-                                value={newProj.Tags}
+                                value={newProj.tags}
                                 onChange={handleAddProject}
                                 name="Tags"
                                 type="text" placeholder="Tags" className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 w-full" />
                             <input
-                                value={newProj.Thumbnail}
+                                value={newProj.thumbnail}
                                 onChange={handleAddProject}
                                 name="Thumbnail"
                                 type="text" placeholder="Thumbnail" className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 w-full" />
                             <input
-                                value={newProj.GithubLink}
+                                value={newProj.githublink}
                                 onChange={handleAddProject}
                                 name="GithubLink"
                                 type="text" placeholder="GithubLink" className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 w-full" />
                             <input
-                                value={newProj.LiveDemoLink}
+                                value={newProj.livedemolink}
                                 onChange={handleAddProject}
                                 name="LiveDemoLink"
                                 type="text" placeholder="Live Demo link" className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 w-full" />

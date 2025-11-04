@@ -1,14 +1,8 @@
 "use client"
 
-import { UserContext } from "@/context/UserProvider";
-
-
+import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
-
-import { useContext, useState } from "react";
-
-// import { useState } from 'react';
-
+import { useState } from "react";
 interface AuthFormProps {
     type: 'signin' | 'signup';
 }
@@ -19,8 +13,8 @@ export default function AuthForm({ type }: AuthFormProps) {
     const [Password, setPassword] = useState("")
     const [Role, setRole] = useState("")
     const [ProfilePic, setProfilePic] = useState("")
-    const { setUser } = useContext(UserContext)
-    const { setIsUserLoading, setIsAuthenticated } = useContext(UserContext)
+    const { user, isAuthenticated, setUser, setIsAuthenticated, setUserLoading } = useAuthStore();
+
 
 
     const router = useRouter()
@@ -29,7 +23,7 @@ export default function AuthForm({ type }: AuthFormProps) {
         e.preventDefault();
 
         if (type === 'signin') {
-            setIsUserLoading(true)
+            setUserLoading(true)
             // console.log("env : ", process.env.NEXT_PUBLIC_BACKEND_URL)
             const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, {
                 method: 'POST',
@@ -50,9 +44,10 @@ export default function AuthForm({ type }: AuthFormProps) {
                 setUser(data.user)
                 setIsAuthenticated(true)
                 router.push("/dashboard")
-                setIsUserLoading(false)
+                setUserLoading(false)
             } else {
                 alert("Invalid credentials")
+                setUserLoading(false)
             }
         } else if (type === 'signup') {
             const formData = new FormData()
@@ -73,16 +68,15 @@ export default function AuthForm({ type }: AuthFormProps) {
                 setUser(data.user)
                 setIsAuthenticated(true)
                 router.push("/dashboard")
-                setIsUserLoading(false)
+                setUserLoading(false)
             } else {
                 alert("Invalid credentials")
+                setUserLoading(false)
             }
-
         }
     };
 
-
-
+    console.log("user and is authenticated: ", user, isAuthenticated)
 
     return (
         <div className="flex flex-col space-y-4">

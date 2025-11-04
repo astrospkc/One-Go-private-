@@ -5,7 +5,10 @@ export default async function postCollection(body: { Title: string; Description:
     try {
 
         const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/collection/createCollection`, body, {
-            withCredentials: true
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
         }
         )
         const info = await response.data

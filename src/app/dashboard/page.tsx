@@ -6,42 +6,99 @@ import getAllProjects from "@/lib/getAllProjects"
 import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import React, { useContext, useEffect, useState } from "react"
-// import { User } from "../../../types"
-import { UserContext } from "@/context/UserProvider"
 import { Pencil, LayoutDashboard } from "lucide-react";
 import Link from "next/link"
+import useCollectionStore from "@/store/collectionStore"
+
+import useProjectStore from "@/store/projectStore"
+import { useAuthStore } from "@/store/authStore"
+import axios from "axios"
+import { useQuery } from "@tanstack/react-query"
 
 const Dashboard = () => {
 
-    const { isAuthenticated } = useContext(UserContext)
-    const { user } = useContext(UserContext)
+    const { user, isAuthenticated } = useAuthStore()
     console.log("user:", user)
     const [isOpen, setIsOpen] = useState(false);
     const { open, setOpen } = useContext(ModalContextapp)
     const handleClick = () => {
         setOpen(!open)
     }
-    const [collectionsList, setCollectionsList] = useState([])
-    const [projectsList, setProjectsList] = useState([])
+    const { collection, setCollection, collectionLoading, setCollectionLoading } = useCollectionStore()
+    const { project, setProject, projectLoading, setProjectLoading } = useProjectStore()
     const [sectionSelected, setSectionSelected] = useState('collection')
     console.log(isOpen, sectionSelected)
     // const {user} = props 
 
+
+    const fetchCollections = async () => {
+        try {
+            setCollectionLoading(true)
+            const token = localStorage.getItem('token')
+            console.log("token: ", token)
+
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/collection/getAllCollection`, {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            const result = await response.json()
+            setCollection(result)
+            setCollectionLoading(false)
+        } catch (error) {
+            console.error("Error fetching collection data:", error);
+            alert("Error fetching collection data")
+            setCollectionLoading(false)
+        }
+    }
+
+    const fetchProjects = async () => {
+        try {
+            setProjectLoading(true)
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/getAllProject`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            console.log("projects: ", response.data)
+            const result = await response.data
+            setProject(result)
+            setProjectLoading(false)
+        } catch (error) {
+            console.error("Error fetching projects:", error);
+            alert("Error fetching projects")
+            setProjectLoading(false)
+        }
+    }
+
     useEffect(() => {
-        const fetchCollections = async () => {
-            const collections = await getAllCollection()
-            setCollectionsList(collections)
-        }
-        const fetchProjects = async () => {
-            const projects = await getAllProjects()
-            setProjectsList(projects)
-        }
         fetchCollections()
         fetchProjects()
     }, [])
+    // const { data: collections_data } = useQuery({
+    //     queryKey: ["collectionsList"],
+    //     queryFn: fetchCollections,
+    //     retry: 3
+    // })
 
-    const totalCollection = collectionsList ? collectionsList.length : []
-    const totalProjects = projectsList ? projectsList.length : []
+    // const { data: projects_data } = useQuery({
+    //     queryKey: ["projects"],
+    //     queryFn: fetchProjects,
+    //     retry: 3
+    // })
+
+    console.log("collections_data: ", collection)
+    console.log("projects_data: ", project)
+
+
+
+
+    const totalCollection = collection ? collection.length : []
+    const totalProjects = project ? project.length : []
     const router = useRouter()
     const baseClass = "  flex flex-col justify-center items-center  rounded-3xl hover:bg-white/10 cursor-pointer bg-white/5 backdrop-blur-lg p-6  border border-white/10 text-white/80 shadow-sm shadow-orange-500"
 
@@ -103,13 +160,17 @@ const Dashboard = () => {
                             onClick={handleSection}
                             className={cn(baseClass)}>
                             <span className="font-bold  text-center "> Total Collections </span>
-                            <span className="rounded-full  p-2">{totalCollection}</span>
+                            {collectionLoading ? <span>Loading...</span> :
+                                <span className="rounded-full  p-2">{totalCollection}</span>
+                            }
                         </div>
                         <div
                             onClick={handleSection}
                             className={cn(baseClass)}>
                             <span className="font-bold text-center"> Total Projects </span>
-                            <span>{totalProjects}</span>
+                            {projectLoading ? <span>Loading...</span> :
+                                <span className="rounded-full  p-2">{totalProjects}</span>
+                            }
                         </div>
                         <div
                             className={cn(baseClass)}>
@@ -125,22 +186,6 @@ const Dashboard = () => {
                         </div>
 
                     </div>
-                    {/* <div className="flex flex-row gap-4 justify-center items-center m-auto ">
-
-                        <MyButton onClick={handleClick}>+ Create Collection</MyButton>
-                        <MyButton pathname="/dashboard/collections"> See All Collection</MyButton>
-
-                    </div> */}
-
-                    {/* <div>
-                <Modal isOpen={isOpen} onClose={handleClick}>
-                    {
-                        sectionSelected === "collection" ?
-                            <TotalCollection />
-                            : null
-                    }
-                </Modal>
-            </div> */}
 
                 </div>
 

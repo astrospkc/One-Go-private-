@@ -1,22 +1,30 @@
 "use client"
 import Modal from '@/components/ui/MyModal'
 // import Modal from '@/components/ui/Modal'
-import { ProjectContext } from '@/context/ProjectProvider'
 import { cn } from '@/lib/utils'
 // import { useSearchParams } from 'next/navigation'
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { AiFillCaretLeft } from 'react-icons/ai'
 import { Project } from '../../../../../../types'
+import useProjectStore from '@/store/projectStore'
 
 const ProjectsPage = () => {
     const [isOpen, setIsOpen] = useState(false);
 
-    const { projects } = useContext(ProjectContext)
+    const { project } = useProjectStore()
     const [projectDetails, setProjectDetails] = useState<Project>()
     const handleOpenProject = (val: Project) => {
         setProjectDetails(val)
         setIsOpen(true)
+    }
 
+    let projectCreatedTime = ""
+    if (projectDetails && projectDetails.time) {
+        const date = new Date(projectDetails.time)
+        const month = date.toLocaleString('default', { month: 'long' });
+        const day = date.getDate();
+        const year = date.getFullYear();
+        projectCreatedTime = `${month} ${day}, ${year}`
     }
     return (
         <div className='p-6 font-serif'>
@@ -28,8 +36,8 @@ const ProjectsPage = () => {
             </div>
             <div>
                 <div className=" w-full grid grid-cols-3 gap-4">
-                    {projects && projects.length > 0 &&
-                        projects.map((val, ind) => {
+                    {project && project.length > 0 &&
+                        project.map((val, ind) => {
                             return (
 
                                 <div
@@ -76,9 +84,12 @@ const ProjectsPage = () => {
                                     <li><span className='text-xl mr-2  w-fit font-bold text-violet-400'>Title:</span> {projectDetails.title}</li>
                                     <li><span className='text-xl mr-2  w-fit font-bold text-violet-400'>Description:</span> {projectDetails.description}</li>
                                     <li><span className='text-xl mr-2  w-fit font-bold text-violet-400'>Thumbnail:</span> {projectDetails.thumbnail}</li>
-                                    <li><span className='text-xl mr-2  w-fit font-bold text-violet-400'>Live Demo link:</span> {projectDetails.liveddemolink}</li>
+                                    <li><span className='text-xl mr-2  w-fit font-bold text-violet-400'>Live Demo link:</span> {projectDetails.livedemolink}</li>
                                     <li><span className='text-xl mr-2  w-fit font-bold text-violet-400'>Github Link:</span> {projectDetails.githublink}</li>
-                                    <li><span className='text-xl mr-2  w-fit font-bold text-violet-400'>Created At:</span> {projectDetails.time}</li>
+                                    <li>
+                                        <span className='text-xl mr-2  w-fit font-bold text-violet-400'>Created At:</span>
+                                        {projectCreatedTime}
+                                    </li>
                                 </ul>
                             </>}
 

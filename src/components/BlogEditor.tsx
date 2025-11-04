@@ -97,9 +97,9 @@ export default function BlogEditor({ col_id }: { col_id: string }) {
     const CreateBlog = async (payload: PayloadType) => {
         const token = localStorage.getItem('token')
         await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blog/createBlog/${col_id}`, {
-            withCredentials: true,
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
 
             },
             data: { payload }

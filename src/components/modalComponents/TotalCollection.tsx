@@ -8,16 +8,11 @@ import { SingleCollection } from '../../../types'
 
 const TotalCollection = () => {
     const [collection, setCollection] = useState<SingleCollection[]>([])
-    const [token, setToken] = useState<string | null>(null)
 
-    useEffect(() => {
-        const localToken = localStorage.getItem("token")
-        setToken(localToken)
-    }, [])
     const query = useQuery({
         queryKey: ['collection'],
-        queryFn: () => getAllCollection(token ?? ""),
-        enabled: !!token
+        queryFn: () => getAllCollection(),
+
     })
     useEffect(() => {
         if (query.data) {

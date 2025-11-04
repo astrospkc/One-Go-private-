@@ -4,6 +4,7 @@ import ProjectUsage from './ProjectUsage'
 import ProjectActivity from './ProjectActivity'
 import axios from 'axios'
 import Link from 'next/link'
+import { Project } from "../../../types"
 
 const ProjectOverview = ({ col_id }: { col_id: string }) => {
 
@@ -30,14 +31,15 @@ export default ProjectOverview
 const ProjectList = ({ col_id }: { col_id: string }) => {
 
     const [projects, setProjects] = useState([])
-    // get all the projects
-
 
     useEffect(() => {
         const fetchAllProjects = async () => {
             const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/readProject/${col_id}`,
                 {
-                    withCredentials: true
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
                 }
             )
             const record = await res.data
@@ -107,19 +109,4 @@ const ProjectList = ({ col_id }: { col_id: string }) => {
 }
 
 
-type Project = {
-    blogLink: string
-    collection_id: string
-    demolink: string
-    description: string
-    fileUpload: string
-    githublink: string
-    id: string
-    livedemolink: string
-    tags: string
-    teamMembers: string
-    thumbnail: string
-    time: Date
-    title: string
-    user_id: string
-}
+
