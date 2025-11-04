@@ -1,9 +1,50 @@
 "use client"
 
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+
+import { useParams } from 'next/navigation'
+import axios from 'axios'
+
 
 const ProjectShowCase = () => {
+    const params = useParams()
+    const p_id = params.p_id
+    const [project, setProject] = useState()
+    console.log("project id: ", p_id)
+    const col_id = params.col_id
+
+
+    // fetch project
+    const fetchProject = async () => {
+        try {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/readProjectWithId/${p_id}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            const record = await res.data
+            setProject(record)
+        } catch (error) {
+            console.error("Error fetching project:", error);
+        }
+    }
+
+    useEffect(() => {
+        fetchProject()
+    }, [])
+    console.log("project: ", project)
+    const date = new Date(project?.time)
+    const formattedDate = date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    })
+    let tagsArr = []
+    if (project?.tags) {
+        tagsArr = project.tags.split(",")
+    }
     return (
         <div>
 
@@ -11,20 +52,27 @@ const ProjectShowCase = () => {
                 <section className="p-8 bg-[#0b0b0e] text-gray-100 min-h-screen">
                     <div className="flex items-center justify-between mb-6">
                         <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">
-                            Portfolio Project
+                            {project ? project.title.toUpperCase() : ""}
                         </h1>
-                        <Link href="/overview" className="text-sm text-purple-400 hover:underline">← Back to Overview</Link>
+                        <Link href={`/dashboard/project/${col_id}`} className="text-sm text-purple-400 hover:underline">← Back to Overview</Link>
                     </div>
 
                     <div className="bg-[#111] border border-purple-800 rounded-2xl p-6 shadow-lg mb-8">
-                        <p className="text-gray-300 mb-3">
-                            A dynamic CMS where developers can upload, manage, and showcase their portfolio projects through an integrated API.
-                        </p>
+                        <h1 className="text-gray-300 mb-3 text-xl font-semibold">
+                            - {project ? project.description : ""}
+                        </h1>
                         <div className="text-sm text-gray-400 space-y-1">
-                            <p><strong>Created On:</strong> Jul 8, 2025</p>
-                            <p><strong>Project ID:</strong> 4s3wn7gi</p>
-                            <p><strong>Organization ID:</strong> opCMmUbeG</p>
-                            <p><strong>Tags:</strong> Next.js, MongoDB, Tailwind, Node.js</p>
+                            <p><strong>Created On:</strong>{formattedDate}</p>
+                            <p><strong>Project ID:</strong> {p_id}</p>
+                            <p><strong>Organization ID:</strong>{col_id}</p>
+
+                            <div className='flex flex-row gap-2'>
+                                <p><strong>Tags:</strong></p>
+                                {tagsArr && tagsArr.map((tag: string, i: number) => (
+                                    <h2 className='py-1 px-2 rounded-2xl bg-violet-500/50 text-white' key={i}> {tag}</h2>
+                                ))}
+                            </div>
+
                             <p><strong>API Endpoint:</strong> <code className="bg-[#1a0f24] px-2 py-1 rounded text-purple-300">https://api.jino.io/projects/4s3wn7gi</code></p>
                         </div>
                     </div>

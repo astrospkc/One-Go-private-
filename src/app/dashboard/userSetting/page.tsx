@@ -1,11 +1,9 @@
 "use client"
-
-import { UserContext } from '@/context/UserProvider'
-// import { title } from 'process'
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { User } from '../../../../types'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
+import { useAuthStore } from '@/store/authStore'
 
 const settingSections = [
     {
@@ -23,7 +21,7 @@ const settingSections = [
 ]
 
 const UserSetting = () => {
-    const { user, isAuthenticated } = useContext(UserContext)
+    const { user, isAuthenticated } = useAuthStore()
 
     const [openedSection, setOpenedSection] = useState(settingSections[0].title)
     const handleSection = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -31,7 +29,7 @@ const UserSetting = () => {
     }
     console.log("user: ", user)
     const router = useRouter()
-    if (user.id === "" || isAuthenticated === false) {
+    if (user && user.id === "" || isAuthenticated === false) {
         router.push("/auth/signIn")
     }
 

@@ -4,7 +4,7 @@ import { MediaContext } from '@/context/MediaProvider'
 import getAllMedia from '@/lib/getAllMedia'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
-import { headers } from 'next/headers'
+
 
 import Link from 'next/link'
 import { useParams } from 'next/navigation'

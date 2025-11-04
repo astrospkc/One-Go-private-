@@ -10,10 +10,7 @@ const Navbar = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('token')
-        if (setIsAuthenticated) {
-            setIsAuthenticated(false)
-
-        }
+        setIsAuthenticated(false)
         router.push("/auth/signIn")
 
     }

@@ -1,19 +1,17 @@
 
 "use client"
 import { ModalContextapp } from "@/context/ModalProvider"
-import getAllCollection from "@/lib/getAllCollections"
-import getAllProjects from "@/lib/getAllProjects"
 import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import React, { useContext, useEffect, useState } from "react"
 import { Pencil, LayoutDashboard } from "lucide-react";
 import Link from "next/link"
 import useCollectionStore from "@/store/collectionStore"
-
 import useProjectStore from "@/store/projectStore"
 import { useAuthStore } from "@/store/authStore"
 import axios from "axios"
 import { useQuery } from "@tanstack/react-query"
+
 
 const Dashboard = () => {
 
@@ -30,66 +28,62 @@ const Dashboard = () => {
     console.log(isOpen, sectionSelected)
     // const {user} = props 
 
-
-    const fetchCollections = async () => {
-        try {
-            setCollectionLoading(true)
-            const token = localStorage.getItem('token')
-            console.log("token: ", token)
-
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/collection/getAllCollection`, {
-                method: "GET",
+    const { error: collectionError, data: collectionData, isPending: isCollectionPending } = useQuery({
+        queryKey: ["collectionList"],
+        queryFn: async () => {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/collection/getAllCollection`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             })
-
-            const result = await response.json()
-            setCollection(result)
-            setCollectionLoading(false)
-        } catch (error) {
-            console.error("Error fetching collection data:", error);
-            alert("Error fetching collection data")
-            setCollectionLoading(false)
+            return await response.data
         }
-    }
+    })
 
-    const fetchProjects = async () => {
-        try {
-            setProjectLoading(true)
+    const { error: projectError, data: projectData, isPending: isProjectPending } = useQuery({
+        queryKey: ["projectList"],
+        queryFn: async () => {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/getAllProject`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             })
-            console.log("projects: ", response.data)
-            const result = await response.data
-            setProject(result)
-            setProjectLoading(false)
-        } catch (error) {
-            console.error("Error fetching projects:", error);
-            alert("Error fetching projects")
-            setProjectLoading(false)
+            return await response.data
         }
+    })
+    console.log("collection data, project data: ", collectionData, projectData)
+    if (collectionError) {
+        console.log(collectionError)
+        alert("Error fetching collections")
+    }
+
+    if (projectError) {
+        console.log(projectError)
+        alert("Error fetching projects")
     }
 
     useEffect(() => {
-        fetchCollections()
-        fetchProjects()
-    }, [])
-    // const { data: collections_data } = useQuery({
-    //     queryKey: ["collectionsList"],
-    //     queryFn: fetchCollections,
-    //     retry: 3
-    // })
+        if (collectionData) {
+            setCollection(collectionData);
 
-    // const { data: projects_data } = useQuery({
-    //     queryKey: ["projects"],
-    //     queryFn: fetchProjects,
-    //     retry: 3
-    // })
+        }
+        if (isCollectionPending) {
+            setCollectionLoading(true)
+        }
+
+    }, [collectionData, isCollectionPending]);
+
+    useEffect(() => {
+        if (projectData) {
+            setProject(projectData);
+        }
+        if (isProjectPending) {
+            setProjectLoading(true)
+        }
+    }, [projectData, isProjectPending]);
+
 
     console.log("collections_data: ", collection)
     console.log("projects_data: ", project)
