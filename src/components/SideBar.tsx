@@ -19,10 +19,10 @@ const SideBar = () => {
 
             <nav className="flex flex-col gap-4 text-sm">
                 <div>
-                    <Link href="/dashboard/cmsSection">
+                    <Link href="/dashboard/apiDocumentation">
                         <div className="flex items-center gap-3 cursor-pointer hover:text-violet-400">
                             <FaFolder />
-                            <span>CMS Section</span>
+                            <span>API Documentation</span>
                         </div>
                     </Link>
 

@@ -22,8 +22,8 @@ const Dashboard = () => {
     const handleClick = () => {
         setOpen(!open)
     }
-    const { collection, setCollection, collectionLoading, setCollectionLoading } = useCollectionStore()
-    const { project, setProject, projectLoading, setProjectLoading } = useProjectStore()
+    const { collection, setCollection, collectionLoading } = useCollectionStore()
+    const { project, setProject, projectLoading } = useProjectStore()
     const [sectionSelected, setSectionSelected] = useState('collection')
     console.log(isOpen, sectionSelected)
     // const {user} = props 
@@ -69,20 +69,14 @@ const Dashboard = () => {
             setCollection(collectionData);
 
         }
-        if (isCollectionPending) {
-            setCollectionLoading(true)
-        }
 
-    }, [collectionData, isCollectionPending]);
+    }, [collectionData]);
 
     useEffect(() => {
         if (projectData) {
             setProject(projectData);
         }
-        if (isProjectPending) {
-            setProjectLoading(true)
-        }
-    }, [projectData, isProjectPending]);
+    }, [projectData]);
 
 
     console.log("collections_data: ", collection)
@@ -154,7 +148,7 @@ const Dashboard = () => {
                             onClick={handleSection}
                             className={cn(baseClass)}>
                             <span className="font-bold  text-center "> Total Collections </span>
-                            {collectionLoading ? <span>Loading...</span> :
+                            {isCollectionPending ? <span>Loading...</span> :
                                 <span className="rounded-full  p-2">{totalCollection}</span>
                             }
                         </div>
@@ -162,7 +156,7 @@ const Dashboard = () => {
                             onClick={handleSection}
                             className={cn(baseClass)}>
                             <span className="font-bold text-center"> Total Projects </span>
-                            {projectLoading ? <span>Loading...</span> :
+                            {isProjectPending ? <span>Loading...</span> :
                                 <span className="rounded-full  p-2">{totalProjects}</span>
                             }
                         </div>

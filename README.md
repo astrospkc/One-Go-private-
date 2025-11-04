@@ -50,6 +50,12 @@ So we built **One-Go** — a modern CMS that takes care of all backend hurdles f
 
 ---
 
+### TODO
+- [ ] implement email sending confirmation to the user's email
+- [ ] cms section - api details , how to use this?
+- [ ] testing , github actions
+- [ ] implement monetization using stripe or razorpay.
+
 ## 📦 Getting Started
 
 ### Clone & Install

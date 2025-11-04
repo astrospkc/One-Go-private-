@@ -35,7 +35,7 @@ const UserSetting = () => {
 
     return (
         <>
-            <div className='flex flex-col  m-10 font-serif my-10  '>
+            <div className='flex flex-col  m-10 font-serif my-10 '>
                 <div className='flex flex-col  '>
                     <span className='text-xl md:text-4xl font-bold'>
                         USERS-SETTINGS
@@ -186,7 +186,7 @@ const UsersProfile = ({ props }: UsersProps) => {
     }
     return (
         <div>
-            <div className='flex flex-row w-full  my-3 md:my-5 bg-black p-3 '>
+            <div className='flex flex-row w-full  my-3 md:my-5 bg-black p-3  shaodow-lg shadow-violet-50  '>
                 <div className='flex flex-col md:flex-row shadow-sm shadow-violet-500 mx-3 p-3 rounded-4xl'>
                     <div className=' flex flex-col justify-center items-center px-5' >
                         <div className='h-40 w-40 rounded-full bg-black border-2 shadow-lg shadow-violet-400'></div>
