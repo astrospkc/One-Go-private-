@@ -4,12 +4,12 @@ import React, { useState } from 'react'
 type ProjectGettingStartedProps = {
     col_id: string;
 };
-type FileState = File | null
+type FileState = File[] | null
 const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [tags, setTags] = useState("")
-    const [file, setFile] = useState<FileState>(null)
+    const [selectedFile, setSelectedFile] = useState<FileState>([])
     const [videoDemolink, setVideoDemoLink] = useState("")
     const [githublink, setGithubLink] = useState("")
     const [liveUrl, setLiveUrl] = useState("")
@@ -20,7 +20,7 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
         try {
             console.log("submitting the form")
             const formData = new FormData();
-            formData.append("file", file);
+
             formData.append("title", title);
             formData.append("description", description);
             formData.append("tags", JSON.stringify(tags.split(",")));
@@ -29,6 +29,11 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
             formData.append("liveUrl", liveUrl)
             formData.append("blogLink", blogLink)
             formData.append("teamMembers", JSON.stringify(teamMembers.split(",")))
+
+            // multiple files
+            selectedFile?.forEach((file) => {
+                formData.append("files", file);
+            });
 
             const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/createProject/${col_id}`, formData, {
                 headers: {
@@ -54,6 +59,13 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
     const handleSettingProject = () => {
         setSettingClicked(!settingClicked)
     }
+    const handleDiscard = () => {
+        setSelectedFile([])
+
+        setSettingClicked(!settingClicked)
+    }
+
+    console.log("selected files: ", selectedFile)
     return (<>
         <div className='bg-black w-full h-screen justify-center items-center p-4 '>
             <Template />
@@ -78,8 +90,29 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
                         </div>
                         <div className='shadow-sm shadow-slate-800 p-4 rounded-2xl'>
                             <h1>Content Uploads:</h1>
-                            <input onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)} type="file" placeholder='File Upload' className='w-full rounded-2xl p-2 my-2 border-2 border-slate-800' />
+                            <input multiple onChange={(e) => setSelectedFile(e.target.files ? Array.from(e.target.files) : [])} type="file" placeholder='File Upload' className='w-full rounded-2xl p-2 my-2 border-2 border-slate-800' />
                             {/* <input type="file" placeholder='Image Upload' className='w-full rounded-2xl p-2 my-2 border-2 border-slate-800' /> */}
+                            {/* Show Uploaded File List */}
+                            {selectedFile && selectedFile.length > 0 && (
+                                <div className="mt-3 p-3 border border-slate-300/30 rounded-lg bg-slate-600/10">
+                                    <h3 className="font-semibold text-white mb-2">
+                                        Selected Files:
+                                    </h3>
+                                    <ul className="space-y-2">
+                                        {selectedFile.map((file, index) => (
+                                            <li
+                                                key={index}
+                                                className="flex items-center justify-between text-slate-700 text-sm bg-blue-400 border border-slate-200/30 rounded-md px-2 py-1 shadow-sm"
+                                            >
+                                                <span>{file.name}</span>
+                                                <span className="text-xs text-black">
+                                                    {(file.size / 1024).toFixed(1)} KB
+                                                </span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
                             <input onChange={(e) => setVideoDemoLink(e.target.value)} type="text" placeholder='Video/demo link' className='w-full rounded-2xl p-2 my-2 border-2 border-slate-800' />
                             <input onChange={(e) => setGithubLink(e.target.value)} type="text" placeholder='Github/Repo Link' className='w-full rounded-2xl p-2 my-2 border-2 border-slate-800' />
                             <input onChange={(e) => setLiveUrl(e.target.value)} type="text" placeholder='Live Project Url' className='w-full rounded-2xl p-2 my-2 border-2 border-slate-800' />
@@ -95,7 +128,7 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
                         </div>
                         <div className=' flex flex-row gap-4'>
                             <button onClick={handleSubmit} className='bg-[#5D3871] p-2 rounded-2xl hover:bg-[#846794] hover:scale-95 cursor-pointer'>Submit</button>
-                            <button className='bg-red-900 hover:bg-red-700 p-2 rounded-2xl hover:scale-95 cursor-pointer'>Discard</button>
+                            <button onClick={handleDiscard} className='bg-red-900 hover:bg-red-700 p-2 rounded-2xl hover:scale-95 cursor-pointer'>Discard</button>
                         </div>
                     </div>
                 }
