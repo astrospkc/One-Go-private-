@@ -33,7 +33,7 @@ interface RegisterPayload {
     email: string,
     password: string,
     role?: string,
-    file?: File
+    file?: string
 }
 
 interface UserResponse {

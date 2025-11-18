@@ -1,5 +1,6 @@
 "use client"
 
+import { authService } from "@/services/authService";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -14,9 +15,6 @@ export default function AuthForm({ type }: AuthFormProps) {
     const [Role, setRole] = useState("")
     const [ProfilePic, setProfilePic] = useState("")
     const { user, isAuthenticated, setUser, setIsAuthenticated, setUserLoading } = useAuthStore();
-
-
-
     const router = useRouter()
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -25,23 +23,12 @@ export default function AuthForm({ type }: AuthFormProps) {
         if (type === 'signin') {
             setUserLoading(true)
             // console.log("env : ", process.env.NEXT_PUBLIC_BACKEND_URL)
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
+            const res = await authService.login(Email, Password)
+            const { token, user } = res
 
-                    Email: Email,
-
-                    Password: Password
-                })
-            })
-            const data = await res.json()
-
-            if (data.token) {
-                localStorage.setItem("token", data.token)
-                setUser(data.user)
+            if (token) {
+                localStorage.setItem("token", token)
+                setUser(user)
                 setIsAuthenticated(true)
                 router.push("/dashboard")
                 setUserLoading(false)
@@ -50,18 +37,16 @@ export default function AuthForm({ type }: AuthFormProps) {
                 setUserLoading(false)
             }
         } else if (type === 'signup') {
-            const formData = new FormData()
-            formData.append('name', Name)
-            formData.append('email', Email)
-            formData.append('file', ProfilePic)
-            formData.append('role', Role)
-            formData.append('password', Password)
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/createUser`, {
-                method: "POST",
-                body: formData
-            })
-            const data = await res.json()
-            console.log("data: ", data)
+            const payload = {
+                name: Name,
+                email: Email,
+                password: Password,
+                role: Role,
+                file: ProfilePic
+            }
+            const res = await authService.registerSendOtp(payload)
+            const { message, email, otp } = res
+
 
             if (data.token) {
                 localStorage.setItem("token", data.token)

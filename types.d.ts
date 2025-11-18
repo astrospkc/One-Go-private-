@@ -3,7 +3,7 @@ export type User = {
     name: string;
     email: string;
     profile_pic?: string;
-    password: string;
+    password?: string;
     role: string;
     api_key: string;
 }
@@ -15,7 +15,7 @@ export type UserContextType = {
         name: string;
         email: string;
         profile_pic: string;
-        password: string;
+        password?: string;
         role: string;
         api_key: string;
     };
@@ -24,7 +24,7 @@ export type UserContextType = {
         name: string;
         email: string;
         profile_pic: string;
-        password: string;
+        password?: string;
         role: string;
         api_key: string;
     }>>;
