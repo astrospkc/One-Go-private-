@@ -48,7 +48,7 @@ interface UserResponse {
 interface RegisterVerifyOtpResponse {
     message: string,
     token: string,
-    user: UserResponse | null,
+    user: UserResponse,
     code: number
 }
 
@@ -62,7 +62,7 @@ export const authService = {
     async login(email: string, password: string): Promise<LoginResponse> {
         try {
 
-            const response = await axios.post(`${baseUrl}/login`, { email, password })
+            const response = await axios.post(`${baseUrl}/auth/login`, { email, password })
             const { token, user } = response.data
             return { token, user }
         } catch (error) {
@@ -71,7 +71,7 @@ export const authService = {
     },
 
     // register 
-    async registerSendOtp(payload: RegisterPayload): Promise<RegisterSendOtpResponse> {
+    async registerSendOtp(payload: RegisterPayload): Promise<void> {
         try {
             const formData = new FormData()
             formData.append('name', payload.name)
@@ -83,7 +83,7 @@ export const authService = {
             }
             const response = await axios.post(`${baseUrl}/auth/register/send-otp`, formData)
             const { message, email, otp } = response.data
-            return { message, email, otp }
+            return
         } catch (error) {
             throw error
         }
@@ -109,9 +109,9 @@ export const authService = {
         }
     },
 
-    async resetPassword(email: string, password: string, otp: string): Promise<Forgot_ResetPasswordResponse> {
+    async resetPassword(email: string, newPassword: string, confirmPassword: string, otp: string): Promise<Forgot_ResetPasswordResponse> {
         try {
-            const response = await axios.post(`${baseUrl}/auth/reset-password`, { email, password, otp })
+            const response = await axios.post(`${baseUrl}/auth/reset-password`, { email, otp, newPassword, confirmPassword })
             const { message, code } = response.data
             return { message, code }
         } catch (error) {

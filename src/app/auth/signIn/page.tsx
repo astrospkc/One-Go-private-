@@ -1,16 +1,108 @@
+"use client"
 import Link from 'next/link';
-import AuthForm from '@/components/AuthForm';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/store/authStore';
+import { ArrowBigLeft, CornerDownLeft } from 'lucide-react';
+import { authService } from '@/services/authService';
 
 
 export default function SignInPage() {
-
+    const [Email, setEmail] = useState("")
+    const [Password, setPassword] = useState("")
+    const [clickedForgotPassword, setClickedForgotPassword] = useState(false)
+    const { user, isAuthenticated, setUser, setIsAuthenticated, setUserLoading } = useAuthStore();
+    const router = useRouter()
+    const handleSubmit = async (type: string) => {
+        if (type == "send-otp") {
+            try {
+                const forgotRes = await authService.forgotPassword(Email)
+                const { message, code } = forgotRes
+                if (code == 200) {
+                    router.push("/auth/resetPassword")
+                }
+            } catch (error) {
+                console.error(error)
+                throw error
+            }
+        }
+        if (type == "login") {
+            try {
+                const loginRes = await authService.login(Email, Password)
+                setUser(loginRes.user)
+                localStorage.setItem("token", loginRes.token)
+                setIsAuthenticated(true)
+                setUserLoading(false)
+                router.push("/dashboard")
+            } catch (error) {
+                console.error(error)
+            } finally {
+                setUserLoading(false)
+            }
+        }
+        console.log("handle submit")
+    }
+    const handleForgotPassword = () => {
+        setClickedForgotPassword(prev => !prev)
+    }
     return (
 
-        <div className="w-full  font-serif relative z-10 max-w-md p-8  shadow-lg shadow-violet-300 justify-center rounded-3xl items-center">
+        <div className="w-full flex flex-col gap-2 font-serif relative z-10 max-w-md p-8  shadow-lg shadow-violet-300 justify-center rounded-3xl items-center">
             <h1 className=" font-bold mb-4 text-violet-300 text-4xl text-center">SIGN IN</h1>
-            <AuthForm type="signin" />
+            {
+                clickedForgotPassword ? (
+                    <>
+                        <>
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                className="border p-2 rounded"
+                                value={Email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                        </>
+                    </>
+                ) : (
+                    <>
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            className="border p-2 rounded"
+                            value={Email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            className="border p-2 rounded"
+                            value={Password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </>
+
+                )
+            }
+            {
+                clickedForgotPassword ? (
+                    <><button onClick={() => handleSubmit("send-otp")} type="submit" className="bg-blue-600 text-white p-2 rounded hover:cursor-pointer hover:scale-90">
+                        Send Otp
+                    </button>
+                        <span className='flex flex-row gap-2 '><ArrowBigLeft />Back</span>
+                    </>
+                ) : (
+                    <button onClick={() => handleSubmit("login")} type="submit" className="bg-blue-600 text-white p-2 rounded hover:cursor-pointer hover:scale-90">
+                        Sign In
+                    </button>
+                )
+            }
+            {
+                !clickedForgotPassword && (
+                    <p className='hover:cursor-pointer hover:text-blue-400' onClick={handleForgotPassword}>Forgot Password?</p>
+                )
+            }
             <p className="mt-4 text-sm">
-                Don&apos;t have an account? <Link href="/auth/signup" className="text-blue-500 underline">Sign Up</Link>
+                Don&apos;t have an account? <Link href="/auth/signUp" className="text-blue-500 underline">Sign Up</Link>
             </p>
         </div>
 
