@@ -118,4 +118,18 @@ export const authService = {
             throw error
         }
     },
+
+    async getUser() {
+        try {
+            const response = await axios.get(`${baseUrl}/auth/user`, {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            })
+            const { user } = response.data
+            return user
+        } catch (error) {
+            throw error
+        }
+    }
 }

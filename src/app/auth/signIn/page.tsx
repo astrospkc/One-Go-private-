@@ -12,7 +12,7 @@ export default function SignInPage() {
     const [Email, setEmail] = useState("")
     const [Password, setPassword] = useState("")
     const [clickedForgotPassword, setClickedForgotPassword] = useState(false)
-    const { user, isAuthenticated, setUser, setIsAuthenticated, setUserLoading } = useAuthStore();
+    const { user, isAuthenticated, userLoading, setUser, setIsAuthenticated, setUserLoading } = useAuthStore();
     const router = useRouter()
     const handleSubmit = async (type: string) => {
         if (type == "send-otp") {
@@ -33,8 +33,8 @@ export default function SignInPage() {
                 setUser(loginRes.user)
                 localStorage.setItem("token", loginRes.token)
                 setIsAuthenticated(true)
-                setUserLoading(false)
                 router.push("/dashboard")
+                setUserLoading(false)
             } catch (error) {
                 console.error(error)
             } finally {
@@ -46,6 +46,7 @@ export default function SignInPage() {
     const handleForgotPassword = () => {
         setClickedForgotPassword(prev => !prev)
     }
+    console.log("user loading:", userLoading)
     return (
 
         <div className="w-full flex flex-col gap-2 font-serif relative z-10 max-w-md p-8  shadow-lg shadow-violet-300 justify-center rounded-3xl items-center">
@@ -91,9 +92,17 @@ export default function SignInPage() {
                         <span className='flex flex-row gap-2 '><ArrowBigLeft />Back</span>
                     </>
                 ) : (
-                    <button onClick={() => handleSubmit("login")} type="submit" className="bg-blue-600 text-white p-2 rounded hover:cursor-pointer hover:scale-90">
-                        Sign In
-                    </button>
+                    <>
+                        {
+                            userLoading &&
+                            <div>Loading...</div>
+                        }
+                        <button disabled={userLoading} onClick={() => handleSubmit("login")} type="submit" className="bg-blue-600 text-white p-2 rounded hover:cursor-pointer hover:scale-90">
+                            Sign In
+                        </button>
+                    </>
+
+
                 )
             }
             {
@@ -104,7 +113,7 @@ export default function SignInPage() {
             <p className="mt-4 text-sm">
                 Don&apos;t have an account? <Link href="/auth/signUp" className="text-blue-500 underline">Sign Up</Link>
             </p>
-        </div>
+        </div >
 
     );
 }

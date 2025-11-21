@@ -43,9 +43,11 @@ export type ModalContextType = {
 
 export type SingleCollection = {
     id: string,
+    user_id: string,
     title: string,
-    description: string
-    time: string
+    description: string,
+    created_at: string,
+    updated_at: string
 }
 
 export type CollectionContextType = {

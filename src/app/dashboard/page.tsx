@@ -11,6 +11,7 @@ import useProjectStore from "@/store/projectStore"
 import { useAuthStore } from "@/store/authStore"
 import axios from "axios"
 import { useQuery } from "@tanstack/react-query"
+import { collectionService } from "@/services/collectionService"
 
 
 const Dashboard = () => {
@@ -18,12 +19,8 @@ const Dashboard = () => {
     const { user, isAuthenticated } = useAuthStore()
     console.log("user:", user)
     const [isOpen, setIsOpen] = useState(false);
-    const { open, setOpen } = useContext(ModalContextapp)
-    const handleClick = () => {
-        setOpen(!open)
-    }
-    const { collection, setCollection, collectionLoading } = useCollectionStore()
-    const { project, setProject, projectLoading } = useProjectStore()
+    const { collection, setCollection } = useCollectionStore()
+    const { project, setProject } = useProjectStore()
     const [sectionSelected, setSectionSelected] = useState('collection')
     console.log(isOpen, sectionSelected)
     // const {user} = props 
@@ -78,13 +75,6 @@ const Dashboard = () => {
         }
     }, [projectData]);
 
-
-    console.log("collections_data: ", collection)
-    console.log("projects_data: ", project)
-
-
-
-
     const totalCollection = collection ? collection.length : []
     const totalProjects = project ? project.length : []
     const router = useRouter()
@@ -111,9 +101,18 @@ const Dashboard = () => {
         setIsOpen(true)
     }
 
-    if (!isAuthenticated) {
-        router.push("/auth/signIn")
+    const handleClick = () => {
+        setIsOpen(!isOpen)
     }
+
+    const handleClose = () => {
+        setIsOpen(false)
+    }
+
+
+    // if (!isAuthenticated) {
+    //     router.push("/auth/signIn")
+    // }
 
 
     return (
@@ -127,10 +126,8 @@ const Dashboard = () => {
                 <h1 className="text-5xl font-semibold">Hello, {user?.name.toUpperCase()}</h1>
                 <p className="my-3">Its been a while</p>
             </div>
-
             <div className="flex flex-row justify-center items-center w-full h-full">
                 <div className="flex flex-col gap-4   m-auto">
-
                     <h1 className=" flex text-violet-600 text-4xl md:text-7xl font-bold text">
                         Manage your content in
                     </h1>
@@ -140,9 +137,7 @@ const Dashboard = () => {
                     <div className="rounded-3xl bg-white/5 backdrop-blur-lg p-6 border border-white/10 text-white">
                         <h2 className="text-xl font-semibold mb-2">Manage all your<span className="text-white/70"> content and APIs in one place</span></h2>
                         <p className="text-white/60 mb-4">Create, store, and organize your projects, links, media, and custom data using One-Go. Instantly connect everything to your frontend via powerful APIs — no backend needed.</p>
-
                     </div>
-
                     <div className="grid grid-cols-2 gap-4">
                         <div
                             onClick={handleSection}
@@ -167,16 +162,11 @@ const Dashboard = () => {
                         </div>
                         <div
                             className={cn(baseClass)}>
-
-
                             <span className="font-bold text-center "> Total Media </span>
                             <span>43</span>
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
             <div className=" text-white mt-10 ">
                 <h2 className="text-xl font-semibold mb-4">Get started</h2>
@@ -197,7 +187,6 @@ const Dashboard = () => {
                             /> */}
                         </div>
                     </div>
-
                     {/* Studios Card */}
                     <div className="bg-gray-900 border border-gray-700 rounded-xl p-6 flex flex-col justify-between gap-4 hover:border-violet-500 transition">
                         <div>
@@ -216,24 +205,93 @@ const Dashboard = () => {
                             <button onClick={handleClick} className="hover:cursor-pointer bg-white text-black px-4 py-2 rounded-lg font-semibold hover:bg-violet-200 transition">
                                 Create New Collection
                             </button>
+                            <CreateCollectionModal open={isOpen} onClose={handleClose} />
                             <Link href={"/dashboard/collections"}>
                                 <button className="bg-gray-800 w-full text-white px-4 py-2 rounded-lg border border-gray-600 hover:border-violet-500 transition">
                                     See All Collections
                                 </button>
                             </Link>
-
-                            {/* <MyButton pathname="/dashboard/collections"
-                                classname="bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-600 hover:border-violet-500 transition">
-                                Create new Collection
-                            </MyButton> */}
                         </div>
                     </div>
                 </div>
             </div>
-
-
         </div>
     )
 }
 
 export default Dashboard
+
+
+function CreateCollectionModal({ open, onClose }: { open: boolean, onClose: () => void }) {
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const { collection, setCollection } = useCollectionStore()
+    if (!open) return null;
+    const router = useRouter()
+    const handleCreate = async () => {
+        const payload = {
+            Title: title,
+            Description: description
+        }
+        const createdCollection = await collectionService.createCollection(payload)
+        setCollection([...collection, createdCollection])
+        onClose()
+        router.push("/dashboard/collections")
+    }
+
+    console.log("title, description: ", title, description)
+
+    return (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+
+            <div className="bg-white/10 backdrop-blur-xl border border-white/20 
+                            shadow-lg rounded-2xl p-8 w-full max-w-md text-white">
+
+                {/* Modal Header */}
+                <h2 className="text-2xl font-bold mb-4 text-violet-400">
+                    Create New Collection
+                </h2>
+
+                {/* Input: Name */}
+                <label className="block mb-3 text-sm text-gray-300">Collection Name</label>
+                <input
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Enter collection name"
+                    className="w-full px-4 py-2 mb-4 bg-black/30 border border-white/20 rounded-lg 
+                               focus:outline-none focus:ring-2 focus:ring-violet-500"
+                />
+
+                {/* Input: Description */}
+                <label className="block mb-3 text-sm text-gray-300">Description</label>
+                <textarea
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder="Enter description"
+                    className="w-full px-4 py-2 mb-4 bg-black/30 border border-white/20 rounded-lg 
+                               h-24 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                />
+
+                {/* Buttons */}
+                <div className="flex justify-end gap-4 mt-6">
+                    <button
+                        onClick={onClose}
+                        className="px-4 py-2 rounded-lg border border-gray-500 
+                                   text-gray-300 hover:bg-gray-700/40 transition">
+                        Cancel
+                    </button>
+
+                    <button
+                        onClick={handleCreate}
+                        className="px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-700 
+                                   text-white font-semibold shadow-md transition">
+                        Create Collection
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    );
+}
+
