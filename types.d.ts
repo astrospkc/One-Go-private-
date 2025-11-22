@@ -71,8 +71,8 @@ export type Project = {
     livedemolink?: string,
     blogLink?: string,
     teamMembers?: string,
-    time?: Date | string,
-    updated_time?: Date | string
+    created_at?: Date | string,
+    updated_at?: Date | string
 }
 
 export type ProjectContextType = {
