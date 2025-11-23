@@ -10,12 +10,47 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
     const [description, setDescription] = useState("")
     const [tags, setTags] = useState("")
     const [selectedFile, setSelectedFile] = useState<FileState>([])
+    const [selectedFileNames, setSelectedFileNames] = useState<string[]>([])
     const [videoDemolink, setVideoDemoLink] = useState("")
     const [githublink, setGithubLink] = useState("")
     const [liveUrl, setLiveUrl] = useState("")
     const [blogLink, setBlogLink] = useState("")
     const [teamMembers, setTeamMembers] = useState("")
+    const [fileUrls, setFileUrls] = useState<string[]>([])
 
+    const handleFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        try {
+            console.log(e.target.files)
+            setSelectedFile(e.target.files ? Array.from(e.target.files) : [])
+            setSelectedFileNames(e.target.files ? Array.from(e.target.files).map((file) => file.name.toString()) : [])
+
+        } catch (error) {
+            console.error("Error fetching presigned urls of files ", error)
+        }
+    }
+    const handleAddFileUrls = async () => {
+        try {
+            console.log("selected file names: ", selectedFileNames)
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/presignedUrl`, {
+                fileKey: selectedFileNames
+            },
+                {
+                    headers: {
+                        // 'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
+
+            )
+            console.log("response: ", res, res.data)
+            const urls = await res.data
+            console.log(urls)
+            setFileUrls(urls)
+        } catch (error) {
+            console.error("Error fetching presigned urls of files ", error)
+
+        }
+    }
     const handleSubmit = async () => {
         try {
             console.log("submitting the form")
@@ -64,21 +99,21 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
 
         setSettingClicked(!settingClicked)
     }
-
+    console.log("selected file urls: ", fileUrls)
     console.log("selected files: ", selectedFile)
     return (<>
         <div className='bg-black w-full h-screen justify-center items-center p-4 '>
             <Template />
             <h1 className='text-blue-900'>For developer</h1>
             <h1 className='text-3xl text-white'> You&apos;re just few steps away from uploading projects. </h1>
-            <div className='w-full justify-center items-center m-auto my-5'>
+            {/* <div className='w-full justify-center items-center m-auto my-5'>
                 <button
                     onClick={handleSettingProject}
                     style={{
                         background: 'radial-gradient(circle at center, #675575, #5D3871, #090417)',
                     }}
                     className='p-4  border-2 border-slate-400/20 w-fit rounded-2xl cursor-pointer hover:scale-105 transition-transform hover:shadow-md hover:shadow-yellow-400/70 hover:bg-yellow-50'>setting up your project </button>
-                {/* project input fields */}
+                
                 {
                     settingClicked &&
                     <div className=' flex flex-col gap-4 w-1/2 p-4 m-2  rounded-2xl h-full '>
@@ -90,9 +125,9 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
                         </div>
                         <div className='shadow-sm shadow-slate-800 p-4 rounded-2xl'>
                             <h1>Content Uploads:</h1>
-                            <input multiple onChange={(e) => setSelectedFile(e.target.files ? Array.from(e.target.files) : [])} type="file" placeholder='File Upload' className='w-full rounded-2xl p-2 my-2 border-2 border-slate-800' />
-                            {/* <input type="file" placeholder='Image Upload' className='w-full rounded-2xl p-2 my-2 border-2 border-slate-800' /> */}
-                            {/* Show Uploaded File List */}
+                            <input multiple onChange={handleFiles} type="file" placeholder='File Upload' className='w-full rounded-2xl p-2 my-2 border-2 border-slate-800' />
+                            
+                            
                             {selectedFile && selectedFile.length > 0 && (
                                 <div className="mt-3 p-3 border border-slate-300/30 rounded-lg bg-slate-600/10">
                                     <h3 className="font-semibold text-white mb-2">
@@ -133,7 +168,9 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
                     </div>
                 }
 
-            </div>
+            </div> */}
+            <input type="file" multiple onChange={handleFiles} />
+            <button onClick={handleAddFileUrls}>Add File Urls</button>
         </div>
 
     </>
