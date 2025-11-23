@@ -12,6 +12,7 @@ import { useAuthStore } from "@/store/authStore"
 import axios from "axios"
 import { useQuery } from "@tanstack/react-query"
 import { collectionService } from "@/services/collectionService"
+import { error } from "console"
 
 
 const Dashboard = () => {
@@ -52,19 +53,20 @@ const Dashboard = () => {
     })
     console.log("collection data, project data: ", collectionData, projectData)
     if (collectionError) {
-        console.log(collectionError)
-        alert("Error fetching collections")
+        console.error(collectionError)
+        throw collectionError
+        // alert("Error fetching collections")
     }
 
     if (projectError) {
-        console.log(projectError)
-        alert("Error fetching projects")
+        console.error(projectError)
+        throw projectError
+        // alert("Error fetching projects")
     }
 
     useEffect(() => {
         if (collectionData) {
             setCollection(collectionData);
-
         }
 
     }, [collectionData]);

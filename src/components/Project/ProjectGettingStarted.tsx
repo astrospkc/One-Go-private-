@@ -1,5 +1,7 @@
 "use client"
+import projectService from '@/services/projectService';
 import axios from 'axios'
+import { stringify } from 'querystring';
 import React, { useState } from 'react'
 type ProjectGettingStartedProps = {
     col_id: string;
@@ -17,12 +19,22 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
     const [blogLink, setBlogLink] = useState("")
     const [teamMembers, setTeamMembers] = useState("")
     const [fileUrls, setFileUrls] = useState<string[]>([])
+    const [uploads, setUploads] = useState<{ file: File; name: string; presignedUrl?: string }[]>([])
+
 
     const handleFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
         try {
-            console.log(e.target.files)
-            setSelectedFile(e.target.files ? Array.from(e.target.files) : [])
-            setSelectedFileNames(e.target.files ? Array.from(e.target.files).map((file) => file.name.toString()) : [])
+            const files = e.target.files ? Array.from(e.target.files) : [];
+            setSelectedFile(files)
+            console.log("files: ", files)
+            const uploadFiles = files.map((f) => ({
+                file: f,
+                name: f.name
+            }))
+
+            setUploads(uploadFiles)
+            console.log("uploads: ", uploads)
+            setSelectedFileNames(files.map((f) => f.name))
 
         } catch (error) {
             console.error("Error fetching presigned urls of files ", error)
@@ -31,64 +43,64 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
     const handleAddFileUrls = async () => {
         try {
             console.log("selected file names: ", selectedFileNames)
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/presignedUrl`, {
-                fileKey: selectedFileNames
-            },
-                {
-                    headers: {
-                        // 'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
-                }
+            const urls = await projectService.getPresignedUrls(selectedFileNames)
 
-            )
-            console.log("response: ", res, res.data)
-            const urls = await res.data
-            console.log(urls)
-            setFileUrls(urls)
+            const updateUploads = uploads.map((item, index) => {
+                console.log("item: ", item)
+                console.log("urls[index]: ", index, urls.urls[index])
+                return ({
+                    ...item,
+                    presignedUrl: urls.urls[index]
+                })
+            })
+            console.log("updateUploads: ", updateUploads)
+            setUploads(updateUploads)
+
+            for (let item of updateUploads) {
+                console.log("items")
+                console.log(item)
+                if (!item.presignedUrl) continue;
+                await axios.put(item.presignedUrl, item.file, {
+                    headers: {
+                        "Content-Type": item.file.type,
+
+                    }
+                })
+            }
         } catch (error) {
             console.error("Error fetching presigned urls of files ", error)
-
         }
     }
+
+
     const handleSubmit = async () => {
         try {
+            console.log("uploads, ", uploads)
+
             console.log("submitting the form")
-            const formData = new FormData();
+            const body = {
+                title,
+                description,
+                tags,
+                fileUpload: uploads.map(u => u.presignedUrl).filter((url): url is string => url !== undefined),
+                githublink,
+                demolink: videoDemolink,
+                liveUrl,
+                blogLink,
+                teamMembers,
+                collection_id: col_id
+            }
 
-            formData.append("title", title);
-            formData.append("description", description);
-            formData.append("tags", JSON.stringify(tags.split(",")));
-            formData.append("githubLink", githublink);
-            formData.append("demoLink", videoDemolink);
-            formData.append("liveUrl", liveUrl)
-            formData.append("blogLink", blogLink)
-            formData.append("teamMembers", JSON.stringify(teamMembers.split(",")))
-
-            // multiple files
-            selectedFile?.forEach((file) => {
-                formData.append("files", file);
-            });
-
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/createProject/${col_id}`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-
-                },
-            })
-
-            const data = await res.data
-            console.log(data)
+            const res = await projectService.createProject(col_id, body)
+            const { data, success } = res
             alert("project created successfully")
 
         } catch (error) {
             console.error("Error creating project:", error);
             alert("Error creating project")
         }
-
-
     }
+
 
     const [settingClicked, setSettingClicked] = useState(false)
     const handleSettingProject = () => {
@@ -99,21 +111,20 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
 
         setSettingClicked(!settingClicked)
     }
-    console.log("selected file urls: ", fileUrls)
-    console.log("selected files: ", selectedFile)
+
     return (<>
         <div className='bg-black w-full h-screen justify-center items-center p-4 '>
             <Template />
             <h1 className='text-blue-900'>For developer</h1>
             <h1 className='text-3xl text-white'> You&apos;re just few steps away from uploading projects. </h1>
-            {/* <div className='w-full justify-center items-center m-auto my-5'>
+            <div className='w-full justify-center items-center m-auto my-5'>
                 <button
                     onClick={handleSettingProject}
                     style={{
                         background: 'radial-gradient(circle at center, #675575, #5D3871, #090417)',
                     }}
                     className='p-4  border-2 border-slate-400/20 w-fit rounded-2xl cursor-pointer hover:scale-105 transition-transform hover:shadow-md hover:shadow-yellow-400/70 hover:bg-yellow-50'>setting up your project </button>
-                
+
                 {
                     settingClicked &&
                     <div className=' flex flex-col gap-4 w-1/2 p-4 m-2  rounded-2xl h-full '>
@@ -126,8 +137,8 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
                         <div className='shadow-sm shadow-slate-800 p-4 rounded-2xl'>
                             <h1>Content Uploads:</h1>
                             <input multiple onChange={handleFiles} type="file" placeholder='File Upload' className='w-full rounded-2xl p-2 my-2 border-2 border-slate-800' />
-                            
-                            
+
+
                             {selectedFile && selectedFile.length > 0 && (
                                 <div className="mt-3 p-3 border border-slate-300/30 rounded-lg bg-slate-600/10">
                                     <h3 className="font-semibold text-white mb-2">
@@ -148,6 +159,7 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
                                     </ul>
                                 </div>
                             )}
+                            <button onClick={handleAddFileUrls} className='bg-[#5D3871] p-2 rounded-2xl hover:bg-[#846794] hover:scale-95 cursor-pointer'>Add File Urls</button>
                             <input onChange={(e) => setVideoDemoLink(e.target.value)} type="text" placeholder='Video/demo link' className='w-full rounded-2xl p-2 my-2 border-2 border-slate-800' />
                             <input onChange={(e) => setGithubLink(e.target.value)} type="text" placeholder='Github/Repo Link' className='w-full rounded-2xl p-2 my-2 border-2 border-slate-800' />
                             <input onChange={(e) => setLiveUrl(e.target.value)} type="text" placeholder='Live Project Url' className='w-full rounded-2xl p-2 my-2 border-2 border-slate-800' />
@@ -168,9 +180,9 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
                     </div>
                 }
 
-            </div> */}
-            <input type="file" multiple onChange={handleFiles} />
-            <button onClick={handleAddFileUrls}>Add File Urls</button>
+            </div>
+            {/* <input type="file" multiple onChange={handleFiles} />
+            <button onClick={handleAddFileUrls}>Add File Urls</button> */}
         </div>
 
     </>
