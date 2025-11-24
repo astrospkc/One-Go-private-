@@ -13,6 +13,7 @@ import axios from "axios"
 import { useQuery } from "@tanstack/react-query"
 import { collectionService } from "@/services/collectionService"
 import { error } from "console"
+import projectService from "@/services/projectService"
 
 
 const Dashboard = () => {
@@ -29,26 +30,16 @@ const Dashboard = () => {
     const { error: collectionError, data: collectionData, isPending: isCollectionPending } = useQuery({
         queryKey: ["collectionList"],
         queryFn: async () => {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/collection/getAllCollection`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            })
-            return await response.data
+            const response = await collectionService.getAllCollection()
+            return response.collections
         }
     })
 
     const { error: projectError, data: projectData, isPending: isProjectPending } = useQuery({
         queryKey: ["projectList"],
         queryFn: async () => {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/getAllProject`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            })
-            return await response.data
+            const response = await projectService.getAllProjects()
+            return response.data
         }
     })
     console.log("collection data, project data: ", collectionData, projectData)

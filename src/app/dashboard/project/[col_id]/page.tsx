@@ -14,6 +14,7 @@ import ProjectPlan from '@/components/Project/ProjectPlan';
 import ProjectGettingStarted from '@/components/Project/ProjectGettingStarted';
 import { useAuthStore } from '@/store/authStore';
 import useProjectStore from '@/store/projectStore';
+import projectService from '@/services/projectService';
 
 
 type TopNavigationProps = {
@@ -99,13 +100,9 @@ const Project = () => {
         const fetchProjects = async () => {
             try {
                 // const token = localStorage.getItem('token')
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/readProject/${col_id}`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
-                })
-                const data = response.data
+                const response = await projectService.getAllProjectOfCollectionId(col_id as string)
+                const { data, code } = response
+                if (code !== 200) return
                 setProject(data)
             } catch (error) {
                 console.error("Error fetching projects:", error);
@@ -113,7 +110,6 @@ const Project = () => {
         }
         fetchProjects()
     }, [setProject, col_id])
-
 
 
     return (

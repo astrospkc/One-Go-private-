@@ -71,13 +71,13 @@ export type Project = {
     livedemolink?: string,
     blogLink?: string,
     teamMembers?: string,
-    created_at?: string,
-    updated_at?: string
+    created_at: string,
+    updated_at: string
 }
 
 export type ProjectContextType = {
-    project: Project[] | [],
-    setProject: (project: Project[]) => void,
+    project: Project[] | null,
+    setProject: (project: Project[] | null) => void,
     projectLoading: boolean,
     setProjectLoading: (value: boolean) => void
 }

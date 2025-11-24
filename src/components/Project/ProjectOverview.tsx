@@ -41,8 +41,8 @@ const ProjectList = ({ col_id }: { col_id: string }) => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {project &&
                     project.map((p: Project, index: number) => {
-                        console.log(typeof p.time)
-                        const date = new Date(p.time)
+                        console.log(typeof p.created_at)
+                        const date = new Date(p.created_at)
                         const formattedDate = date.toLocaleString('default', { month: 'long', day: 'numeric', year: 'numeric' });
                         const tagsArr = p.tags?.split(",")
                         return (
