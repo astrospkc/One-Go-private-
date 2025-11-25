@@ -11,7 +11,7 @@ export type ProjectPayload = {
     fileUpload: string[],
     githublink: string
     demolink: string,
-    liveUrl: string,
+    liveUrl?: string,
     blogLink: string,
     teamMembers: string,
     collection_id: string,
@@ -21,11 +21,11 @@ export type ProjectPayload = {
 
 }
 type ProjectResponse = {
-    data: ProjectPayload | null,
+    data: Project | null,
     success: boolean
 }
 type ProjectReadResponse = {
-    data: ProjectPayload | null,
+    data: Project | null,
     code: number
 }
 
@@ -72,9 +72,10 @@ const projectService = {
                 },
             })
 
-            const data = await res.data
+            const p_data = await res.data
+            console.log("project data: ", p_data)
             return {
-                data,
+                data: p_data.data,
                 success: true
             }
         } catch (error) {
@@ -160,6 +161,25 @@ const projectService = {
                 data: null,
                 code: 500
             }
+        }
+    },
+
+    async deleteFile(project_id: string, file: string) {
+        try {
+            const res = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/deleteFile/${project_id}?key=${file}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+            })
+            const data = await res.data
+            console.log("file deleted: ", data)
+            return {
+                data,
+                code: res.data.code
+            }
+        } catch (error) {
+            console.log("Error deleting file", error)
         }
     }
 }

@@ -1,8 +1,10 @@
 "use client"
 import projectService from '@/services/projectService';
+import useProjectStore from '@/store/projectStore';
 import axios from 'axios'
 import { stringify } from 'querystring';
 import React, { useState } from 'react'
+import { Project } from '../../../types';
 type ProjectGettingStartedProps = {
     col_id: string;
 };
@@ -19,8 +21,15 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
     const [blogLink, setBlogLink] = useState("")
     const [teamMembers, setTeamMembers] = useState("")
     const [fileUrls, setFileUrls] = useState<string[]>([])
-    const [uploads, setUploads] = useState<{ file: File; name: string; presignedUrl?: string }[]>([])
+    const [uploads, setUploads] = useState<{ file: File; name: string; presignedUrl?: string; nameKey?: string }[]>([])
+    const { setProject, project } = useProjectStore()
 
+    function extractObjectKey(url: string) {
+        const urlObj = new URL(url);
+        return urlObj.pathname.startsWith("/")
+            ? urlObj.pathname.substring(1) // remove leading slash
+            : urlObj.pathname;
+    }
 
     const handleFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
         try {
@@ -47,10 +56,12 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
 
             const updateUploads = uploads.map((item, index) => {
                 console.log("item: ", item)
+                const key = extractObjectKey(urls.urls[index])
                 console.log("urls[index]: ", index, urls.urls[index])
                 return ({
                     ...item,
-                    presignedUrl: urls.urls[index]
+                    presignedUrl: urls.urls[index],
+                    nameKey: key
                 })
             })
             console.log("updateUploads: ", updateUploads)
@@ -72,7 +83,6 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
         }
     }
 
-
     const handleSubmit = async () => {
         try {
             console.log("uploads, ", uploads)
@@ -82,7 +92,7 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
                 title,
                 description,
                 tags,
-                fileUpload: uploads.map(u => u.presignedUrl).filter((url): url is string => url !== undefined),
+                fileUpload: uploads.map(u => u.nameKey).filter((url): url is string => url !== undefined),
                 githublink,
                 demolink: videoDemolink,
                 liveUrl,
@@ -93,6 +103,12 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
 
             const res = await projectService.createProject(col_id, body)
             const { data, success } = res
+
+            setProject(prev => {
+                if (prev) return [...prev, data as Project];
+                return [data as Project];
+            });
+
             alert("project created successfully")
 
         } catch (error) {
@@ -100,7 +116,6 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
             alert("Error creating project")
         }
     }
-
 
     const [settingClicked, setSettingClicked] = useState(false)
     const handleSettingProject = () => {
@@ -111,6 +126,9 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
 
         setSettingClicked(!settingClicked)
     }
+
+    console.log("projects: ", project)
+
 
     return (<>
         <div className='bg-black w-full h-screen justify-center items-center p-4 '>

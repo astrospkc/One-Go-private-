@@ -15,6 +15,8 @@ import ProjectGettingStarted from '@/components/Project/ProjectGettingStarted';
 import { useAuthStore } from '@/store/authStore';
 import useProjectStore from '@/store/projectStore';
 import projectService from '@/services/projectService';
+import { collectionService } from '@/services/collectionService';
+import { SingleCollection } from '../../../../../types';
 
 
 type TopNavigationProps = {
@@ -94,6 +96,23 @@ const Project = () => {
     const title = searchParams.get('title')
     console.log("title: ", title)
     const { setProject } = useProjectStore()
+    const [collectionData, setCollectionData] = useState<SingleCollection | null>(null)
+
+
+    // get the collection with id
+    useEffect(() => {
+        const fetchCollection = async () => {
+            try {
+                const response = await collectionService.getCollectionById(col_id as string)
+                const { collection, code } = response
+                if (code !== 200) return
+                setCollectionData(collection)
+            } catch (error) {
+                console.error("Error fetching collection:", error);
+            }
+        }
+        fetchCollection()
+    }, [col_id])
 
     // get all the projects
     useEffect(() => {
@@ -121,54 +140,57 @@ const Project = () => {
                 className='flex flex-col p-4 relative h-screen  '>
 
                 <div className='text-white h-full  flex flex-col  font-serif '>
-
-                    <div className="bg-[#0f0f12] text-white p-6 rounded-xl w-full max-w-full shadow-md">
-                        <div className="flex items-start gap-6">
-                            {/* Logo Circle */}
-                            <div className="w-16 h-16 rounded-md bg-yellow-600 flex items-center justify-center text-3xl font-bold text-black">
-                                {title?.slice(0, 1)}
-                            </div>
-
-                            {/* Text Info */}
-                            <div className="flex-1">
-                                <h1 className="text-lg text-gray-300">{user?.name.toUpperCase()}</h1>
-                                <h2 className="text-2xl font-semibold text-white">{title}</h2>
-
-                                <div className="flex flex-wrap gap-4 mt-4 text-sm">
-                                    {/* Plan */}
-                                    <div className="flex gap-1 items-center">
-                                        <span className="bg-purple-700 text-white px-2 py-1 rounded-full text-xs font-medium">Growth Trial</span>
+                    {collectionData && (
+                        <>
+                            <div className="bg-[#0f0f12] text-white p-6 rounded-xl w-full max-w-full shadow-md">
+                                <div className="flex items-start gap-6">
+                                    {/* Logo Circle */}
+                                    <div className="w-16 h-16 rounded-md bg-yellow-600 flex items-center justify-center text-3xl font-bold text-black">
+                                        {collectionData?.title?.slice(0, 1)}
                                     </div>
 
-                                    {/* Status */}
-                                    <div className="flex gap-1 items-center">
-                                        <span className="bg-green-700 text-white px-2 py-1 rounded-full text-xs font-medium">Active</span>
-                                    </div>
+                                    {/* Text Info */}
+                                    <div className="flex-1">
+                                        <h1 className="text-lg text-gray-300">{user?.name.toUpperCase()}</h1>
+                                        <h2 className="text-2xl font-semibold text-white">{collectionData.title}</h2>
 
-                                    {/* Project ID */}
-                                    <div className="flex gap-1 items-center text-gray-400">
-                                        <span className="font-medium text-white">PROJECT ID</span>:
-                                        <span className="font-mono">4s3wn7gi</span>
-                                        <button title="Copy Project ID">
-                                            📋
-                                        </button>
-                                    </div>
+                                        <div className="flex flex-wrap gap-4 mt-4 text-sm">
+                                            {/* Plan */}
+                                            <div className="flex gap-1 items-center">
+                                                <span className="bg-purple-700 text-white px-2 py-1 rounded-full text-xs font-medium">Growth Trial</span>
+                                            </div>
 
-                                    {/* Organization ID */}
-                                    <div className="flex gap-1 items-center text-gray-400">
-                                        <span className="font-medium text-white">ORGANIZATION ID</span>:
-                                        <span className="font-mono">opCMmUbeG</span>
-                                        <button title="Copy Org ID">
-                                            📋
-                                        </button>
+                                            {/* Status */}
+                                            <div className="flex gap-1 items-center">
+                                                <span className="bg-green-700 text-white px-2 py-1 rounded-full text-xs font-medium">Active</span>
+                                            </div>
+
+                                            {/* Project ID */}
+                                            <div className="flex gap-1 items-center text-gray-400">
+                                                <span className="font-medium text-white">Collection ID</span>:
+                                                <span className="font-mono">{collectionData.id}</span>
+                                                <button title="Copy Project ID">
+                                                    📋
+                                                </button>
+                                            </div>
+
+                                            {/* Organization ID */}
+                                            {/* <div className="flex gap-1 items-center text-gray-400">
+                                                <span className="font-medium text-white">ORGANIZATION ID</span>:
+                                                <span className="font-mono">opCMmUbeG</span>
+                                                <button title="Copy Org ID">
+                                                    📋
+                                                </button>
+                                            </div> */}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <TopNavigation col_id={col_id as string} />
-                    {/* <ProjectSettings /> */}
+                            <TopNavigation col_id={col_id as string} />
+                        </>
 
+
+                    )}
                 </div>
             </div >
 

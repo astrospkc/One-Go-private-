@@ -1,4 +1,5 @@
 import axios from "axios"
+import { SingleCollection } from "../../types"
 
 
 
@@ -20,12 +21,17 @@ type GetAllCollectionResponse = {
     code: number
 }
 
+type GetCollectionByIdResponse = {
+    collection: SingleCollection,
+    code: number
+}
+
 export const collectionService = {
     async createCollection(payload: CollectionPayload): Promise<CreateCollectionResponse> {
         try {
 
             const { Title, Description } = payload
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/collection/createCollection`,
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/collection`,
                 {
                     Title,
                     Description,
@@ -54,6 +60,24 @@ export const collectionService = {
             const col_res = await response.data
             return {
                 collections: col_res.collections,
+                code: col_res.code
+            }
+        } catch (error) {
+            throw error as Error
+        }
+    },
+
+    async getCollectionById(col_id: string): Promise<GetCollectionByIdResponse> {
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/collection/${col_id}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            const col_res = await response.data
+            return {
+                collection: col_res.collection,
                 code: col_res.code
             }
         } catch (error) {

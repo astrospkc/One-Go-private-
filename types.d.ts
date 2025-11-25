@@ -64,7 +64,7 @@ export type Project = {
     title: string,
     description?: string,
     tags?: string,
-    fileUpload?: string
+    fileUpload?: string[]
     thumbnail?: string,
     githublink?: string,
     demolink?: string
@@ -77,7 +77,13 @@ export type Project = {
 
 export type ProjectContextType = {
     project: Project[] | null,
-    setProject: (project: Project[] | null) => void,
+    setProject: (
+        project:
+            | Project[]
+            | null
+            | ((prev: Project[] | null) => Project[] | null)
+    ) => void;
+
     projectLoading: boolean,
     setProjectLoading: (value: boolean) => void
 }
