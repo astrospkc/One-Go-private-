@@ -45,6 +45,8 @@ const ProjectShowCase = () => {
         tagsArr = projectData.tags.split(",")
     }
 
+
+
     const handleDeleteFile = async (id: string, file: string) => {
         console.log("delete file")
         try {
@@ -52,7 +54,7 @@ const ProjectShowCase = () => {
             const { data, code } = res
             console.log("file deleted: ", data)
             // refetch the projectData with the project id  and update the projectData state
-
+            fetchProject()
         } catch (error) {
             console.log("Error deleting file", error)
         }
