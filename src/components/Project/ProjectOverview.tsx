@@ -1,8 +1,8 @@
 "use client"
-import React, { use, useEffect, useState } from 'react'
+
 import ProjectUsage from './ProjectUsage'
 import ProjectActivity from './ProjectActivity'
-import axios from 'axios'
+
 import Link from 'next/link'
 import { Project } from "../../../types"
 import useProjectStore from '@/store/projectStore'

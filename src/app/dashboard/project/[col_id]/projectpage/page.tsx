@@ -19,8 +19,8 @@ const ProjectsPage = () => {
     }
 
     let projectCreatedTime = ""
-    if (projectDetails && projectDetails.time) {
-        const date = new Date(projectDetails.time)
+    if (projectDetails && projectDetails.created_at) {
+        const date = new Date(projectDetails.created_at)
         const month = date.toLocaleString('default', { month: 'long' });
         const day = date.getDate();
         const year = date.getFullYear();

@@ -14,7 +14,7 @@ export default function SignUpPage() {
     const [ProfilePic, setProfilePic] = useState("")
     const [clickedSendOtp, setClickedSendOtp] = useState(false)
     const [Otp, setOtp] = useState("")
-    const { user, isAuthenticated, setUser, setIsAuthenticated, setUserLoading } = useAuthStore();
+    const { setUser, setIsAuthenticated, setUserLoading } = useAuthStore();
     const router = useRouter()
     const handleSubmit = async (type: string) => {
         if (type == "send-otp") {
@@ -28,7 +28,7 @@ export default function SignUpPage() {
         if (type == "verify-otp") {
             try {
                 const registerVerifyOtpRes = await authService.registerVerifyOtp(Email, Otp)
-                const { message, token, user, code } = registerVerifyOtpRes
+                const { token, user, code } = registerVerifyOtpRes
                 if (code == 200) {
                     setUser(user)
                     localStorage.setItem("token", token)

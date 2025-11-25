@@ -50,7 +50,7 @@ const TotalCollection = () => {
                                 <tr key={index} className="border-t ">
                                     <td className="px-4 py-2">{item.title}</td>
                                     {/* <td className="px-4 py-2">{item.projects?.length ?? 0}</td> */}
-                                    <td className="px-4 py-2">{new Date(item.time).toLocaleDateString()}</td>
+                                    <td className="px-4 py-2">{new Date(item.created_at).toLocaleDateString()}</td>
                                 </tr>
                             ))
                         ) : (

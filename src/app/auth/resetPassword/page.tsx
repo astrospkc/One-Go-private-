@@ -15,7 +15,7 @@ const ResetPassword = () => {
     const resetPassword = async (email: string, newPassword: string, otp: string) => {
         try {
             const resetPasswordRes = await authService.resetPassword(email, newPassword, confirmPassword, otp)
-            const { message, code } = resetPasswordRes
+            const { code } = resetPasswordRes
             if (code === 200) {
                 router.push("/auth/signIn")
             }

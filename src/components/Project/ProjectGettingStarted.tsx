@@ -2,7 +2,6 @@
 import projectService from '@/services/projectService';
 import useProjectStore from '@/store/projectStore';
 import axios from 'axios'
-import { stringify } from 'querystring';
 import React, { useState } from 'react'
 import { Project } from '../../../types';
 type ProjectGettingStartedProps = {
@@ -20,7 +19,6 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
     const [liveUrl, setLiveUrl] = useState("")
     const [blogLink, setBlogLink] = useState("")
     const [teamMembers, setTeamMembers] = useState("")
-    const [fileUrls, setFileUrls] = useState<string[]>([])
     const [uploads, setUploads] = useState<{ file: File; name: string; presignedUrl?: string; nameKey?: string }[]>([])
     const { setProject, project } = useProjectStore()
 
@@ -67,7 +65,7 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
             console.log("updateUploads: ", updateUploads)
             setUploads(updateUploads)
 
-            for (let item of updateUploads) {
+            for (const item of updateUploads) {
                 console.log("items")
                 console.log(item)
                 if (!item.presignedUrl) continue;
@@ -102,7 +100,7 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
             }
 
             const res = await projectService.createProject(col_id, body)
-            const { data, success } = res
+            const { data } = res
 
             setProject(prev => {
                 if (prev) return [...prev, data as Project];

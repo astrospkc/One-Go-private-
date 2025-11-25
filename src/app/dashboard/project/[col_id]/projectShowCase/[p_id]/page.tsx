@@ -5,8 +5,8 @@ import React, { useEffect, useState } from 'react'
 
 import { useParams } from 'next/navigation'
 
-import projectService, { ProjectPayload } from '@/services/projectService'
-import { Trash, Trash2Icon } from 'lucide-react'
+import projectService from '@/services/projectService'
+import { Trash2Icon } from 'lucide-react'
 import { Project } from '../../../../../../../types'
 
 
@@ -23,7 +23,7 @@ const ProjectShowCase = () => {
     const fetchProject = async () => {
         try {
             const res = await projectService.readProject(project_id ? project_id : "")
-            const { data, code } = res
+            const { data } = res
             setProjectData(data)
         } catch (error) {
             console.error("Error fetching project:", error);

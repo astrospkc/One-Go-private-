@@ -56,7 +56,7 @@ const TotalProject = () => {
                                 <tr key={index} className="border-t ">
                                     <td className="px-4 py-2">{item.title}</td>
                                     <td className="px-4 py-2">{item.collection_id}</td>
-                                    <td className="px-4 py-2">{new Date(item.time).toLocaleDateString()}</td>
+                                    <td className="px-4 py-2">{new Date(item.created_at).toLocaleDateString()}</td>
                                 </tr>
                             ))
                         ) : (

@@ -7,7 +7,7 @@
 // resetPassword
 
 import axios from "axios"
-import { User } from "../../types"
+
 import { baseUrl } from "./api"
 
 interface LoginResponse {
@@ -22,11 +22,11 @@ interface LoginResponse {
     }
 }
 
-interface RegisterSendOtpResponse {
-    message: string,
-    email: string,
-    otp: string
-}
+// interface RegisterSendOtpResponse {
+//     message: string,
+//     email: string,
+//     otp: string
+// }
 
 interface RegisterPayload {
     name: string,
@@ -81,8 +81,8 @@ export const authService = {
             if (payload.file) {
                 formData.append('file', payload.file)
             }
-            const response = await axios.post(`${baseUrl}/auth/register/send-otp`, formData)
-            const { message, email, otp } = response.data
+            await axios.post(`${baseUrl}/auth/register/send-otp`, formData)
+            // const { message, email } = response.data
             return
         } catch (error) {
             throw error

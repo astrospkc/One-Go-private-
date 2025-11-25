@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
-import { ArrowBigLeft, CornerDownLeft } from 'lucide-react';
+import { ArrowBigLeft } from 'lucide-react';
 import { authService } from '@/services/authService';
 
 
@@ -12,13 +12,13 @@ export default function SignInPage() {
     const [Email, setEmail] = useState("")
     const [Password, setPassword] = useState("")
     const [clickedForgotPassword, setClickedForgotPassword] = useState(false)
-    const { user, isAuthenticated, userLoading, setUser, setIsAuthenticated, setUserLoading } = useAuthStore();
+    const { userLoading, setUser, setIsAuthenticated, setUserLoading } = useAuthStore();
     const router = useRouter()
     const handleSubmit = async (type: string) => {
         if (type == "send-otp") {
             try {
                 const forgotRes = await authService.forgotPassword(Email)
-                const { message, code } = forgotRes
+                const { code } = forgotRes
                 if (code == 200) {
                     router.push("/auth/resetPassword")
                 }

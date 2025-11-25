@@ -93,7 +93,7 @@ export function ProjectModal({ props }: { props: { col_id: string } }) {
             })
 
         const data = await response.data
-        setProject([...project, data])
+        setProject([...(project || []), data])
         setOpenProjectModal(!openProjectModal)
         window.location.reload()
     }

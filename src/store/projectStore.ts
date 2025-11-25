@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import { Project, ProjectContextType } from "../../types"
+import { ProjectContextType } from "../../types"
 
 
 

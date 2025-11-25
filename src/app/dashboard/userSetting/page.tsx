@@ -49,9 +49,9 @@ const UserSetting = () => {
 
                     </div>
                     {
-                        openedSection === "User Profile" ?
+                        user && (openedSection === "User Profile" ?
                             <UsersProfile props={{ user }} /> :
-                            (openedSection === "API Key" ? <ApiKeyPage props={{ user }} /> : <BillingPage />)
+                            (openedSection === "API Key" ? <ApiKeyPage props={{ user }} /> : <BillingPage />))
 
                     }
 
@@ -165,7 +165,10 @@ const UsersProfile = ({ props }: UsersProps) => {
         formData.append('id', userData.id)
         formData.append('name', userData.name)
         formData.append('email', userData.email)
-        formData.append('profile_pic', file ? file : userData.profile_pic)
+        if (file) {
+            formData.append('profile_pic', file)
+        }
+
         formData.append('role', userData.role)
         formData.append('api_key', userData.api_key)
 
@@ -195,7 +198,7 @@ const UsersProfile = ({ props }: UsersProps) => {
                                 <label htmlFor="" className='text-bold text-sm md:text-lg'>Upload photo</label>
                                 <InputField type="file"
                                     disabled={edit}
-                                    value={userData.profile_pic}
+                                    value={userData.profile_pic || ""}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFile(e.target.files?.[0])}
                                     id="profile_pic"
                                 />
@@ -272,7 +275,7 @@ type InputFieldProps = {
     type: string;
     className?: string;
     disabled: boolean;
-    onChange: any;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     value: string;
 
 }

@@ -1,4 +1,4 @@
-import { Clock, Database, Settings } from 'lucide-react';
+import { Database, Settings } from 'lucide-react';
 
 const activities = [
     {

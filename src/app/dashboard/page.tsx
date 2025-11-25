@@ -1,24 +1,22 @@
 
 "use client"
-import { ModalContextapp } from "@/context/ModalProvider"
+
 import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Pencil, LayoutDashboard } from "lucide-react";
 import Link from "next/link"
 import useCollectionStore from "@/store/collectionStore"
 import useProjectStore from "@/store/projectStore"
 import { useAuthStore } from "@/store/authStore"
-import axios from "axios"
 import { useQuery } from "@tanstack/react-query"
 import { collectionService } from "@/services/collectionService"
-import { error } from "console"
 import projectService from "@/services/projectService"
 
 
 const Dashboard = () => {
 
-    const { user, isAuthenticated } = useAuthStore()
+    const { user } = useAuthStore()
     console.log("user:", user)
     const [isOpen, setIsOpen] = useState(false);
     const { collection, setCollection } = useCollectionStore()
@@ -26,6 +24,8 @@ const Dashboard = () => {
     const [sectionSelected, setSectionSelected] = useState('collection')
     console.log(isOpen, sectionSelected)
     // const {user} = props 
+    const router = useRouter()
+
 
     const { error: collectionError, data: collectionData, isPending: isCollectionPending } = useQuery({
         queryKey: ["collectionList"],
@@ -60,17 +60,16 @@ const Dashboard = () => {
             setCollection(collectionData);
         }
 
-    }, [collectionData]);
+    }, [collectionData, setCollection]);
 
     useEffect(() => {
         if (projectData) {
             setProject(projectData);
         }
-    }, [projectData]);
+    }, [projectData, setProject]);
 
     const totalCollection = collection ? collection.length : []
     const totalProjects = project ? project.length : []
-    const router = useRouter()
     const baseClass = "  flex flex-col justify-center items-center  rounded-3xl hover:bg-white/10 cursor-pointer bg-white/5 backdrop-blur-lg p-6  border border-white/10 text-white/80 shadow-sm shadow-orange-500"
 
     const handleSection = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -219,8 +218,9 @@ function CreateCollectionModal({ open, onClose }: { open: boolean, onClose: () =
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const { collection, setCollection } = useCollectionStore()
-    if (!open) return null;
     const router = useRouter()
+
+    if (!open) return null;
     const handleCreate = async () => {
         const payload = {
             Title: title,
