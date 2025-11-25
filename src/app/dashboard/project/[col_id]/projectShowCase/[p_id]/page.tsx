@@ -51,10 +51,14 @@ const ProjectShowCase = () => {
         console.log("delete file")
         try {
             const res = await projectService.deleteFile(id, file)
-            const { data, code } = res
-            console.log("file deleted: ", data)
+            const { message, code } = res
+            console.log("file deleted: ", message)
             // refetch the projectData with the project id  and update the projectData state
-            fetchProject()
+            if (code === 200) {
+                fetchProject()
+            } else {
+                alert(message)
+            }
         } catch (error) {
             console.log("Error deleting file", error)
         }
@@ -116,7 +120,7 @@ const ProjectShowCase = () => {
                                                     <span onClick={handleDownloadFile} className="text-xs text-purple-400 hover:underline mt-2 block">Download</span>
                                                 </div>
 
-                                                <span onClick={() => handleDeleteFile(projectData.id, file)} className="text-xs text-purple-400 hover:underline mt-2 block cursor-pointer hover:text-white"><Trash2Icon /></span>
+                                                <span onClick={() => projectData?.id && handleDeleteFile(projectData.id, file)} className="text-xs text-purple-400 hover:underline mt-2 block cursor-pointer hover:text-white"><Trash2Icon /></span>
                                             </div>
                                         </div>
 

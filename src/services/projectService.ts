@@ -39,6 +39,11 @@ type GetAllProjectResponse = {
     code: number
 }
 
+type DeleteFileResponse = {
+    message: string,
+    code: number
+}
+
 const projectService = {
     async getPresignedUrls(fileKey: string[]) {
         try {
@@ -164,7 +169,7 @@ const projectService = {
         }
     },
 
-    async deleteFile(project_id: string, file: string) {
+    async deleteFile(project_id: string, file: string): Promise<DeleteFileResponse> {
         try {
             const res = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/deleteFile/${project_id}?key=${file}`, {
                 headers: {
@@ -175,11 +180,16 @@ const projectService = {
             const data = await res.data
             console.log("file deleted: ", data)
             return {
-                data,
-                code: res.data.code
+                message: data.message,
+                code: data.code
             }
         } catch (error) {
             console.log("Error deleting file", error)
+            const errorMessage = error instanceof Error ? error.message : 'An error occurred while deleting the file';
+            return {
+                message: errorMessage,
+                code: 500
+            };
         }
     }
 }
