@@ -8,7 +8,7 @@
 
 import axios from "axios"
 
-import { baseUrl } from "./api"
+import baseUrl from "./api"
 
 interface LoginResponse {
     token: string,
