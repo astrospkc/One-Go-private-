@@ -29,6 +29,7 @@ export default function SignInPage() {
         }
         if (type == "login") {
             try {
+                console.log("email", Email)
                 const loginRes = await authService.login(Email, Password)
                 setUser(loginRes.user)
                 localStorage.setItem("token", loginRes.token)
