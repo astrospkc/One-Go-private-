@@ -31,8 +31,17 @@ const ProjectShowCase = () => {
     }
 
     useEffect(() => {
+        const fetchProject = async () => {
+            try {
+                const res = await projectService.readProject(project_id ? project_id : "")
+                const { data } = res
+                setProjectData(data)
+            } catch (error) {
+                console.error("Error fetching project:", error);
+            }
+        }
         fetchProject()
-    }, [])
+    }, [project_id])
     console.log("project: ", projectData)
     const date = projectData?.created_at ? new Date(projectData.created_at) : new Date();
     const formattedDate = date.toLocaleDateString('en-US', {
