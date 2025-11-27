@@ -4,12 +4,13 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 const Navbar = () => {
-    const { isAuthenticated, setIsAuthenticated } = useAuthStore()
+    const { isAuthenticated, setToken, setIsAuthenticated } = useAuthStore()
 
     const router = useRouter()
 
     const handleLogout = () => {
         localStorage.removeItem('token')
+        setToken("")
         setIsAuthenticated(false)
         router.push("/auth/signIn")
 

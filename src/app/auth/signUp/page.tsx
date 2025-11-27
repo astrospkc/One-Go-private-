@@ -14,7 +14,7 @@ export default function SignUpPage() {
     const [ProfilePic, setProfilePic] = useState("")
     const [clickedSendOtp, setClickedSendOtp] = useState(false)
     const [Otp, setOtp] = useState("")
-    const { setUser, setIsAuthenticated, setUserLoading } = useAuthStore();
+    const { setUser, setIsAuthenticated, setUserLoading, setToken } = useAuthStore();
     const router = useRouter()
     const handleSubmit = async (type: string) => {
         if (type == "send-otp") {
@@ -32,6 +32,7 @@ export default function SignUpPage() {
                 if (code == 200) {
                     setUser(user)
                     localStorage.setItem("token", token)
+                    setToken(token)
                     setIsAuthenticated(true)
                     setUserLoading(false)
                     router.push("/dashboard")

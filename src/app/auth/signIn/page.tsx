@@ -12,7 +12,8 @@ export default function SignInPage() {
     const [Email, setEmail] = useState("")
     const [Password, setPassword] = useState("")
     const [clickedForgotPassword, setClickedForgotPassword] = useState(false)
-    const { userLoading, setUser, setIsAuthenticated, setUserLoading } = useAuthStore();
+    const { userLoading, setUser, setIsAuthenticated, setUserLoading, setToken } = useAuthStore();
+
     const router = useRouter()
     const handleSubmit = async (type: string) => {
         if (type == "send-otp") {
@@ -33,6 +34,7 @@ export default function SignInPage() {
                 const loginRes = await authService.login(Email, Password)
                 setUser(loginRes.user)
                 localStorage.setItem("token", loginRes.token)
+                setToken(loginRes.token)
                 setIsAuthenticated(true)
                 router.push("/dashboard")
                 setUserLoading(false)

@@ -29,7 +29,7 @@ type GetCollectionByIdResponse = {
 const token = localStorage.getItem('token')
 
 export const collectionService = {
-    async createCollection(payload: CollectionPayload): Promise<CreateCollectionResponse> {
+    async createCollection(payload: CollectionPayload, token: string): Promise<CreateCollectionResponse> {
         try {
 
             const { Title, Description } = payload
@@ -51,7 +51,7 @@ export const collectionService = {
         }
     },
 
-    async getAllCollection(): Promise<GetAllCollectionResponse> {
+    async getAllCollection(token: string): Promise<GetAllCollectionResponse> {
         try {
             const response = await axios.get(`${baseUrl}/collection`, {
                 headers: {
@@ -69,7 +69,7 @@ export const collectionService = {
         }
     },
 
-    async getCollectionById(col_id: string): Promise<GetCollectionByIdResponse> {
+    async getCollectionById(col_id: string, token: string): Promise<GetCollectionByIdResponse> {
         try {
             const response = await axios.get(`${baseUrl}/collection/${col_id}`, {
                 headers: {

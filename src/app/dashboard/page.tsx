@@ -16,21 +16,23 @@ import projectService from "@/services/projectService"
 
 const Dashboard = () => {
 
-    const { user } = useAuthStore()
+    const { user, token } = useAuthStore()
     console.log("user:", user)
     const [isOpen, setIsOpen] = useState(false);
     const { collection, setCollection } = useCollectionStore()
     const { project, setProject } = useProjectStore()
     const [sectionSelected, setSectionSelected] = useState('collection')
+
     console.log(isOpen, sectionSelected)
     // const {user} = props 
     const router = useRouter()
 
 
+
     const { error: collectionError, data: collectionData, isPending: isCollectionPending } = useQuery({
         queryKey: ["collectionList"],
         queryFn: async () => {
-            const response = await collectionService.getAllCollection()
+            const response = await collectionService.getAllCollection(token)
             return response.collections
         }
     })
@@ -38,7 +40,7 @@ const Dashboard = () => {
     const { error: projectError, data: projectData, isPending: isProjectPending } = useQuery({
         queryKey: ["projectList"],
         queryFn: async () => {
-            const response = await projectService.getAllProjects()
+            const response = await projectService.getAllProjects(token)
             return response.data
         }
     })
@@ -112,7 +114,7 @@ const Dashboard = () => {
             style={{
                 background: 'radial-gradient(circle at center, #1a0c2b, #0e0618, #090417)',
             }}
-            className=" flex flex-col min-h-screen bg-gradient-to-t  from-violet-950 via-pink-700
+            className=" flex flex-col min-h-screen bg-linear-gradient-to-t from-violet-950 via-pink-700
          to-violet-950  gap-4     font-serif py-10 px-10 ">
             <div className="flex flex-col">
                 <h1 className="text-5xl font-semibold">Hello, {user?.name.toUpperCase()}</h1>
@@ -197,7 +199,7 @@ const Dashboard = () => {
                             <button onClick={handleClick} className="hover:cursor-pointer bg-white text-black px-4 py-2 rounded-lg font-semibold hover:bg-violet-200 transition">
                                 Create New Collection
                             </button>
-                            <CreateCollectionModal open={isOpen} onClose={handleClose} />
+                            <CreateCollectionModal open={isOpen} onClose={handleClose} token={token} />
                             <Link href={"/dashboard/collections"}>
                                 <button className="bg-gray-800 w-full text-white px-4 py-2 rounded-lg border border-gray-600 hover:border-violet-500 transition">
                                     See All Collections
@@ -214,7 +216,7 @@ const Dashboard = () => {
 export default Dashboard
 
 
-function CreateCollectionModal({ open, onClose }: { open: boolean, onClose: () => void }) {
+function CreateCollectionModal({ open, onClose, token }: { open: boolean, onClose: () => void, token: string }) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const { collection, setCollection } = useCollectionStore()
@@ -226,7 +228,7 @@ function CreateCollectionModal({ open, onClose }: { open: boolean, onClose: () =
             Title: title,
             Description: description
         }
-        const createdCollection = await collectionService.createCollection(payload)
+        const createdCollection = await collectionService.createCollection(payload, token)
         setCollection([...collection, createdCollection])
         onClose()
         router.push("/dashboard/collections")

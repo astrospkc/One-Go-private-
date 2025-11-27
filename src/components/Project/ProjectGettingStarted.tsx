@@ -4,6 +4,7 @@ import useProjectStore from '@/store/projectStore';
 import axios from 'axios'
 import React, { useState } from 'react'
 import { Project } from '../../../types';
+import { useAuthStore } from '@/store/authStore';
 type ProjectGettingStartedProps = {
     col_id: string;
 };
@@ -21,6 +22,7 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
     const [teamMembers, setTeamMembers] = useState("")
     const [uploads, setUploads] = useState<{ file: File; name: string; presignedUrl?: string; nameKey?: string }[]>([])
     const { setProject, project } = useProjectStore()
+    const { token } = useAuthStore()
 
     function extractObjectKey(url: string) {
         const urlObj = new URL(url);
@@ -50,7 +52,7 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
     const handleAddFileUrls = async () => {
         try {
             console.log("selected file names: ", selectedFileNames)
-            const urls = await projectService.getPresignedUrls(selectedFileNames)
+            const urls = await projectService.getPresignedUrls(selectedFileNames, token)
 
             const updateUploads = uploads.map((item, index) => {
                 console.log("item: ", item)
@@ -99,7 +101,7 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
                 collection_id: col_id
             }
 
-            const res = await projectService.createProject(col_id, body)
+            const res = await projectService.createProject(col_id, body, token)
             const { data } = res
 
             setProject(prev => {

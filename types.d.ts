@@ -143,6 +143,8 @@ export type AuthState = {
     user: User | null,
     isAuthenticated: boolean,
     userLoading: boolean,
+    token: string,
+    setToken: (value: string) => void,
     setUser: (user: User) => void,
     setIsAuthenticated: (value: boolean) => void,
     setUserLoading: (value: boolean) => void,

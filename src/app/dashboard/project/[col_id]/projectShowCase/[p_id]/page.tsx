@@ -8,6 +8,7 @@ import { useParams } from 'next/navigation'
 import projectService from '@/services/projectService'
 import { Trash2Icon } from 'lucide-react'
 import { Project } from '../../../../../../../types'
+import { useAuthStore } from '@/store/authStore'
 
 
 
@@ -17,12 +18,13 @@ const ProjectShowCase = () => {
     const [projectData, setProjectData] = useState<Project | null>(null)
     console.log("project id: ", project_id)
     const col_id = params.col_id
+    const { token } = useAuthStore()
 
 
     // fetch project
     const fetchProject = async () => {
         try {
-            const res = await projectService.readProject(project_id ? project_id : "")
+            const res = await projectService.readProject(project_id ? project_id : "", token)
             const { data } = res
             setProjectData(data)
         } catch (error) {
@@ -33,7 +35,7 @@ const ProjectShowCase = () => {
     useEffect(() => {
         const fetchProject = async () => {
             try {
-                const res = await projectService.readProject(project_id ? project_id : "")
+                const res = await projectService.readProject(project_id ? project_id : "", token)
                 const { data } = res
                 setProjectData(data)
             } catch (error) {
@@ -59,7 +61,7 @@ const ProjectShowCase = () => {
     const handleDeleteFile = async (id: string, file: string) => {
         console.log("delete file")
         try {
-            const res = await projectService.deleteFile(id, file)
+            const res = await projectService.deleteFile(id, file, token)
             const { message, code } = res
             console.log("file deleted: ", message)
             // refetch the projectData with the project id  and update the projectData state

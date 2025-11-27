@@ -45,7 +45,7 @@ type DeleteFileResponse = {
 }
 
 const projectService = {
-    async getPresignedUrls(fileKey: string[]) {
+    async getPresignedUrls(fileKey: string[], token: string) {
         try {
             const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/presignedUrl`, {
                 fileKey
@@ -53,7 +53,7 @@ const projectService = {
                 {
                     headers: {
                         // 'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        'Authorization': `Bearer ${token}`
                     }
                 }
 
@@ -67,12 +67,12 @@ const projectService = {
         }
     },
 
-    async createProject(col_id: string, projectData: ProjectPayload): Promise<ProjectResponse> {
+    async createProject(col_id: string, projectData: ProjectPayload, token: string): Promise<ProjectResponse> {
         try {
             const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/createProject/${col_id}`, projectData, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    'Authorization': `Bearer ${token}`
 
                 },
             })
@@ -93,12 +93,12 @@ const projectService = {
     },
 
 
-    async readProject(project_id: string): Promise<ProjectReadResponse> {
+    async readProject(project_id: string, token: string): Promise<ProjectReadResponse> {
         try {
             const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/readProject/${project_id}`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    'Authorization': `Bearer ${token}`
 
                 },
             })
@@ -118,12 +118,12 @@ const projectService = {
         }
     },
 
-    async getAllProjectOfCollectionId(col_id: string): Promise<ProjectReadAllResponse> {
+    async getAllProjectOfCollectionId(col_id: string, token: string): Promise<ProjectReadAllResponse> {
         try {
             const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/collectionProject/${col_id}`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    'Authorization': `Bearer ${token}`
 
                 },
             })
@@ -143,12 +143,12 @@ const projectService = {
         }
     },
 
-    async getAllProjects(): Promise<GetAllProjectResponse> {
+    async getAllProjects(token: string): Promise<GetAllProjectResponse> {
         try {
             const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    'Authorization': `Bearer ${token}`
 
                 },
             })
@@ -169,12 +169,12 @@ const projectService = {
         }
     },
 
-    async deleteFile(project_id: string, file: string): Promise<DeleteFileResponse> {
+    async deleteFile(project_id: string, file: string, token: string): Promise<DeleteFileResponse> {
         try {
             const res = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/deleteFile/${project_id}?key=${file}`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    'Authorization': `Bearer ${token}`
                 },
             })
             const data = await res.data

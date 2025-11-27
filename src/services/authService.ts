@@ -123,11 +123,11 @@ export const authService = {
         }
     },
 
-    async getUser() {
+    async getUser(token: string) {
         try {
             const response = await axios.get(`${baseUrl}/auth/user`, {
                 headers: {
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    "Authorization": `Bearer ${token}`
                 }
             })
             const { user } = response.data
