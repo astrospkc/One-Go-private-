@@ -1,5 +1,6 @@
 import axios from "axios"
 import { SingleCollection } from "../../types"
+import baseUrl from "./api"
 
 
 
@@ -25,13 +26,14 @@ type GetCollectionByIdResponse = {
     collection: SingleCollection,
     code: number
 }
+const token = localStorage.getItem('token')
 
 export const collectionService = {
     async createCollection(payload: CollectionPayload): Promise<CreateCollectionResponse> {
         try {
 
             const { Title, Description } = payload
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/collection`,
+            const response = await axios.post(`${baseUrl}/collection`,
                 {
                     Title,
                     Description,
@@ -39,7 +41,7 @@ export const collectionService = {
                 },
                 {
                     headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     }
                 })
@@ -51,9 +53,9 @@ export const collectionService = {
 
     async getAllCollection(): Promise<GetAllCollectionResponse> {
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/collection`, {
+            const response = await axios.get(`${baseUrl}/collection`, {
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             })
@@ -69,9 +71,9 @@ export const collectionService = {
 
     async getCollectionById(col_id: string): Promise<GetCollectionByIdResponse> {
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/collection/${col_id}`, {
+            const response = await axios.get(`${baseUrl}/collection/${col_id}`, {
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             })

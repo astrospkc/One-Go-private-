@@ -7,7 +7,7 @@ import Link from "next/link";
 
 // import { useContext, useEffect } from "react";
 
-
+console.log("main page", process.env.NEXT_PUBLIC_BACKEND_DEV_URL)
 export default function Home() {
 
 
