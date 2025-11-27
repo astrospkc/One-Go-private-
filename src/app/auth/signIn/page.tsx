@@ -29,6 +29,7 @@ export default function SignInPage() {
         }
         if (type == "login") {
             try {
+                console.log("url", process.env.NEXT_PUBLIC_BACKEND_PROD_URL)
                 console.log("email", Email)
                 const loginRes = await authService.login(Email, Password)
                 setUser(loginRes.user)

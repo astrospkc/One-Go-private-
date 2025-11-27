@@ -4,6 +4,7 @@ let baseUrl = "";
 const NEXT_PUBLIC_BACKEND_DEV_URL = process.env.NEXT_PUBLIC_BACKEND_DEV_URL
 const NEXT_PUBLIC_BACKEND_PROD_URL = process.env.NEXT_PUBLIC_BACKEND_PROD_URL
 // This function will be called when the code runs on the client side
+
 const getBaseUrl = () => {
     // In browser environments
     if (typeof window !== "undefined") {
@@ -17,6 +18,7 @@ const getBaseUrl = () => {
 
 // Set the baseUrl when the module loads
 baseUrl = getBaseUrl();
+console.log("base url ", baseUrl)
 
 // For debugging - this will only run on the client side
 if (typeof window !== "undefined") {
