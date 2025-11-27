@@ -26,7 +26,7 @@ type GetCollectionByIdResponse = {
     collection: SingleCollection,
     code: number
 }
-const token = localStorage.getItem('token')
+
 
 export const collectionService = {
     async createCollection(payload: CollectionPayload, token: string): Promise<CreateCollectionResponse> {

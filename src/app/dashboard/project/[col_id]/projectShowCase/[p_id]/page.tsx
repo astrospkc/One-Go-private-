@@ -43,7 +43,7 @@ const ProjectShowCase = () => {
             }
         }
         fetchProject()
-    }, [project_id])
+    }, [project_id, token])
     console.log("project: ", projectData)
     const date = projectData?.created_at ? new Date(projectData.created_at) : new Date();
     const formattedDate = date.toLocaleDateString('en-US', {
