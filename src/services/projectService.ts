@@ -1,5 +1,6 @@
 import axios from "axios"
 import { Project } from "../../types"
+import baseUrl from "./api"
 
 
 export type ProjectPayload = {
@@ -47,7 +48,7 @@ type DeleteFileResponse = {
 const projectService = {
     async getPresignedUrls(fileKey: string[], token: string) {
         try {
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/presignedUrl`, {
+            const res = await axios.post(`${baseUrl}/project/presignedUrl`, {
                 fileKey
             },
                 {
@@ -69,7 +70,7 @@ const projectService = {
 
     async createProject(col_id: string, projectData: ProjectPayload, token: string): Promise<ProjectResponse> {
         try {
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/createProject/${col_id}`, projectData, {
+            const res = await axios.post(`${baseUrl}/project/createProject/${col_id}`, projectData, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -95,7 +96,7 @@ const projectService = {
 
     async readProject(project_id: string, token: string): Promise<ProjectReadResponse> {
         try {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/readProject/${project_id}`, {
+            const res = await axios.get(`${baseUrl}/project/readProject/${project_id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -120,7 +121,7 @@ const projectService = {
 
     async getAllProjectOfCollectionId(col_id: string, token: string): Promise<ProjectReadAllResponse> {
         try {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/collectionProject/${col_id}`, {
+            const res = await axios.get(`${baseUrl}/project/collectionProject/${col_id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -145,7 +146,7 @@ const projectService = {
 
     async getAllProjects(token: string): Promise<GetAllProjectResponse> {
         try {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project`, {
+            const res = await axios.get(`${baseUrl}/project`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -171,7 +172,7 @@ const projectService = {
 
     async deleteFile(project_id: string, file: string, token: string): Promise<DeleteFileResponse> {
         try {
-            const res = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/project/deleteFile/${project_id}?key=${file}`, {
+            const res = await axios.delete(`${baseUrl}/project/deleteFile/${project_id}?key=${file}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
