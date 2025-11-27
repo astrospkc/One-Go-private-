@@ -117,7 +117,7 @@ const Project = () => {
         const fetchProjects = async () => {
             try {
                 // const token = localStorage.getItem('token')
-                const response = await projectService.getAllProjectOfCollectionId(col_id as string)
+                const response = await projectService.getAllProjectOfCollectionId(col_id as string, token)
                 const { data, code } = response
                 if (code !== 200) return
                 setProject(data)
