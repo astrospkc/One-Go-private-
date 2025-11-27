@@ -95,13 +95,13 @@ const Project = () => {
     console.log("title: ", title)
     const { setProject } = useProjectStore()
     const [collectionData, setCollectionData] = useState<SingleCollection | null>(null)
-
+    const { token } = useAuthStore()
 
     // get the collection with id
     useEffect(() => {
         const fetchCollection = async () => {
             try {
-                const response = await collectionService.getCollectionById(col_id as string)
+                const response = await collectionService.getCollectionById(col_id as string, token)
                 const { collection, code } = response
                 if (code !== 200) return
                 setCollectionData(collection)
