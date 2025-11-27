@@ -23,7 +23,7 @@ baseUrl = getBaseUrl();
 // For debugging - this will only run on the client side
 if (typeof window !== "undefined") {
     console.log("Current hostname:", window.location.hostname);
-    console.log("Using base URL:", baseUrl);
+
 }
 
 export default baseUrl;
