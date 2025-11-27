@@ -18,7 +18,7 @@ const getBaseUrl = () => {
 
 // Set the baseUrl when the module loads
 baseUrl = getBaseUrl();
-console.log("base url ", baseUrl)
+
 
 // For debugging - this will only run on the client side
 if (typeof window !== "undefined") {
