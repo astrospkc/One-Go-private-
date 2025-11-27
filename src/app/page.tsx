@@ -1,13 +1,6 @@
 "use client"
-
-// import { UserContext } from "@/context/UserProvider";
-// import axios from "axios";
 import { motion } from "motion/react";
 import Link from "next/link";
-
-// import { useContext, useEffect } from "react";
-
-console.log("main page", process.env.NEXT_PUBLIC_BACKEND_DEV_URL)
 export default function Home() {
 
 
@@ -15,18 +8,6 @@ export default function Home() {
     <>
       <div className="min-h-screen relative  flex justify-center items-center bg-black border-b-2 border-gray-900 w-full font-serif">
         <div
-          // style={{
-          //   backgroundImage: 'url("/image/laptopplant.jpg")',
-          //   backgroundSize: "cover",
-          //   backgroundPosition: "center",
-          //   backgroundRepeat: "no-repeat, repeat",
-          //   // backgroundColor: "rgb(34, 34, 34)",
-          //   backgroundColor: "white",
-          //   backgroundBlendMode: "luminosity",
-
-          //   opacity: 0.2, // control background image opacity here
-          //   zIndex: 0,
-          // }}
           className="absolute inset-0"
         ></div>
         <div className="w-2/3  relative z-10 flex flex-col items-center">
