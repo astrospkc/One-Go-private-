@@ -18,23 +18,7 @@ const Collection = () => {
     const { token } = useAuthStore()
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     console.log("collection: ", collection)
-    if (!collection || collection.length == 0) {
-        const fetchCollection = async () => {
-            const token = localStorage.getItem('token')
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/collection/getAllCollection`, {
-                method: "GET",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            const result = await response.json()
-            console.log("collections: ", result)
-            setCollection(result)
 
-        }
-        fetchCollection()
-    }
     const handleDeleteCollection = () => {
         setShowDeleteModal(true)
     }
