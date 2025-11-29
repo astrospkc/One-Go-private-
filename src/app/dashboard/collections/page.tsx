@@ -51,7 +51,6 @@ const Collection = () => {
                 <div className=" w-full grid grid-cols-3 gap-4">
                     {collection && collection.length > 0 &&
                         collection.map((val, ind) => {
-                            // console.log("val: ", val)
                             return (
                                 <div
                                     key={ind}
@@ -61,11 +60,8 @@ const Collection = () => {
                                         className={cn(
                                             "group w-full   shadow-violet-950 cursor-pointer overflow-hidden relative card h-70 rounded-md shadow-lg mx-auto flex flex-col justify-end p-4 border border-transparent dark:border-neutral-800",
                                             "bg-[url(https://images.unsplash.com/photo-1476842634003-7dcca8f832de?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80)] bg-cover",
-                                            // Preload hover image by setting it in a pseudo-element
-                                            // "before:bg-[url(https://unsplash.com/photos/cozy-room-with-two-red-chairs-and-car-memorabilia-5jbjClZI8SA)] before:fixed before:inset-0 before:opacity-0 before:z-[-1]",
                                             "hover:bg-[url(https://unsplash.com/photos/cozy-room-with-two-red-chairs-and-car-memorabilia-5jbjClZI8SA)]",
                                             "hover:bg-black", "hover:shadow-lg", "hover:shadow-violet-500", "hover:text-violet-950",
-                                            // "hover:after:content-[''] hover:after:absolute hover:after:inset-0 hover:after:bg-black hover:after:opacity-50",
                                             "transition-all duration-500"
                                         )}
                                     >
