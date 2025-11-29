@@ -9,6 +9,7 @@
 import axios from "axios"
 
 import baseUrl from "./api"
+import { User } from "../../types"
 
 interface LoginResponse {
     token: string,
@@ -135,5 +136,22 @@ export const authService = {
         } catch (error) {
             throw error
         }
+    },
+
+    async editUser(token: string, payload: FormData): Promise<User> {
+        try {
+            const response = await axios.put(`${baseUrl}/auth/user`, payload, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+            const { user } = response.data
+            return user
+        } catch (error) {
+            throw error
+        }
     }
+
+
 }

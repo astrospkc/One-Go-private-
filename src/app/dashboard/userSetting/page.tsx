@@ -4,6 +4,7 @@ import { User } from '../../../../types'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/store/authStore'
+import { authService } from '@/services/authService'
 
 const settingSections = [
     {
@@ -149,38 +150,34 @@ interface UsersProps {
 
 const UsersProfile = ({ props }: UsersProps) => {
     const { user } = props
+    const { token } = useAuthStore()
     const [edit, setEdit] = useState(false)
     const [userData, setUserData] = useState({
         id: user.id,
         name: user.name,
         email: user.email,
         profile_pic: user.profile_pic,
+        password: user.password,
         role: user.role,
         api_key: user.api_key
     })
     const [file, setFile] = useState<File | null>()
 
     const handleEdit = async () => {
-        const formData = new FormData()
-        formData.append('id', userData.id)
-        formData.append('name', userData.name)
-        formData.append('email', userData.email)
+        const formData = new FormData();
+        formData.append('id', userData.id);
+        formData.append('name', userData.name);
+        formData.append('email', userData.email);
         if (file) {
-            formData.append('profile_pic', file)
+            formData.append('profile_pic', file);
         }
-
-        formData.append('role', userData.role)
-        formData.append('api_key', userData.api_key)
-
+        if (userData.password) {
+            formData.append('password', userData.password);
+        }
+        formData.append('role', userData.role);
+        formData.append('api_key', userData.api_key);
         setEdit(edit => !edit)
-        const res = await axios.put(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/editUser`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-        })
-        const data = res.data
-        console.log("edit: ", data)
+        await authService.editUser(token || '', formData)
     }
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault()
@@ -192,13 +189,14 @@ const UsersProfile = ({ props }: UsersProps) => {
             <div className='flex flex-row w-full  my-3 md:my-5 bg-black p-3  shaodow-lg shadow-violet-50  '>
                 <div className='flex flex-col md:flex-row shadow-sm shadow-violet-500 mx-3 p-3 rounded-4xl'>
                     <div className=' flex flex-col justify-center items-center px-5' >
-                        <div className='h-40 w-40 rounded-full bg-black border-2 shadow-lg shadow-violet-400'></div>
+                        <div className='h-40 w-40 rounded-full bg-black  shadow-lg shadow-violet-400'></div>
                         {!edit &&
                             <div className='mt-5 flex flex-col'>
                                 <label htmlFor="" className='text-bold text-sm md:text-lg'>Upload photo</label>
                                 <InputField type="file"
                                     disabled={edit}
                                     value={userData.profile_pic || ""}
+                                    className='bg-black'
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFile(e.target.files?.[0])}
                                     id="profile_pic"
                                 />
@@ -245,6 +243,16 @@ const UsersProfile = ({ props }: UsersProps) => {
 
                                 />
                             </div>
+                            {/* <div className='flex flex-col'>
+                                <label htmlFor="" className='mb-2 font-bold text-lg'>Role:</label>
+                                <InputField type="password"
+                                    disabled={edit}
+                                    value={userData.password}
+                                    id="role"
+                                    onChange={handleChange}
+
+                                />
+                            </div> */}
                             {/* <div className='flex flex-col'>
                                 <label htmlFor="" className='mb-2 font-bold text-lg'>Phone number:</label>
                                 <InputField type="text"
