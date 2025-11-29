@@ -85,5 +85,43 @@ export const collectionService = {
         } catch (error) {
             throw error as Error
         }
+    },
+
+    async deleteCollectionById(col_id: string, token: string) {
+        try {
+            const response = await axios.delete(`${baseUrl}/collection/${col_id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            const col_res = await response.data
+            return {
+                message: col_res.message,
+                code: col_res.code
+            }
+        } catch (error) {
+            throw error as Error
+        }
+    },
+
+    async deleteAllCollection(token: string) {
+        try {
+            const response = await axios.delete(`${baseUrl}/collection/deleteAllCollection`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            const col_res = await response.data
+            return {
+                message: col_res.message,
+                code: col_res.code
+            }
+        } catch (error) {
+            throw error as Error
+        }
     }
+
+
 }

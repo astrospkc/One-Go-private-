@@ -17,7 +17,7 @@ export default function DashboardLayout({
     return (
         <>
             <div className="min-h-screen flex items-center justify-center relative w-full">
-                <div
+                {/* <div
                     style={{
                         backgroundImage: 'url("/image/laptopplant.jpg")',
                         backgroundSize: "cover",
@@ -31,7 +31,7 @@ export default function DashboardLayout({
                         zIndex: 0,
                     }}
                     className="absolute inset-0"
-                ></div>
+                ></div> */}
                 <div className=" flex flex-row w-full relative z-10">
                     <SideBar />
 
