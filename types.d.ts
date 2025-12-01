@@ -89,6 +89,12 @@ export type ProjectContextType = {
 }
 
 
+export type CollectionWithProjects = {
+    collection: SingleCollection;
+    projects: Project[];
+}
+
+
 export type CollectionType = {
     description: string
     id: string
