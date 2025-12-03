@@ -1,0 +1,89 @@
+
+const plans = [
+    {
+        id: 1,
+        plan_name: "Starter",
+        about: "For personal projects and testing",
+        price: "₹0",
+        button: "Get Started",
+        features: [
+            "1 GB storage",
+            "Basic API access",
+            "Public file hosting",
+            "Community support"
+        ]
+    },
+    {
+        id: 2,
+        plan_name: "Creator",
+        about: "Most Popular – for indie devs",
+        price: "₹99",
+        button: "Upgrade Now",
+        features: [
+            "10 GB storage",
+            "Standard bandwidth",
+            "Unlimited projects",
+            "Email support"
+        ]
+    },
+    {
+        id: 3,
+        plan_name: "Pro/Team",
+        about: ">For teams & high-traffic apps",
+        price: "₹299",
+        button: "Talk to Sales",
+        features: [
+            "100 GB storage",
+            "Priority support",
+            "Analytics & versioning",
+            "Secure access controls"
+        ]
+    }
+]
+
+
+export default function PricingSection() {
+    const cn = "bg-linear-gradient-to-br from-purple-500/50 to-violet-700/30 p-8 rounded-2xl shadow-xl  scale-105"
+
+    return (
+        <div className="p-8 bg-[#0b0b0e] text-gray-100 min-h-screen flex flex-col items-center">
+            <div className="flex items-center justify-center mb-6">
+                <h1 className="text-6xl text-  font-bold  bg-clip-text bg-linear-gradient-to-r from-purple-400 to-pink-500">
+                    Pricing
+                </h1>
+            </div>
+
+            <p className="text-center max-w-2xl text-gray-300 mb-16">
+                Simple, scalable pricing for developers and teams. Start for free and grow as you go.
+            </p>
+
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl">
+                {
+                    plans && plans.map((plan, id) => (
+                        <div key={id} className={`bg-linear-gradient-to-br from-[#1d1d35] to-[#121226] p-8 rounded-2xl shadow-xl border border-[#2b2b40] hover:cursor-pointer  hover:from-purple-500 hover:to-violet-700/30 hover:scale-105
+    `}>
+                            <h2 className="text-2xl font-semibold mb-2"> {plan.plan_name}</h2>
+                            <p className="text-lg text-gray-300 mb-6">{plan.about}</p>
+                            <p className="text-4xl font-bold mb-4">{plan.price}<span className="text-lg text-gray-400">/month</span></p>
+                            <button className="w-full py-2 rounded-xl border border-gray-400 hover:bg-white hover:text-black transition hover:cursor-pointer">{plan.button}</button>
+
+                            <ul className="mt-6 space-y-3 text-sm">
+                                {plan.features.map((feature, index) => (
+                                    <li
+                                        key={index}
+                                        className={"text-gray-200"}
+                                    >
+                                        ✔ {feature}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))
+                }
+
+            </div>
+        </div>
+    );
+}
+

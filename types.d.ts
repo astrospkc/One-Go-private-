@@ -1,3 +1,14 @@
+export type PricingPlan = {
+    id: number;
+    plan_name: string;
+    about: string;
+    price: string;
+    button: string;
+    features: string[];
+    isPopular?: boolean;
+    buttonVariant?: 'default' | 'outline';
+}
+
 export type User = {
     id: string;
     name: string;
