@@ -25,7 +25,7 @@ const Collection = () => {
     const deleteCollection = async (col_id: string) => {
         try {
             const response = await collectionService.deleteCollectionById(col_id, token)
-            const { message, code } = response
+            const { code } = response
             if (code == 200) {
                 const fetchNewCollection = await collectionService.getAllCollection(token)
                 const { collections, code } = fetchNewCollection
