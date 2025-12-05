@@ -66,7 +66,7 @@ export const authService = {
     async login(email: string, password: string): Promise<LoginResponse> {
         try {
             console.log(process.env.WITH)
-            console.log("base url: ", baseUrl, window.location.hostname, NEXT_PUBLIC_BACKEND_DEV_URL, NEXT_PUBLIC_BACKEND_PROD_URL)
+            // console.log("base url: ", baseUrl, window.location.hostname, NEXT_PUBLIC_BACKEND_DEV_URL, NEXT_PUBLIC_BACKEND_PROD_URL)
             const response = await axios.post(`${baseUrl}/auth/login`, { email, password })
             const { token, user } = response.data
             return { token, user }
