@@ -27,7 +27,6 @@ const UserSetting = () => {
     const handleSection = (e: React.MouseEvent<HTMLDivElement>) => {
         setOpenedSection((e.target as HTMLElement).innerText)
     }
-    console.log("user: ", user)
     const router = useRouter()
     if (user && user.id === "" || isAuthenticated === false) {
         router.push("/auth/signIn")

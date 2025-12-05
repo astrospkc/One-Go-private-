@@ -59,7 +59,6 @@ const projectService = {
                 }
 
             )
-            console.log("response: ", res, res.data)
             const urls = await res.data
             return urls
         } catch (error) {
@@ -79,13 +78,11 @@ const projectService = {
             })
 
             const p_data = await res.data
-            console.log("project data: ", p_data)
             return {
                 data: p_data.data,
                 success: true
             }
         } catch (error) {
-            console.log("Error creating project", error)
             return {
                 data: null,
                 success: false
@@ -105,13 +102,11 @@ const projectService = {
             })
 
             const data = await res.data
-            console.log("project data: ", data)
             return {
                 data: data.project,
                 code: 200
             }
         } catch (error) {
-            console.log("Error reading project", error)
             return {
                 data: null,
                 code: 500
@@ -136,7 +131,6 @@ const projectService = {
                 code: projectRes.code
             }
         } catch (error) {
-            console.log("Error reading project", error)
             return {
                 data: null,
                 code: 500
@@ -156,13 +150,11 @@ const projectService = {
 
             const projectRes = await res.data
             const data = projectRes.projects
-            console.log("project data: ", data)
             return {
                 data,
                 code: projectRes.code
             }
         } catch (error) {
-            console.log("Error reading project", error)
             return {
                 data: null,
                 code: 500
@@ -179,13 +171,11 @@ const projectService = {
                 },
             })
             const data = await res.data
-            console.log("file deleted: ", data)
             return {
                 message: data.message,
                 code: data.code
             }
         } catch (error) {
-            console.log("Error deleting file", error)
             const errorMessage = error instanceof Error ? error.message : 'An error occurred while deleting the file';
             return {
                 message: errorMessage,

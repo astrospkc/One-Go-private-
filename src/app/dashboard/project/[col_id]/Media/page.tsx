@@ -98,13 +98,11 @@ const Media = () => {
             }
         );
         const result = await res.data
-        console.log("deleted data: ", result)
         const mediaResponse = await getAllMedia(token ?? "", col_id?.toString() ?? "")
         setMedia(mediaResponse)
 
     }
 
-    console.log("media: ", media)
     return (
         <div className='p-4'>
             <Link href={`/dashboard/project/${col_id}`}>

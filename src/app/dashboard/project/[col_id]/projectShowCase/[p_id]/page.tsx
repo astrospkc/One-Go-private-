@@ -16,7 +16,6 @@ const ProjectShowCase = () => {
     const params = useParams()
     const project_id = Array.isArray(params.p_id) ? params.p_id[0] : params.p_id
     const [projectData, setProjectData] = useState<Project | null>(null)
-    console.log("project id: ", project_id)
     const col_id = params.col_id
     const { token } = useAuthStore()
 
@@ -44,7 +43,6 @@ const ProjectShowCase = () => {
         }
         fetchProject()
     }, [project_id, token])
-    console.log("project: ", projectData)
     const date = projectData?.created_at ? new Date(projectData.created_at) : new Date();
     const formattedDate = date.toLocaleDateString('en-US', {
         year: 'numeric',
@@ -59,11 +57,9 @@ const ProjectShowCase = () => {
 
 
     const handleDeleteFile = async (id: string, file: string) => {
-        console.log("delete file")
         try {
             const res = await projectService.deleteFile(id, file, token)
             const { message, code } = res
-            console.log("file deleted: ", message)
             // refetch the projectData with the project id  and update the projectData state
             if (code === 200) {
                 fetchProject()
@@ -71,17 +67,12 @@ const ProjectShowCase = () => {
                 alert(message)
             }
         } catch (error) {
-            console.log("Error deleting file", error)
         }
     }
     const handleViewFile = async () => {
-        console.log("view file")
     }
     const handleDownloadFile = async () => {
-        console.log("download file")
     }
-    console.log(projectData?.title)
-    console.log(projectData?.fileUpload?.map((file: string, i: number) => console.log(file, i)))
     return (
         <>
 

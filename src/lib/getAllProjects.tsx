@@ -12,7 +12,6 @@ export default async function getAllProjects() {
         }
     }
     )
-    console.log("response projects: ", response.data)
     if (response.status == 200) {
         return response.data
     }

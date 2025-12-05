@@ -48,12 +48,11 @@ export default function SignInPage() {
                 setUserLoading(false)
             }
         }
-        console.log("handle submit")
+
     }
     const handleForgotPassword = () => {
         setClickedForgotPassword(prev => !prev)
     }
-    console.log("user loading:", userLoading)
     return (
 
         <div className="w-full flex flex-col gap-2 font-serif relative z-10 max-w-md p-8  shadow-lg shadow-violet-300 justify-center rounded-3xl items-center">

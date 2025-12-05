@@ -17,7 +17,6 @@ const Collection = () => {
     const { collection, setCollection } = useCollectionStore()
     const { token } = useAuthStore()
     const [showDeleteModal, setShowDeleteModal] = useState(false)
-    console.log("collection: ", collection)
 
     const handleDeleteCollection = () => {
         setShowDeleteModal(true)
@@ -34,7 +33,6 @@ const Collection = () => {
                 }
             }
         } catch (error) {
-            console.log("error: ", error)
             throw error as Error
         } finally {
             setShowDeleteModal(false)
