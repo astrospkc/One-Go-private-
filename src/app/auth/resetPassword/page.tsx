@@ -3,8 +3,10 @@
 import { authService } from "@/services/authService"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
+
+const OTP_TIMEOUT = 10 * 60
 const ResetPassword = () => {
     const [email, setEmail] = useState("")
     const [newPassword, setNewPassword] = useState("")
@@ -12,8 +14,51 @@ const ResetPassword = () => {
     const [otp, setOtp] = useState("")
     const [clickedResendOtp, setClickedResendOtp] = useState(false)
     const router = useRouter()
+    const [timeLeft, setTimeLeft] = useState(OTP_TIMEOUT)
+    const intervalRef = useRef<NodeJS.Timeout | null>(null)
+    const [showPassword, setShowPassword] = useState({
+        newPassword: false,
+        confirmPassword: false
+    });
+
+    const formatTime = (seconds: number): string => {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;;
+        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
+    }
+
+    // clear interval safely
+    const clearTimer = () => {
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current)
+            intervalRef.current = null
+        }
+    }
+
+    const startTimer = () => {
+        clearTimer()
+        setTimeLeft(OTP_TIMEOUT)
+        intervalRef.current = setInterval(() => {
+            setTimeLeft(prev => {
+                if (prev <= 1) {
+                    clearTimer()
+                    return 0
+                }
+                return prev - 1
+            })
+        }, 1000)
+    }
+
+    useEffect(() => {
+        startTimer()
+        return () => {
+            clearTimer()
+        }
+    }, [])
+
     const resetPassword = async (email: string, newPassword: string, otp: string) => {
         try {
+
             const resetPasswordRes = await authService.resetPassword(email, newPassword, confirmPassword, otp)
             const { code } = resetPasswordRes
             if (code === 200) {
@@ -25,8 +70,9 @@ const ResetPassword = () => {
     }
     const handleResendOtp = async (email: string) => {
         try {
+            clearTimer()
             await authService.forgotPassword(email)
-
+            startTimer()
         } catch (error) {
             console.error(error)
         } finally {
@@ -36,8 +82,13 @@ const ResetPassword = () => {
 
     return (
         <>
-            <div className="w-full flex flex-col gap-2 font-serif relative z-10 max-w-md p-8  shadow-lg shadow-violet-300 justify-center rounded-3xl items-center">
+            <div className="w-full flex flex-col gap-2 font-serif relative z-10 max-w-md p-8 bg-black  shadow-lg shadow-violet-300 justify-center rounded-3xl items-center">
                 <h1 className=" font-bold mb-4 text-violet-300 text-4xl text-center">Reset Password</h1>
+                {!clickedResendOtp && timeLeft > 0 && (
+                    <div className="text-xl font-bold text-blue-400 mb-2">
+                        OTP expires in: {formatTime(timeLeft)}
+                    </div>
+                )}
                 {
                     clickedResendOtp ? (
                         <>
@@ -58,28 +109,46 @@ const ResetPassword = () => {
                             <input
                                 type="email"
                                 placeholder="Email"
-                                className="border p-2 rounded"
+                                className="border p-2 rounded w-full"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
-                            <input
-                                type="password"
-                                placeholder="New Password"
-                                className="border p-2 rounded"
-                                value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)}
-                            />
-                            <input
-                                type="password"
-                                placeholder="Confirm Password"
-                                className="border p-2 rounded"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                            />
+                            <div className="relative w-full">
+                                <input
+                                    type={showPassword.newPassword ? "text" : "password"}
+                                    placeholder="New Password"
+                                    className="border p-2 rounded w-full pr-10"
+                                    value={newPassword}
+                                    onChange={(e) => setNewPassword(e.target.value)}
+                                />
+                                <button
+                                    type="button"
+                                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
+                                    onClick={() => setShowPassword(prev => ({ ...prev, newPassword: !prev.newPassword }))}
+                                >
+                                    {showPassword.newPassword ? "👁️" : "👁️‍🗨️"}
+                                </button>
+                            </div>
+                            <div className="relative w-full">
+                                <input
+                                    type={showPassword.confirmPassword ? "text" : "password"}
+                                    placeholder="Confirm Password"
+                                    className="border p-2 rounded w-full pr-10"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                />
+                                <button
+                                    type="button"
+                                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
+                                    onClick={() => setShowPassword(prev => ({ ...prev, confirmPassword: !prev.confirmPassword }))}
+                                >
+                                    {showPassword.confirmPassword ? "👁️" : "👁️‍🗨️"}
+                                </button>
+                            </div>
                             <input
                                 type="text"
                                 placeholder="Otp"
-                                className="border p-2 rounded"
+                                className="border p-2 rounded w-full"
                                 value={otp}
                                 onChange={(e) => setOtp(e.target.value)}
                             />
