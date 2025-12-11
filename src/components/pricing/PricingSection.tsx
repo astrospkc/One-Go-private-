@@ -52,12 +52,9 @@ const plans = [
 
 
 export default function PricingSection() {
-<<<<<<< Updated upstream
-    const cn = "bg-linear-gradient-to-br from-purple-500/50 to-violet-700/30 p-8 rounded-2xl shadow-xl  scale-105"
-=======
+
     const { user, token, isAuthenticated } = useAuthStore()
-    const router = useRouter()
-    // const cn = "bg-linear-gradient-to-br from-purple-500/50 to-violet-700/30 p-8 rounded-2xl shadow-xl  scale-105"
+
     const handleSubscriptionPlan = async (plan: string) => {
         try {
             if (isAuthenticated) {
@@ -67,7 +64,7 @@ export default function PricingSection() {
                 const { success, data } = await paymentService.createPaymentLink(payload, token)
                 console.log("success and data", success, data)
                 window.location.href = data.short_url
->>>>>>> Stashed changes
+
 
             } else {
                 window.location.href = "/auth/signIn"
