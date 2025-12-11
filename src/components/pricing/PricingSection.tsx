@@ -43,7 +43,7 @@ const plans = [
 
 
 export default function PricingSection() {
-    // const cn = "bg-linear-gradient-to-br from-purple-500/50 to-violet-700/30 p-8 rounded-2xl shadow-xl  scale-105"
+
 
     return (
         <div className="p-8 bg-[#0b0b0e] text-gray-100 min-h-screen flex flex-col items-center">
