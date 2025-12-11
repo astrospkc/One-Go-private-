@@ -17,7 +17,6 @@ const Collection = () => {
     const { collection, setCollection } = useCollectionStore()
     const { token } = useAuthStore()
     const [showDeleteModal, setShowDeleteModal] = useState(false)
-    console.log("collection: ", collection)
 
     const handleDeleteCollection = () => {
         setShowDeleteModal(true)
@@ -25,7 +24,7 @@ const Collection = () => {
     const deleteCollection = async (col_id: string) => {
         try {
             const response = await collectionService.deleteCollectionById(col_id, token)
-            const { message, code } = response
+            const { code } = response
             if (code == 200) {
                 const fetchNewCollection = await collectionService.getAllCollection(token)
                 const { collections, code } = fetchNewCollection
@@ -34,7 +33,6 @@ const Collection = () => {
                 }
             }
         } catch (error) {
-            console.log("error: ", error)
             throw error as Error
         } finally {
             setShowDeleteModal(false)

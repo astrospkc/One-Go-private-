@@ -20,7 +20,6 @@ const TotalProject = () => {
         queryFn: () => getAllProjects(),
         enabled: !!token
     })
-    console.log("project data: ", query.data)
     useEffect(() => {
         if (query.data) {
             setProjects(query.data)

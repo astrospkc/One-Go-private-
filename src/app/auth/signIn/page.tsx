@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 import { ArrowBigLeft } from 'lucide-react';
 import { authService } from '@/services/authService';
+import toast from 'react-hot-toast';
 
 
 export default function SignInPage() {
@@ -21,6 +22,7 @@ export default function SignInPage() {
                 const forgotRes = await authService.forgotPassword(Email)
                 const { code } = forgotRes
                 if (code == 200) {
+                    toast.success("Otp sent successfully, check your provided email")
                     router.push("/auth/resetPassword")
                 }
             } catch (error) {
@@ -40,16 +42,17 @@ export default function SignInPage() {
                 setUserLoading(false)
             } catch (error) {
                 console.error(error)
+                toast.error("Invalid email or password")
+
             } finally {
                 setUserLoading(false)
             }
         }
-        console.log("handle submit")
+
     }
     const handleForgotPassword = () => {
         setClickedForgotPassword(prev => !prev)
     }
-    console.log("user loading:", userLoading)
     return (
 
         <div className="w-full flex flex-col gap-2 font-serif relative z-10 max-w-md p-8  shadow-lg shadow-violet-300 justify-center rounded-3xl items-center">
@@ -92,7 +95,7 @@ export default function SignInPage() {
                     <><button onClick={() => handleSubmit("send-otp")} type="submit" className="bg-blue-600 text-white p-2 rounded hover:cursor-pointer hover:scale-90">
                         Send Otp
                     </button>
-                        <span className='flex flex-row gap-2 '><ArrowBigLeft />Back</span>
+                        {/* <span className='flex flex-row gap-2 '><ArrowBigLeft />Back</span> */}
                     </>
                 ) : (
                     <>

@@ -24,8 +24,8 @@ const About = () => {
             </div>
             <div className='flex justify-center items-center flex-col my-10 w-3/4'>
 
-                <div className='text-6xl font-bold text-center'>💡 A CMS That Gives You an API — Instantly</div>
-                <div>
+                <div className='text-6xl font-bold text-center text-indigo-300'>💡 A CMS That Gives You an API — Instantly</div>
+                <div className="text-white/90 text-lg mt-4">
                     This CMS is for devs, freelancers, indie makers — anyone who needs dynamic content in their projects without spinning up a whole new backend.
 
                     You get:
@@ -40,14 +40,17 @@ const About = () => {
             <div className='flex justify-center items-center flex-col my-10 w-3/4'>
 
                 <div className='text-4xl'>🎯Who It’s For</div>
-                <div className='my-10 text-center'>
-                    Developers tired of building dashboards from scratch
+                <div className='my-10 text-center relative bg-[#0A0B12] rounded-3xl p-6 shadow-xl border border-white/20'>
+                    <div className="absolute -top-16 -left-12 w-48 h-48 bg-violet-600/30 blur-3xl rounded-full" />
+                    <div className="absolute -bottom-20 -right-16 w-64 h-64 bg-indigo-500/30 blur-3xl rounded-full" />
+                    <ul className=" text-start text-xl grid grid-cols-4 gap-4">
+                        <li>⭐ Developers tired of building dashboards from scratch</li>
+                        <li>⭐ Designers who want to update content without touching code</li>
+                        <li>⭐ Students & freelancers building their portfolio the smart way</li>
+                        <li>⭐ Teams & agencies managing content across multiple sites</li>
+                    </ul>
 
-                    Designers who want to update content without touching code
 
-                    Students & freelancers building their portfolio the smart way
-
-                    Teams & agencies managing content across multiple sites
 
                 </div>
             </div>

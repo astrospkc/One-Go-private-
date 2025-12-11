@@ -10,7 +10,6 @@ export default async function getAllCollection() {
             credentials: "include",
 
         })
-        console.log("response collections: ", response)
 
         const data = await response.json()
         return data

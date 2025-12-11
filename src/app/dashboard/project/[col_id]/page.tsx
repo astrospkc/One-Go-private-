@@ -92,7 +92,6 @@ const Project = () => {
     const col_id = params.col_id
     const searchParams = useSearchParams()
     const title = searchParams.get('title')
-    console.log("title: ", title)
     const { setProject } = useProjectStore()
     const [collectionData, setCollectionData] = useState<SingleCollection | null>(null)
     const { token } = useAuthStore()

@@ -2,7 +2,6 @@
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { AiFillCaretLeft } from 'react-icons/ai'
-import useCollectionStore from '@/store/collectionStore'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import baseUrl from '@/services/api'
@@ -11,13 +10,13 @@ import { CollectionWithProjects } from '../../../types'
 
 
 const TotalCollection = () => {
-    const { collection } = useCollectionStore()
+    // const { collection } = useCollectionStore()
     const [collectionData, setCollectionData] = useState<CollectionWithProjects[]>([])
     const { token } = useAuthStore()
     const [showProjects, setShowProjects] = useState(false)
 
     // use react query here 
-    const { data: col_data, isLoading: isCollectionLoading, error: collectionError } = useQuery({
+    const { data: col_data, error: collectionError } = useQuery({
         queryKey: ['collectionData'],
         queryFn: async () => {
 
