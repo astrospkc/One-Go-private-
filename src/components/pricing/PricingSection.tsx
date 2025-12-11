@@ -1,3 +1,10 @@
+"use client"
+
+import { paymentService } from "@/services/paymentService";
+import { useAuthStore } from "@/store/authStore";
+
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const plans = [
     {
@@ -28,7 +35,7 @@ const plans = [
     },
     {
         id: 3,
-        plan_name: "Pro/Team",
+        plan_name: "Pro",
         about: ">For teams & high-traffic apps",
         price: "₹299",
         button: "Talk to Sales",
@@ -41,10 +48,37 @@ const plans = [
     }
 ]
 
+// const handleSubscriptionPlan = 
+
 
 export default function PricingSection() {
+<<<<<<< Updated upstream
     const cn = "bg-linear-gradient-to-br from-purple-500/50 to-violet-700/30 p-8 rounded-2xl shadow-xl  scale-105"
+=======
+    const { user, token, isAuthenticated } = useAuthStore()
+    const router = useRouter()
+    // const cn = "bg-linear-gradient-to-br from-purple-500/50 to-violet-700/30 p-8 rounded-2xl shadow-xl  scale-105"
+    const handleSubscriptionPlan = async (plan: string) => {
+        try {
+            if (isAuthenticated) {
+                const payload = {
+                    plan: plan
+                }
+                const { success, data } = await paymentService.createPaymentLink(payload, token)
+                console.log("success and data", success, data)
+                window.location.href = data.short_url
+>>>>>>> Stashed changes
 
+            } else {
+                window.location.href = "/auth/signIn"
+                toast.error("Your need to first have an account to subscribe. Login first or create an account.")
+
+            }
+
+        } catch (error) {
+            throw new Error("Something went wrong while handling subscription plan.")
+        }
+    }
     return (
         <div className="p-8 bg-[#0b0b0e] text-gray-100 min-h-screen flex flex-col items-center">
             <div className="flex items-center justify-center mb-6">
@@ -66,7 +100,7 @@ export default function PricingSection() {
                             <h2 className="text-2xl font-semibold mb-2"> {plan.plan_name}</h2>
                             <p className="text-lg text-gray-300 mb-6">{plan.about}</p>
                             <p className="text-4xl font-bold mb-4">{plan.price}<span className="text-lg text-gray-400">/month</span></p>
-                            <button className="w-full py-2 rounded-xl border border-gray-400 hover:bg-white hover:text-black transition hover:cursor-pointer">{plan.button}</button>
+                            <button onClick={() => handleSubscriptionPlan(plan.plan_name.toLocaleLowerCase())} className="w-full py-2 rounded-xl border border-gray-400 hover:bg-white hover:text-black transition hover:cursor-pointer">{plan.button}</button>
 
                             <ul className="mt-6 space-y-3 text-sm">
                                 {plan.features.map((feature, index) => (
