@@ -53,6 +53,7 @@ const plans = [
 
 export default function PricingSection() {
 
+
     const { user, token, isAuthenticated } = useAuthStore()
 
     const handleSubscriptionPlan = async (plan: string) => {
@@ -77,6 +78,7 @@ export default function PricingSection() {
     }
     return (
         <div className="p-8 bg-[#0b0b0e] text-gray-100 min-h-screen flex flex-col items-center">
+
             <div className="flex items-center justify-center mb-6">
                 <h1 className="text-6xl   font-bold  bg-clip-text bg-linear-to-r from-purple-400 to-pink-500">
                     Pricing

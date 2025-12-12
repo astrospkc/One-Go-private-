@@ -35,14 +35,12 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
         try {
             const files = e.target.files ? Array.from(e.target.files) : [];
             setSelectedFile(files)
-            console.log("files: ", files)
             const uploadFiles = files.map((f) => ({
                 file: f,
                 name: f.name
             }))
 
             setUploads(uploadFiles)
-            console.log("uploads: ", uploads)
             setSelectedFileNames(files.map((f) => f.name))
 
         } catch (error) {
@@ -51,25 +49,19 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
     }
     const handleAddFileUrls = async () => {
         try {
-            console.log("selected file names: ", selectedFileNames)
             const urls = await projectService.getPresignedUrls(selectedFileNames, token)
 
             const updateUploads = uploads.map((item, index) => {
-                console.log("item: ", item)
                 const key = extractObjectKey(urls.urls[index])
-                console.log("urls[index]: ", index, urls.urls[index])
                 return ({
                     ...item,
                     presignedUrl: urls.urls[index],
                     nameKey: key
                 })
             })
-            console.log("updateUploads: ", updateUploads)
             setUploads(updateUploads)
 
             for (const item of updateUploads) {
-                console.log("items")
-                console.log(item)
                 if (!item.presignedUrl) continue;
                 await axios.put(item.presignedUrl, item.file, {
                     headers: {
@@ -85,9 +77,7 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
 
     const handleSubmit = async () => {
         try {
-            console.log("uploads, ", uploads)
 
-            console.log("submitting the form")
             const body = {
                 title,
                 description,
@@ -127,7 +117,6 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
         setSettingClicked(!settingClicked)
     }
 
-    console.log("projects: ", project)
 
 
     return (<>

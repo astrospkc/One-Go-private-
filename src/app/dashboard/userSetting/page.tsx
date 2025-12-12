@@ -1,7 +1,6 @@
 "use client"
 import React, { useState } from 'react'
 import { User } from '../../../../types'
-import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/store/authStore'
 import { authService } from '@/services/authService'

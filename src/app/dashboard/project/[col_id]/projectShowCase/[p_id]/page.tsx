@@ -67,14 +67,11 @@ const ProjectShowCase = () => {
                 alert(message)
             }
         } catch (error) {
-            console.log("Error deleting file", error)
         }
     }
     const handleViewFile = async () => {
-        console.log("view file")
     }
     const handleDownloadFile = async () => {
-        console.log("download file")
     }
     return (
         <>
@@ -83,7 +80,7 @@ const ProjectShowCase = () => {
                 {projectData &&
                     <>
                         <div className="flex items-center justify-between mb-6">
-                            <h1 className="text-6xl text-transparent  font-bold  bg-clip-text bg-linear-gradient-to-r from-purple-400 to-pink-500">
+                            <h1 className="text-6xl text-transparent  font-bold  bg-clip-text bg-linear-to-r from-purple-400 to-pink-500">
                                 {projectData.title.toUpperCase()}
                             </h1>
                             <Link href={`/dashboard/project/${col_id}`} className="text-sm text-purple-400 hover:underline">← Back to Overview</Link>
