@@ -27,6 +27,9 @@ const Navbar = () => {
                     <li><Link href="/about" className="hover:text-violet-300">About</Link></li>
                     <li><Link href="#features" className="hover:text-violet-300">Features</Link></li>
                     <li><Link href="/pricing" className="hover:text-violet-300">Pricing</Link></li>
+                    <li><Link href="/pricing" className="hover:text-violet-300">⭐Subscription</Link></li>
+
+
                     <li><Link href="#contact" className="hover:text-violet-300">Contact</Link></li>
                     {
                         isAuthenticated ?

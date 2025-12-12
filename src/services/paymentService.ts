@@ -15,7 +15,6 @@ export const paymentService = {
                     }
                 }
             )
-            console.log("res", res.data)
             const { success, data } = res.data
             return { success, data }
 

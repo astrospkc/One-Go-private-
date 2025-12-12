@@ -50,7 +50,6 @@ const Blogs = () => {
             }
         })
         const result = await res.data
-        console.log("deleted data: ", result)
         const blogResponse = await getAllBlogs(token ?? "", col_id)
         setBlogs(blogResponse)
         window.location.reload()
@@ -62,7 +61,6 @@ const Blogs = () => {
         //         Authorization: `Bearer ${token}`,
         //     }
         // })
-        console.log("blogid: ", blogid, 'col_id: ', col_id)
 
     }
 

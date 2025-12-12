@@ -26,7 +26,6 @@ export default function PaymentSuccessPage() {
     useEffect(() => {
         const subscribe = async () => {
             const response = await paymentService.subscriptionActive(token, queries)
-            console.log("response", response)
             if (response.success) {
                 console.log("subscribed")
             }
