@@ -62,7 +62,6 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
             setUploads(updateUploads)
 
             for (const item of updateUploads) {
-
                 if (!item.presignedUrl) continue;
                 await axios.put(item.presignedUrl, item.file, {
                     headers: {

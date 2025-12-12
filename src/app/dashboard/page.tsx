@@ -17,11 +17,13 @@ import projectService from "@/services/projectService"
 const Dashboard = () => {
 
     const { user, token } = useAuthStore()
+
     const [isOpen, setIsOpen] = useState(false);
     const { collection, setCollection } = useCollectionStore()
     const { project, setProject } = useProjectStore()
     const [sectionSelected, setSectionSelected] = useState('collection')
 
+    console.log(isOpen, sectionSelected)
     // const {user} = props 
     const router = useRouter()
 
@@ -42,6 +44,7 @@ const Dashboard = () => {
             return response.data
         }
     })
+    console.log("collection data, project data: ", collectionData, projectData)
     if (collectionError) {
         console.error(collectionError)
         throw collectionError
