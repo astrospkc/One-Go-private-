@@ -12,6 +12,8 @@ import { useAuthStore } from "@/store/authStore"
 import { useQuery } from "@tanstack/react-query"
 import { collectionService } from "@/services/collectionService"
 import projectService from "@/services/projectService"
+import { usePaymentStore } from "@/store/paymentStore";
+import { paymentService } from "@/services/paymentService";
 
 
 const Dashboard = () => {
@@ -22,11 +24,27 @@ const Dashboard = () => {
     const { collection, setCollection } = useCollectionStore()
     const { project, setProject } = useProjectStore()
     const [sectionSelected, setSectionSelected] = useState('collection')
-
+    const { setPlan, setIsActive, setSubscriptionData } = usePaymentStore()
     console.log(isOpen, sectionSelected)
     // const {user} = props 
     const router = useRouter()
 
+    // get the active plan of user
+    useEffect(() => {
+        const getActiveSubscription = async () => {
+            try {
+                const res = await paymentService.getActiveSubscription(token)
+                const { plan, status, data } = res
+                setPlan(plan)
+                setIsActive(status)
+                setSubscriptionData(data)
+            } catch (error) {
+                console.error(error)
+                throw error
+            }
+        }
+        getActiveSubscription()
+    }, [])
 
 
     const { error: collectionError, data: collectionData, isPending: isCollectionPending } = useQuery({
@@ -104,9 +122,7 @@ const Dashboard = () => {
     }
 
 
-    // if (!isAuthenticated) {
-    //     router.push("/auth/signIn")
-    // }
+
 
 
     return (

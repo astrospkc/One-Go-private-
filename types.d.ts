@@ -68,6 +68,27 @@ export type CollectionContextType = {
     setCollectionLoading: (value: boolean) => void
 }
 
+export type PaymentContextType = {
+    plan: string,
+    isActive: boolean,
+    subscriptionData: SubscriptionType,
+    setPlan: (plan: string) => void,
+    setIsActive: (status: boolean) => void,
+    setSubscriptionData: (data: SubscriptionType) => void,
+}
+
+export type SubscriptionType = {
+    id: string
+    user_id: string
+    plan: string
+    status: string
+    start_at: string
+    end_at: string
+    auto_renew: boolean
+    trial_ends_at: string
+    updated_at: string
+}
+
 export type Project = {
     id?: string,
     user_id?: string,
