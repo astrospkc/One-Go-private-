@@ -37,5 +37,19 @@ export const paymentService = {
         } catch (error) {
             throw error
         }
+    },
+
+    async getActiveSubscription(token: string) {
+        try {
+            const res = await axios.get(`${baseUrl}/payment/subscription/isActive`, {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+            const { plan, status, data } = await res.data
+            return { plan, status, data }
+        } catch (error) {
+            throw error
+        }
     }
 }
