@@ -1,12 +1,14 @@
 "use client"
 import Link from 'next/link';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 import { ArrowBigLeft } from 'lucide-react';
 import { authService } from '@/services/authService';
 import toast from 'react-hot-toast';
+import { usePaymentStore } from '@/store/paymentStore';
+import { paymentService } from '@/services/paymentService';
 
 
 export default function SignInPage() {
@@ -14,6 +16,7 @@ export default function SignInPage() {
     const [Password, setPassword] = useState("")
     const [clickedForgotPassword, setClickedForgotPassword] = useState(false)
     const { userLoading, setUser, setIsAuthenticated, setUserLoading, setToken } = useAuthStore();
+
 
     const router = useRouter()
     const handleSubmit = async (type: string) => {
@@ -47,9 +50,11 @@ export default function SignInPage() {
             } finally {
                 setUserLoading(false)
             }
+
         }
 
     }
+
     const handleForgotPassword = () => {
         setClickedForgotPassword(prev => !prev)
     }
