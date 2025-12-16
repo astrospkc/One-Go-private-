@@ -5,7 +5,7 @@ import { useAuthStore } from "@/store/authStore";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import toast from "react-hot-toast";
 
 export default function PaymentSuccessPage() {
@@ -23,7 +23,7 @@ export default function PaymentSuccessPage() {
         RazorpaySignature
     }
     const { token } = useAuthStore()
-    useEffect(() => {
+    useLayoutEffect(() => {
         const subscribe = async () => {
             const response = await paymentService.subscriptionActive(token, queries)
             if (response.success) {
