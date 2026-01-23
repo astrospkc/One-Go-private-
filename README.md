@@ -7,6 +7,10 @@ Instead of rebuilding backend logic every time you start a new portfolio or side
 ## Backend of One-Go
 [One-go backend](https://github.com/astrospkc/cms_gobackend)
 
+
+https://github.com/user-attachments/assets/f817a27a-0b7b-4157-90f0-b53d35bbb1d7
+
+
 ## 🧠 How the Idea Started
 
 Every time we built something — a personal site, a side hustle, or client work — we realized we were repeating the same steps:
@@ -59,6 +63,10 @@ So we built **One-Go** — a modern CMS that takes care of all backend hurdles f
 ## 📦 Getting Started
 
 ### Clone & Install
+
+
+
+
 ```bash
 # Clone this repo
 git clone https://github.com/your-username/one-go
