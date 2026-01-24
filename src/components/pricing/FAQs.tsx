@@ -1,8 +1,8 @@
 const FAQs = () => {
     return (
-        <section className="max-w-4xl mx-auto px-6 py-24">
-            <h3 className="text-3xl font-bold mb-12 text-center">Frequently Asked Questions</h3>
-            <div className="space-y-10">
+        <section className="max-w-3xl mx-auto px-6 py-24 border-t border-gray-100">
+            <h3 className="text-3xl font-bold mb-12 text-center text-gray-900">Frequently Asked Questions</h3>
+            <div className="space-y-8">
                 {[
                     {
                         q: "Is the free plan really free?",
@@ -21,9 +21,9 @@ const FAQs = () => {
                         a: "Yes! Pro/Team comes with collaboration and access controls."
                     }
                 ].map((item, i) => (
-                    <div key={i}>
-                        <p className="font-semibold text-lg text-white mb-2">{item.q}</p>
-                        <p className="text-gray-300 text-sm">{item.a}</p>
+                    <div key={i} className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
+                        <h4 className="font-bold text-lg text-gray-900 mb-2">{item.q}</h4>
+                        <p className="text-gray-600 text-sm leading-relaxed">{item.a}</p>
                     </div>
                 ))}
             </div>
