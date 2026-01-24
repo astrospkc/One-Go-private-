@@ -5,11 +5,16 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import { Project } from '../../../types';
 import { useAuthStore } from '@/store/authStore';
+import { UploadCloud, FileText, Check, Plus, X } from 'lucide-react';
+
 type ProjectGettingStartedProps = {
     col_id: string;
 };
 type FileState = File[] | null
+
 const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
+
+    // Form State
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [tags, setTags] = useState("")
@@ -20,7 +25,10 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
     const [liveUrl, setLiveUrl] = useState("")
     const [blogLink, setBlogLink] = useState("")
     const [teamMembers, setTeamMembers] = useState("")
+
+    // Logic State
     const [uploads, setUploads] = useState<{ file: File; name: string; presignedUrl?: string; nameKey?: string }[]>([])
+    const [showForm, setShowForm] = useState(false)
     const { setProject } = useProjectStore()
     const { token } = useAuthStore()
 
@@ -47,8 +55,10 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
             console.error("Error fetching presigned urls of files ", error)
         }
     }
+
     const handleAddFileUrls = async () => {
         try {
+            if (selectedFileNames.length === 0) return;
             const urls = await projectService.getPresignedUrls(selectedFileNames, token)
 
             const updateUploads = uploads.map((item, index) => {
@@ -66,10 +76,10 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
                 await axios.put(item.presignedUrl, item.file, {
                     headers: {
                         "Content-Type": item.file.type,
-
                     }
                 })
             }
+            alert("Files uploaded successfully!")
         } catch (error) {
             console.error("Error fetching presigned urls of files ", error)
         }
@@ -77,7 +87,6 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
 
     const handleSubmit = async () => {
         try {
-
             const body = {
                 title,
                 description,
@@ -99,7 +108,9 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
                 return [data as Project];
             });
 
-            alert("project created successfully")
+            alert("Project created successfully")
+            setShowForm(false)
+            resetForm()
 
         } catch (error) {
             console.error("Error creating project:", error);
@@ -107,181 +118,225 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
         }
     }
 
-    const [settingClicked, setSettingClicked] = useState(false)
-    const handleSettingProject = () => {
-        setSettingClicked(!settingClicked)
-    }
-    const handleDiscard = () => {
+    const resetForm = () => {
+        setTitle("")
+        setDescription("")
+        setTags("")
         setSelectedFile([])
-
-        setSettingClicked(!settingClicked)
+        setUploads([])
+        setSelectedFileNames([])
+        setGithubLink("")
+        setLiveUrl("")
+        setVideoDemoLink("")
+        setBlogLink("")
+        setTeamMembers("")
     }
 
+    const handleDiscard = () => {
+        resetForm()
+        setShowForm(false)
+    }
 
+    return (
+        <div className='max-w-4xl mx-auto py-8 animate-in fade-in slide-in-from-bottom-4 duration-500'>
 
-    return (<>
-        <div className='bg-black w-full h-screen justify-center items-center p-4 '>
-            <Template />
-            <h1 className='text-blue-900'>For developer</h1>
-            <h1 className='text-3xl text-white'> You&apos;re just few steps away from uploading projects. </h1>
-            <div className='w-full justify-center items-center m-auto my-5'>
-                <button
-                    onClick={handleSettingProject}
-                    style={{
-                        background: 'radial-gradient(circle at center, #675575, #5D3871, #090417)',
-                    }}
-                    className='p-4  border-2 border-slate-400/20 w-fit rounded-2xl cursor-pointer hover:scale-105 transition-transform hover:shadow-md hover:shadow-yellow-400/70 hover:bg-yellow-50'>setting up your project </button>
+            {/* Intro Section */}
+            <div className="mb-12 text-center">
+                <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight mb-3">
+                    Start Building
+                </h1>
+                <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+                    You&apos;re just a few steps away from showcasing your work. Follow the guide below or jump straight into setting up your project.
+                </p>
+            </div>
 
-                {
-                    settingClicked &&
-                    <div className=' flex flex-col gap-4 w-1/2 p-4 m-2  rounded-2xl h-full '>
-                        <div className='shadow-md shadow-[#5D3871]/80 p-4 rounded-2xl'>
-                            <h1>Basic Details</h1>
-                            <input onChange={(e) => setTitle(e.target.value)} type="text" placeholder='Project Name' className='w-full rounded-2xl p-2 my-2 border-2 border-[#5D3871]/80' />
-                            <textarea onChange={(e) => setDescription(e.target.value)} placeholder='Project Short Description' className='w-full rounded-2xl p-2 my-2 border-2 border-[#5D3871]/80' />
-                            <input onChange={(e) => setTags(e.target.value)} type="text" placeholder='Tags/Skills comma separated Used eg. if you are a web developer then you can write React, Nextjs, Tailwindcss' className='w-full rounded-2xl p-2 my-2 border-2 border-[#5D3871]/80' />
+            {/* Action Card */}
+            <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden mb-12">
+                {!showForm ? (
+                    <div className="p-8 text-center bg-gray-50/50">
+                        <div className="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <Plus size={32} />
                         </div>
-                        <div className='shadow-sm shadow-slate-800 p-4 rounded-2xl'>
-                            <h1>Content Uploads:</h1>
-                            <input multiple onChange={handleFiles} type="file" placeholder='File Upload' className='w-full rounded-2xl p-2 my-2 border-2 border-slate-800' />
+                        <h2 className="text-xl font-bold text-gray-900 mb-2">Create New Project</h2>
+                        <p className="text-gray-500 mb-6">Ready to add a new project to this collection?</p>
+                        <button
+                            onClick={() => setShowForm(true)}
+                            className="bg-black text-white px-8 py-3 rounded-xl font-semibold hover:bg-gray-800 transition-all shadow-lg shadow-gray-200 hover:-translate-y-1"
+                        >
+                            Set up Project
+                        </button>
+                    </div>
+                ) : (
+                    <div className="p-8">
+                        <div className="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+                            <h2 className="text-xl font-bold text-gray-900">Project Details</h2>
+                            <button onClick={handleDiscard} className="text-gray-400 hover:text-red-500 transition-colors">
+                                <X size={20} />
+                            </button>
+                        </div>
 
-
-                            {selectedFile && selectedFile.length > 0 && (
-                                <div className="mt-3 p-3 border border-slate-300/30 rounded-lg bg-slate-600/10">
-                                    <h3 className="font-semibold text-white mb-2">
-                                        Selected Files:
-                                    </h3>
-                                    <ul className="space-y-2">
-                                        {selectedFile.map((file, index) => (
-                                            <li
-                                                key={index}
-                                                className="flex items-center justify-between text-slate-700 text-sm bg-blue-400 border border-slate-200/30 rounded-md px-2 py-1 shadow-sm"
-                                            >
-                                                <span>{file.name}</span>
-                                                <span className="text-xs text-black">
-                                                    {(file.size / 1024).toFixed(1)} KB
-                                                </span>
-                                            </li>
-                                        ))}
-                                    </ul>
+                        <div className="space-y-8">
+                            {/* Basic Details */}
+                            <section className="space-y-4">
+                                <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Basic Info</h3>
+                                <div className="grid gap-4">
+                                    <input
+                                        onChange={(e) => setTitle(e.target.value)}
+                                        value={title}
+                                        type="text"
+                                        placeholder='Project Name'
+                                        className='w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all'
+                                    />
+                                    <textarea
+                                        onChange={(e) => setDescription(e.target.value)}
+                                        value={description}
+                                        placeholder='Short Description'
+                                        className='w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all min-h-[100px] resize-y'
+                                    />
+                                    <input
+                                        onChange={(e) => setTags(e.target.value)}
+                                        value={tags}
+                                        type="text"
+                                        placeholder='Tags (e.g., React, Nextjs, Tailwind)'
+                                        className='w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all'
+                                    />
                                 </div>
-                            )}
-                            <button onClick={handleAddFileUrls} className='bg-[#5D3871] p-2 rounded-2xl hover:bg-[#846794] hover:scale-95 cursor-pointer'>Add File Urls</button>
-                            <input onChange={(e) => setVideoDemoLink(e.target.value)} type="text" placeholder='Video/demo link' className='w-full rounded-2xl p-2 my-2 border-2 border-slate-800' />
-                            <input onChange={(e) => setGithubLink(e.target.value)} type="text" placeholder='Github/Repo Link' className='w-full rounded-2xl p-2 my-2 border-2 border-slate-800' />
-                            <input onChange={(e) => setLiveUrl(e.target.value)} type="text" placeholder='Live Project Url' className='w-full rounded-2xl p-2 my-2 border-2 border-slate-800' />
-                            <input onChange={(e) => setBlogLink(e.target.value)} type="text" placeholder='Blog/Article Link' className='w-full rounded-2xl p-2 my-2 border-2 border-slate-800' />
-                        </div>
+                            </section>
 
-                        <div>
-                            <h1>Optional Details</h1>
-                            <input onChange={(e) => setTeamMembers(e.target.value)} type="text" placeholder='Team Members/Collaborators (name + role)' className='w-full rounded-2xl p-2 my-2 border-2 border-slate-800' />
-                            <input type="date" placeholder='date' className='w-full rounded-2xl p-2 my-2 border-2 border-slate-800' />
-                            <input type="text" placeholder='Tech Stack' className='w-full rounded-2xl p-2 my-2 border-2 border-slate-800' />
+                            {/* Uploads */}
+                            <section className="space-y-4">
+                                <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Content</h3>
+                                <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center hover:bg-gray-50 transition-colors relative">
+                                    <input
+                                        multiple
+                                        onChange={handleFiles}
+                                        type="file"
+                                        className='absolute inset-0 w-full h-full opacity-0 cursor-pointer'
+                                    />
+                                    <UploadCloud className="w-10 h-10 text-gray-400 mx-auto mb-2" />
+                                    <p className="text-sm font-medium text-gray-600">Click to upload files</p>
+                                    <p className="text-xs text-gray-400">Images, Videos, or Documents</p>
+                                </div>
 
-                        </div>
-                        <div className=' flex flex-row gap-4'>
-                            <button onClick={handleSubmit} className='bg-[#5D3871] p-2 rounded-2xl hover:bg-[#846794] hover:scale-95 cursor-pointer'>Submit</button>
-                            <button onClick={handleDiscard} className='bg-red-900 hover:bg-red-700 p-2 rounded-2xl hover:scale-95 cursor-pointer'>Discard</button>
+                                {selectedFile && selectedFile.length > 0 && (
+                                    <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                                        <div className="flex justify-between items-center mb-3">
+                                            <h4 className="text-sm font-semibold text-gray-700">Selected Files</h4>
+                                            <button
+                                                onClick={handleAddFileUrls}
+                                                className="text-xs bg-indigo-600 text-white px-3 py-1.5 rounded-lg hover:bg-indigo-700 transition-colors"
+                                            >
+                                                Upload Now
+                                            </button>
+                                        </div>
+                                        <ul className="space-y-2">
+                                            {selectedFile.map((file, index) => (
+                                                <li key={index} className="flex items-center justify-between text-sm bg-white p-2 rounded border border-gray-200">
+                                                    <div className="flex items-center gap-2 overflow-hidden">
+                                                        <FileText className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                                                        <span className="truncate text-gray-700">{file.name}</span>
+                                                    </div>
+                                                    <span className="text-xs text-gray-400 flex-shrink-0 pl-2">
+                                                        {(file.size / 1024).toFixed(1)} KB
+                                                    </span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                            </section>
+
+                            {/* Links */}
+                            <section className="space-y-4">
+                                <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Links</h3>
+                                <div className="grid sm:grid-cols-2 gap-4">
+                                    <input onChange={(e) => setGithubLink(e.target.value)} value={githublink} type="text" placeholder='GitHub Repo URL' className='input-clean' />
+                                    <input onChange={(e) => setLiveUrl(e.target.value)} value={liveUrl} type="text" placeholder='Live Demo URL' className='input-clean' />
+                                    <input onChange={(e) => setVideoDemoLink(e.target.value)} value={videoDemolink} type="text" placeholder='Video Demo URL' className='input-clean' />
+                                    <input onChange={(e) => setBlogLink(e.target.value)} value={blogLink} type="text" placeholder='Blog Article URL' className='input-clean' />
+                                </div>
+                            </section>
+
+                            {/* Optional */}
+                            <section className="space-y-4">
+                                <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Optional</h3>
+                                <div className="grid gap-4">
+                                    <input onChange={(e) => setTeamMembers(e.target.value)} value={teamMembers} type="text" placeholder='Team Members (Name - Role)' className='input-clean' />
+                                </div>
+                            </section>
+
+                            {/* Actions */}
+                            <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                                <button onClick={handleDiscard} className="bg-red-900 text-white hover:bg-red-700 px-6 py-3 rounded-xl transition-colors">Discard</button>
+                                <button onClick={handleSubmit} className="bg-green-900 text-white hover:bg-green-700 px-6 py-3 rounded-xl transition-colors">Create Project</button>
+                            </div>
                         </div>
                     </div>
-                }
-
+                )}
             </div>
-            {/* <input type="file" multiple onChange={handleFiles} />
-            <button onClick={handleAddFileUrls}>Add File Urls</button> */}
+
+            <Template />
+
+            <style jsx>{`
+                .input-clean {
+                    @apply w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all text-sm;
+                }
+                .btn-primary {
+                    @apply px-6 py-3 rounded-xl bg-black text-white font-semibold hover:bg-gray-800 transition-all shadow-lg shadow-gray-200;
+                }
+                .btn-secondary {
+                    @apply px-6 py-3 rounded-xl border border-gray-200 text-gray-600 font-medium hover:bg-gray-50 transition-colors;
+                }
+            `}</style>
         </div>
+    )
+}
 
-    </>
+const Template = () => {
+    return (
+        <section className="mt-16 border-t border-gray-100 pt-10">
+            <h2 className="text-2xl font-bold text-gray-900 mb-8">Guide</h2>
 
+            <div className="space-y-12">
+                <div className="flex gap-4">
+                    <div className="w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm shrink-0">1</div>
+                    <div>
+                        <h3 className="text-lg font-bold text-gray-900 mb-2">Set Up Your Project</h3>
+                        <p className="text-gray-500 leading-relaxed mb-4">
+                            Click "Set up Project" above. Fill in the essential details like your project name, description, and key skills used.
+                        </p>
+                        <ul className="text-sm text-gray-500 list-disc list-inside space-y-1 ml-2">
+                            <li><strong>Tags:</strong> Comma-separated (e.g., <code>React, Node.js</code>).</li>
+                            <li><strong>Media:</strong> Upload screenshots or demos to make your project stand out.</li>
+                        </ul>
+                    </div>
+                </div>
 
+                <div className="flex gap-4">
+                    <div className="w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm shrink-0">2</div>
+                    <div>
+                        <h3 className="text-lg font-bold text-gray-900 mb-2">Connect & Sync</h3>
+                        <p className="text-gray-500 leading-relaxed">
+                            Add links to your live demo, GitHub repository, or blog posts. This centralizes all your project resources in one place.
+                        </p>
+                    </div>
+                </div>
+
+                <div className="flex gap-4">
+                    <div className="w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm shrink-0">3</div>
+                    <div>
+                        <h3 className="text-lg font-bold text-gray-900 mb-2">Use the API</h3>
+                        <p className="text-gray-500 leading-relaxed mb-3">
+                            Showcase this project on your personal portfolio dynamically using our API.
+                        </p>
+                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 font-mono text-sm text-gray-600 inline-block">
+                            GET https://api.jino.io/projects/:projectId
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     )
 }
 
 export default ProjectGettingStarted
-
-
-const Template = () => {
-    return (
-        <>
-            <div>
-                <section className="getting-started bg-[#0a0a0a] text-gray-200 p-8 rounded-2xl border border-purple-900 shadow-[0_0_25px_rgba(155,55,255,0.2)] leading-relaxed font-inter">
-                    <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 mb-4">
-                        🚀 Getting Started with JINO Portfolio Project
-                    </h1>
-
-                    <p className="text-gray-300 mb-6">
-                        Welcome <span className="text-purple-400 font-semibold">JINO</span>, your developer-friendly space to upload, manage, and showcase your portfolio projects.
-                        Follow these steps to get started 👇
-                    </p>
-
-                    <hr className="border-purple-700/50 mb-6" />
-
-                    <h2 className="text-xl font-semibold text-purple-300 mb-2">🧩 Step 1: Set Up Your Project</h2>
-                    <ol className="list-decimal list-inside space-y-2 mb-6 text-gray-300">
-                        <li>Click on <span className="text-purple-400 font-medium">“Setting up your project”</span>.</li>
-                        <li>Fill out the form:
-                            <ul className="list-disc list-inside ml-4 mt-1 space-y-1 text-sm text-gray-400">
-                                <li><strong>Project Name:</strong> A short, clear name for your project.</li>
-                                <li><strong>Description:</strong> Describe what your project does in one or two sentences.</li>
-                                <li><strong>Tags/Skills:</strong> Add comma-separated skills or technologies (e.g., <code>React, Node.js, MongoDB</code>).</li>
-                            </ul>
-                        </li>
-                        <li>Upload related <span className="text-purple-300">files</span>, <span className="text-purple-300">screenshots</span>, or <span className="text-purple-300">demo videos</span>.</li>
-                    </ol>
-
-                    <hr className="border-purple-700/50 mb-6" />
-
-                    <h2 className="text-xl font-semibold text-purple-300 mb-2">⚙️ Step 2: Connect Your Account</h2>
-                    <p className="text-gray-400 mb-6">
-                        Optionally link your <strong>GitHub</strong> or <strong>Project Repository</strong> to automatically sync updates and commits.<br />
-                        <em>This keeps your portfolio live and updated without manual uploads.</em>
-                    </p>
-
-                    <hr className="border-purple-700/50 mb-6" />
-
-                    <h2 className="text-xl font-semibold text-purple-300 mb-2">💡 Step 3: Manage Your Projects</h2>
-                    <ul className="list-disc list-inside text-gray-300 mb-6 space-y-1">
-                        <li>Edit project details anytime.</li>
-                        <li>View analytics under the <em>Activity</em> tab.</li>
-                        <li>Use your API key (found in the <em>API</em> section) to integrate project data into your own site or app.</li>
-                    </ul>
-
-                    <hr className="border-purple-700/50 mb-6" />
-
-                    <h2 className="text-xl font-semibold text-purple-300 mb-2">🧠 Step 4: Use the JINO API</h2>
-                    <p className="text-gray-400 mb-2">Want to showcase your projects dynamically on your own portfolio site? Use our REST API:</p>
-                    <pre className="bg-[#1a0f24] border border-purple-700 rounded-lg p-3 text-sm text-purple-300 overflow-x-auto mb-4"><code>GET https://api.jino.io/projects/:projectId</code></pre>
-                    <p className="text-gray-400 mb-6"><em>You’ll find your API key in the <strong>API</strong> section of your dashboard.</em></p>
-
-                    <hr className="border-purple-700/50 mb-6" />
-
-                    <h2 className="text-xl font-semibold text-purple-300 mb-2">📊 Step 5: Track Your Growth</h2>
-                    <ul className="list-disc list-inside text-gray-300 mb-6 space-y-1">
-                        <li>Project views</li>
-                        <li>API requests</li>
-                        <li>File uploads</li>
-                        <li>Engagement stats</li>
-                    </ul>
-
-                    <hr className="border-purple-700/50 mb-6" />
-
-                    <h2 className="text-xl font-semibold text-purple-300 mb-2">🛠 Tips</h2>
-                    <ul className="list-disc list-inside text-gray-400 mb-6 space-y-1">
-                        <li>Keep your project details concise but descriptive.</li>
-                        <li>Add tags for better discoverability.</li>
-                        <li>Regularly update your content to reflect your latest work.</li>
-                    </ul>
-
-                    <hr className="border-purple-700/50 mb-6" />
-
-                    <h2 className="text-xl font-semibold text-purple-300 mb-2">💬 Need Help?</h2>
-                    <p className="text-gray-400">
-                        Check out the <span className="text-purple-400 font-medium">Docs</span> section or reach out to our support team via the <span className="text-purple-400 font-medium">Help Center</span>.
-                    </p>
-                </section>
-            </div>
-        </>
-    )
-
-}

@@ -45,9 +45,9 @@ export default function SignUpPage() {
 
     return (
 
-        <div className="w-full flex flex-col relative gap-2 z-10 max-w-md p-8  font-serif shadow-lg shadow-violet-300 justify-center rounded-3xl items-center">
+        <div className="w-full flex flex-col relative gap-2 z-10 max-w-md p-8  font-serif border-2 border-black justify-center rounded-3xl items-center">
 
-            <h1 className="text-4xl font-bold mb-4 text-violet-300 text-center">SIGN UP</h1>
+            <h1 className="text-4xl font-bold mb-4 text-black text-center">SIGN UP</h1>
             {
                 clickedSendOtp ? (<><input
                     type="email"

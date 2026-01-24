@@ -58,8 +58,8 @@ export default function SignInPage() {
     }
     return (
 
-        <div className="w-full flex flex-col gap-2 font-serif relative z-10 max-w-md p-8  shadow-lg shadow-violet-300 justify-center rounded-3xl items-center">
-            <h1 className=" font-bold mb-4 text-violet-300 text-4xl text-center">SIGN IN</h1>
+        <div className="w-full flex flex-col gap-2 font-serif relative z-10 max-w-md p-8 border-2 border-black/20 justify-center rounded-3xl items-center">
+            <h1 className=" font-bold mb-4 text-black text-4xl text-center">SIGN IN</h1>
             {
                 clickedForgotPassword ? (
                     <>
