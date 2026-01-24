@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-import { ArrowUpRight, TrendingUp } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 
 const usageData = [
     { label: 'API CDN Requests', value: '0', limit: '1m', color: 'bg-blue-500' },

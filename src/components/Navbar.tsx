@@ -48,6 +48,9 @@ const Navbar = () => {
                                 <button className="bg-black text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-all">
                                     Profile
                                 </button>
+                                <button onClick={handleLogout} className="bg-black text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-all">
+                                    Logout
+                                </button>
                             </>
 
                         ) :

@@ -111,7 +111,7 @@ const Project = () => {
     const [collectionData, setCollectionData] = useState<SingleCollection | null>(null)
     const { token } = useAuthStore()
     const [copied, setCopied] = useState(false)
-    // console.log("title: ", title)
+    console.log("title: ", title)
 
     // get the collection with id
     useEffect(() => {
