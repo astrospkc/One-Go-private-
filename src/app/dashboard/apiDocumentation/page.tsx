@@ -150,24 +150,24 @@ export default function APIDocumentation() {
 
 
     return (
-        <div className="min-h-screen bg-slate-950 text-gray-50 px-6 py-10">
-            <h1 className="text-3xl md:text-5xl font-bold mb-8 text-center bg-clip-text text-transparent bg-linear-to-r from-violet-500 to-blue-500">One-Go Public API Documentation</h1>
-            <div className=" flex flex-col text-center  items-center justify-center text-gray-400 mb-10 w-full mx-auto">
+        <div className="min-h-screen text-black px-6 py-10 font-serif">
+            <h1 className="text-3xl md:text-5xl font-bold mb-8 text-center text-black">One-Go Public API Documentation</h1>
+            <div className=" flex flex-col text-center  items-center justify-center text-gray-800 mb-10 w-full mx-auto">
                 <div>
                     All endpoints below are protected using <strong>API Key authentication</strong>.<br />
-                    Include your API key in the <code className="bg-gray-600 px-1  text-white rounded">Authorization</code> header: <br />
-                    <code className="bg-gray-600 px-2 py-1  text-white rounded text-sm">Bearer YOUR_API_KEY</code>
+                    Include your API key in the <code className=" px-1 border-1 border-black rounded">Authorization</code> header: <br />
+                    <code className=" px-2 py-1  border-1 border-black  rounded text-sm">Bearer YOUR_API_KEY</code>
                 </div>
 
                 <div className='shadow-sm shadow-violet-900 p-4 w-fit rounded-2xl'>
-                    <span className=''>{"{{cms_uri}} ="} </span><span className='text-red-300'>{"https://onego.xastrosbuild.site"}</span>
+                    <span className=''>{"{{cms_uri}} ="} </span><span className='text-black font-bold'>{"https://onego.xastrosbuild.site"}</span>
 
                 </div>
 
             </div>
             <div className='flex flex-row gap-2  w-full my-4'>
-                <button onClick={() => setActiveButton('public')} className={`bg-linear-to-r from-violet-500/20 to-blue-500 p-2 rounded-2xl font-extrabold text-white hover:scale-90 hover:cursor-pointer ${activeButton === 'public' ? 'shadow-md shadow-green-400/40' : ''}`}>Public APIs</button>
-                <button onClick={() => setActiveButton('subscription')} className={`bg-linear-to-r from-blue-500/20 to-violet-500 p-2 rounded-2xl font-extrabold text-white hover:scale-90 hover:cursor-pointer ${activeButton === 'subscription' ? 'shadow-md shadow-green-400/40' : ''}`}>Subscription APIs</button>
+                <button onClick={() => setActiveButton('public')} className={`bg-black p-2 rounded-2xl font-extrabold text-white hover:scale-90 hover:cursor-pointer ${activeButton === 'public' ? 'shadow-md shadow-green-400/40' : ''}`}>Public APIs</button>
+                <button onClick={() => setActiveButton('subscription')} className={`bg-black p-2 rounded-2xl font-extrabold text-white hover:scale-90 hover:cursor-pointer ${activeButton === 'subscription' ? 'shadow-md shadow-green-400/40' : ''}`}>Subscription APIs</button>
             </div>
 
             <div className='flex flex-row gap-2 justify-around w-full'>
@@ -176,8 +176,8 @@ export default function APIDocumentation() {
                     {
                         activeButton === 'public' ?
                             sections.map((section, index) => (
-                                <div key={index} className="bg-gray-800/60 p-6 rounded-2xl shadow-sm ">
-                                    <h2 className="text-2xl font-bold mb-4 text-white">{section.title}</h2>
+                                <div key={index} className="border-2 border-black p-6 rounded-2xl shadow-sm ">
+                                    <h2 className="text-2xl font-bold mb-4 text-black">{section.title}</h2>
                                     <div className="space-y-3">
                                         {section.routes.map((route, i) => (
                                             <div key={i} className=" pl-4 py-2">
@@ -185,9 +185,9 @@ export default function APIDocumentation() {
                                                     <span className={`font-bold ${route.method === 'GET' ? 'text-green-600' : route.method === 'POST' ? 'text-blue-600' : route.method === 'PUT' ? 'text-yellow-600' : 'text-red-600'}`}>
                                                         {route.method}
                                                     </span>
-                                                    &nbsp;<span className='text-red-300'>{"{{cms_uri}}"}</span>{route.path}
+                                                    &nbsp;<span className='text-black'>{"{{cms_uri}}"}</span>{route.path}
                                                 </p>
-                                                <p className="text-violet-400 font-semibold text-sm">{route.desc}</p>
+                                                <p className="text-black font-semibold text-sm">{route.desc}</p>
                                             </div>
                                         ))}
                                     </div>
@@ -199,8 +199,8 @@ export default function APIDocumentation() {
                                 <SubscriptionBanner />
                                 {
                                     activeButton == "subscription" && SubscriptionSection.map((section, index) => (
-                                        <div key={index} className="bg-gray-800/60 p-6 rounded-2xl shadow-sm ">
-                                            <h2 className="text-2xl font-bold mb-4 text-white">{section.title}</h2>
+                                        <div key={index} className="border-2 border-black p-6 rounded-2xl shadow-sm ">
+                                            <h2 className="text-2xl font-bold mb-4 text-black">{section.title}</h2>
                                             <div className="space-y-3">
                                                 {section.routes.map((route, i) => (
                                                     <div key={i} className=" pl-4 py-2">
@@ -208,7 +208,7 @@ export default function APIDocumentation() {
                                                             <span className={`font-bold ${route.method === 'GET' ? 'text-green-600' : route.method === 'POST' ? 'text-blue-600' : route.method === 'PUT' ? 'text-yellow-600' : 'text-red-600'}`}>
                                                                 {route.method}
                                                             </span>
-                                                            &nbsp;<span className='text-red-300'>{"{{cms_uri}}"}</span>{route.path}
+                                                            &nbsp;<span className='text-black'>{"{{cms_uri}}"}</span>{route.path}
                                                         </p>
                                                         <p className="text-violet-400 font-semibold text-sm">{route.desc}</p>
                                                     </div>
@@ -222,8 +222,8 @@ export default function APIDocumentation() {
                     }
 
                 </div>
-                <div className='w-1/4  mx-auto bg-gray-800/60 rounded-2xl p-4  flex flex-col  items-center'>
-                    <h1 className="text-2xl font-bold mb-4 text-white">Category</h1>
+                <div className='w-1/4  h-fit  mx-auto border-2 border-gray-200/60 rounded-2xl p-4  flex flex-col  items-center'>
+                    <h1 className="text-2xl font-bold mb-4 text-black">Category</h1>
 
                     {
                         Buttons.map((button, index) => (

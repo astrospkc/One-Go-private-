@@ -13,7 +13,7 @@ const SideBar = () => {
 
 
     return (
-        <div className="w-[20%] min-h-screen bg-transparent  p-6 flex flex-col gap-6 border-r-2 border-gray-200/60 shadow-xl shadow-slate-800 font-serif">
+        <div className="w-[20%] min-h-screen bg-transparent  p-6 flex flex-col gap-6 border-r-2 border-gray-200/60  font-serif">
             <h2 className="text-xl font-bold mb-6">Dashboard</h2>
             <h3 className="text-xl font-bold mb-6">Home</h3>
 
