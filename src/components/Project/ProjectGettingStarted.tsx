@@ -21,7 +21,7 @@ const ProjectGettingStarted = ({ col_id }: ProjectGettingStartedProps) => {
     const [blogLink, setBlogLink] = useState("")
     const [teamMembers, setTeamMembers] = useState("")
     const [uploads, setUploads] = useState<{ file: File; name: string; presignedUrl?: string; nameKey?: string }[]>([])
-    const { setProject, project } = useProjectStore()
+    const { setProject } = useProjectStore()
     const { token } = useAuthStore()
 
     function extractObjectKey(url: string) {

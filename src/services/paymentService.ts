@@ -4,10 +4,17 @@ import baseUrl from "./api"
 type PlanPayload = {
     plan: string
 }
+
+type RazorpayPayload = {
+    RazorpayPaymentId: string | null,
+    RazorpayPaymentLinkId: string | null,
+    RazorpayPaymentLinkReferenceId: string | null,
+    RazorpayPaymentLinkStatus: string | null,
+    RazorpaySignature: string | null
+}
 export const paymentService = {
     async createPaymentLink(plan: PlanPayload, token: string) {
         try {
-
             const res = await axios.post(`${baseUrl}/payment/subscription/createPaymentLink`, plan,
                 {
                     headers: {
@@ -23,7 +30,7 @@ export const paymentService = {
         }
     },
 
-    async subscriptionActive(token: string, queries: any) {
+    async subscriptionActive(token: string, queries: RazorpayPayload) {
         const { RazorpayPaymentId, RazorpayPaymentLinkId, RazorpayPaymentLinkReferenceId, RazorpayPaymentLinkStatus, RazorpaySignature } = queries
         const query = `razorpay_payment_id=${RazorpayPaymentId}&razorpay_payment_link_id=${RazorpayPaymentLinkId}&razorpay_payment_link_reference_id=${RazorpayPaymentLinkReferenceId}&razorpay_payment_link_status=${RazorpayPaymentLinkStatus}&razorpay_signature=${RazorpaySignature}`
         try {

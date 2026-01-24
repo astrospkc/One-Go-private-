@@ -38,6 +38,7 @@ type ProjectReadAllResponse = {
 type GetAllProjectResponse = {
     data: Project[] | null,
     code: number
+
 }
 
 type DeleteFileResponse = {
@@ -82,7 +83,9 @@ const projectService = {
                 data: p_data.data,
                 success: true
             }
-        } catch (error) {
+        } catch (error: unknown) {
+            console.error("Error fetching projects:", (error as Error).message)
+
             return {
                 data: null,
                 success: false
@@ -106,7 +109,9 @@ const projectService = {
                 data: data.project,
                 code: 200
             }
-        } catch (error) {
+        } catch (error: unknown) {
+            console.error("Error fetching projects:", (error as Error).message)
+
             return {
                 data: null,
                 code: 500
@@ -130,7 +135,9 @@ const projectService = {
                 data,
                 code: projectRes.code
             }
-        } catch (error) {
+        } catch (error: unknown) {
+            console.error("Error fetching projects:", (error as Error).message)
+
             return {
                 data: null,
                 code: 500
@@ -152,12 +159,16 @@ const projectService = {
             const data = projectRes.projects
             return {
                 data,
-                code: projectRes.code
+                code: projectRes.code,
+
             }
-        } catch (error) {
+        } catch (error: unknown) {
+            console.error("Error fetching projects:", (error as Error).message)
             return {
                 data: null,
-                code: 500
+                code: 500,
+
+
             }
         }
     },

@@ -58,8 +58,8 @@ interface Forgot_ResetPasswordResponse {
     code: number
 }
 
-const NEXT_PUBLIC_BACKEND_DEV_URL = process.env.NEXT_PUBLIC_BACKEND_DEV_URL
-const NEXT_PUBLIC_BACKEND_PROD_URL = process.env.NEXT_PUBLIC_BACKEND_PROD_URL
+// const NEXT_PUBLIC_BACKEND_DEV_URL = process.env.NEXT_PUBLIC_BACKEND_DEV_URL
+// const NEXT_PUBLIC_BACKEND_PROD_URL = process.env.NEXT_PUBLIC_BACKEND_PROD_URL
 export const authService = {
 
     // login

@@ -43,26 +43,26 @@ const Blogs = () => {
 
     const handleDeleteBlog = async (blogid: string, col_id: string) => {
 
-        const res = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blog/deleteBlog/${blogid}`, {
+        await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blog/deleteBlog/${blogid}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
         })
-        const result = await res.data
+        // const result = await res.data
         const blogResponse = await getAllBlogs(token ?? "", col_id)
         setBlogs(blogResponse)
         window.location.reload()
     }
-    const handleEditBlog = async (blogid: string, col_id: string) => {
-        // const res = await axios.put(`http://localhost:8000/blog/updateBlog/${blogid}`, {
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         Authorization: `Bearer ${token}`,
-        //     }
-        // })
+    // const handleEditBlog = async (blogid: string, col_id: string) => {
+    //     // const res = await axios.put(`http://localhost:8000/blog/updateBlog/${blogid}`, {
+    //     //     headers: {
+    //     //         'Content-Type': 'application/json',
+    //     //         Authorization: `Bearer ${token}`,
+    //     //     }
+    //     // })
 
-    }
+    // }
 
 
 
@@ -139,7 +139,7 @@ const Blogs = () => {
                                                 {openIndex === index && (
                                                     <div className="absolute right-0 mt-2 w-24 bg-white text-black rounded shadow-lg z-10">
                                                         <button
-                                                            onClick={() => handleEditBlog(blog.id ?? "", blog.collection_id)}
+                                                            // onClick={() => handleEditBlog(blog.id ?? "", blog.collection_id)}
                                                             className="block w-full text-left px-4 py-2 hover:bg-gray-200"
                                                         >
                                                             Edit

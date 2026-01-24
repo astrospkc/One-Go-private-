@@ -53,7 +53,7 @@ const plans = [
 
 export default function PricingSection() {
 
-    const { user, token, isAuthenticated } = useAuthStore()
+    const { token, isAuthenticated } = useAuthStore()
     const { plan, isActive } = usePaymentStore()
 
     const handleSubscriptionPlan = async (plan: string) => {
@@ -62,7 +62,7 @@ export default function PricingSection() {
                 const payload = {
                     plan: plan
                 }
-                const { success, data } = await paymentService.createPaymentLink(payload, token)
+                const { data } = await paymentService.createPaymentLink(payload, token)
                 window.location.href = data.short_url
 
 
@@ -72,7 +72,8 @@ export default function PricingSection() {
 
             }
 
-        } catch (error) {
+        } catch (error: unknown) {
+            console.error("Error fetching subscription plan: ", error)
             throw new Error("Something went wrong while handling subscription plan.")
         }
     }

@@ -1,12 +1,9 @@
-"use client"
-
-// export default function Preview() {
-
-//     const 
 
 
+export default function Preview() {
 
-//     return (
-//         <iframe/>
-//     )
-// }
+
+    return (
+        <iframe />
+    )
+}

@@ -98,6 +98,7 @@ const Media = () => {
             }
         );
         const result = await res.data
+        console.log("media result :", result)
         const mediaResponse = await getAllMedia(token ?? "", col_id?.toString() ?? "")
         setMedia(mediaResponse)
 

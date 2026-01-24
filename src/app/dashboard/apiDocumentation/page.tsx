@@ -121,8 +121,8 @@ export default function APIDocumentation() {
     const mediaRef = useRef<HTMLDivElement | null>(null);
     const linksRef = useRef<HTMLDivElement | null>(null);
 
-    const scrollToSection = (ref: any) => {
-        ref.current?.scrollIntoView({ behaviour: 'smooth', block: 'start' })
+    const scrollToSection = (ref: React.RefObject<HTMLDivElement | null> | null) => {
+        ref?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
 
     const Buttons = [

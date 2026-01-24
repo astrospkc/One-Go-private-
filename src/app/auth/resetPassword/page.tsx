@@ -3,7 +3,7 @@
 import { authService } from "@/services/authService"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useCallback } from "react"
 
 
 const OTP_TIMEOUT = 10 * 60
@@ -28,14 +28,14 @@ const ResetPassword = () => {
     }
 
     // clear interval safely
-    const clearTimer = () => {
+    const clearTimer = useCallback(() => {
         if (intervalRef.current) {
             clearInterval(intervalRef.current)
             intervalRef.current = null
         }
-    }
+    }, [])
 
-    const startTimer = () => {
+    const startTimer = useCallback(() => {
         clearTimer()
         setTimeLeft(OTP_TIMEOUT)
         intervalRef.current = setInterval(() => {
@@ -47,14 +47,14 @@ const ResetPassword = () => {
                 return prev - 1
             })
         }, 1000)
-    }
+    }, [clearTimer])
 
     useEffect(() => {
         startTimer()
         return () => {
             clearTimer()
         }
-    }, [])
+    }, [startTimer, clearTimer])
 
     const resetPassword = async (email: string, newPassword: string, otp: string) => {
         try {

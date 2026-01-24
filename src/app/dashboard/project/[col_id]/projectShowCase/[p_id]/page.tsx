@@ -67,6 +67,7 @@ const ProjectShowCase = () => {
                 alert(message)
             }
         } catch (error) {
+            console.error("Error deleting file:", error);
         }
     }
     const handleViewFile = async () => {

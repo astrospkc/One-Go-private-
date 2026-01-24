@@ -5,25 +5,26 @@ import { useAuthStore } from "@/store/authStore";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useLayoutEffect } from "react";
+import { useLayoutEffect, Suspense } from "react";
 import toast from "react-hot-toast";
 
-export default function PaymentSuccessPage() {
+function PaymentSuccessContent() {
     const sp = useSearchParams()
-    const RazorpayPaymentId = sp.get("razorpay_payment_id")
-    const RazorpayPaymentLinkId = sp.get("razorpay_payment_link_id")
-    const RazorpayPaymentLinkReferenceId = sp.get("razorpay_payment_link_reference_id")
-    const RazorpayPaymentLinkStatus = sp.get("razorpay_payment_link_status")
-    const RazorpaySignature = sp.get("razorpay_signature")
-    const queries = {
-        RazorpayPaymentId,
-        RazorpayPaymentLinkId,
-        RazorpayPaymentLinkReferenceId,
-        RazorpayPaymentLinkStatus,
-        RazorpaySignature
-    }
     const { token } = useAuthStore()
+
     useLayoutEffect(() => {
+        const RazorpayPaymentId = sp.get("razorpay_payment_id")
+        const RazorpayPaymentLinkId = sp.get("razorpay_payment_link_id")
+        const RazorpayPaymentLinkReferenceId = sp.get("razorpay_payment_link_reference_id")
+        const RazorpayPaymentLinkStatus = sp.get("razorpay_payment_link_status")
+        const RazorpaySignature = sp.get("razorpay_signature")
+        const queries = {
+            RazorpayPaymentId,
+            RazorpayPaymentLinkId,
+            RazorpayPaymentLinkReferenceId,
+            RazorpayPaymentLinkStatus,
+            RazorpaySignature
+        }
         const subscribe = async () => {
             const response = await paymentService.subscriptionActive(token, queries)
             if (response.success) {
@@ -32,7 +33,8 @@ export default function PaymentSuccessPage() {
             toast.success(response.message)
         }
         subscribe()
-    }, [token])
+    }, [token, sp])
+
     return (
         <div className="flex min-h-screen flex-col items-center justify-center bg-[#0b0b0e] text-white p-4">
             <motion.div
@@ -105,5 +107,13 @@ export default function PaymentSuccessPage() {
                 </motion.div>
             </motion.div>
         </div>
+    );
+}
+
+export default function PaymentSuccessPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <PaymentSuccessContent />
+        </Suspense>
     );
 }

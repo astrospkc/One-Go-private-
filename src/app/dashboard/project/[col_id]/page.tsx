@@ -95,6 +95,7 @@ const Project = () => {
     const { setProject } = useProjectStore()
     const [collectionData, setCollectionData] = useState<SingleCollection | null>(null)
     const { token } = useAuthStore()
+    console.log("title: ", title)
 
     // get the collection with id
     useEffect(() => {
@@ -109,7 +110,7 @@ const Project = () => {
             }
         }
         fetchCollection()
-    }, [col_id])
+    }, [col_id, token])
 
     // get all the projects
     useEffect(() => {
@@ -125,7 +126,7 @@ const Project = () => {
             }
         }
         fetchProjects()
-    }, [setProject, col_id])
+    }, [setProject, col_id, token])
 
 
     return (

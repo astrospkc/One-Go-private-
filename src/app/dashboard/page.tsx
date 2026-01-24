@@ -44,7 +44,7 @@ const Dashboard = () => {
             }
         }
         getActiveSubscription()
-    }, [])
+    }, [token, setPlan, setIsActive, setSubscriptionData])
 
 
     const { error: collectionError, data: collectionData, isPending: isCollectionPending } = useQuery({
