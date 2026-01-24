@@ -5,7 +5,7 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import { Project } from '../../../types';
 import { useAuthStore } from '@/store/authStore';
-import { UploadCloud, FileText, Check, Plus, X } from 'lucide-react';
+import { UploadCloud, FileText, Plus, X } from 'lucide-react';
 
 type ProjectGettingStartedProps = {
     col_id: string;
@@ -303,7 +303,7 @@ const Template = () => {
                     <div>
                         <h3 className="text-lg font-bold text-gray-900 mb-2">Set Up Your Project</h3>
                         <p className="text-gray-500 leading-relaxed mb-4">
-                            Click "Set up Project" above. Fill in the essential details like your project name, description, and key skills used.
+                            Click &quot;Set up Project&quot; above. Fill in the essential details like your project name, description, and key skills used.
                         </p>
                         <ul className="text-sm text-gray-500 list-disc list-inside space-y-1 ml-2">
                             <li><strong>Tags:</strong> Comma-separated (e.g., <code>React, Node.js</code>).</li>

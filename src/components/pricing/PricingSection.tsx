@@ -83,7 +83,7 @@ export default function PricingSection() {
                     Simple, transparent pricing
                 </h2>
                 <p className="max-w-xl mx-auto text-lg text-gray-500">
-                    Choose the plan that's right for you. Change or cancel at any time.
+                    Choose the plan that&apos;s right for you. Change or cancel at any time.
                 </p>
             </div>
 

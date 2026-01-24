@@ -118,7 +118,7 @@ const Collection = () => {
 
                     {collection.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {collection.map((val, ind) => (
+                            {collection.map((val) => (
                                 <div
                                     key={val.id}
                                     className="group bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-lg hover:border-gray-300 transition-all duration-300 relative flex flex-col justify-between h-56"

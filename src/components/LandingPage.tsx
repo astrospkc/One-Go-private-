@@ -1,6 +1,6 @@
 "use client"
 import React from 'react';
-import { Terminal, Code2, Globe, Layout, RefreshCw, Github, Twitter, Linkedin } from 'lucide-react';
+import { Code2, Globe, Layout, RefreshCw, Github, Twitter, Linkedin } from 'lucide-react';
 import Link from 'next/link';
 import { useAuthStore } from '@/store/authStore';
 

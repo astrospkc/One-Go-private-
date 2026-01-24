@@ -1,6 +1,4 @@
 "use client"
-
-import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import React, { useEffect, useState } from "react"
 import {
@@ -34,6 +32,7 @@ const Dashboard = () => {
     const [sectionSelected, setSectionSelected] = useState('collection')
     const { setPlan, setIsActive, setSubscriptionData, plan } = usePaymentStore()
     const router = useRouter()
+    console.log("section selected: ", sectionSelected)
 
     // get the active plan of user
     useEffect(() => {

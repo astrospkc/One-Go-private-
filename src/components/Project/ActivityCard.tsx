@@ -1,4 +1,4 @@
-import { Database, Settings, PenTool, Plus } from 'lucide-react';
+import { Database, Settings, PenTool } from 'lucide-react';
 
 const activities = [
     {
