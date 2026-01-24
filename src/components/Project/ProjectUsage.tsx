@@ -3,7 +3,7 @@ import UsageDashboard from './UsageDashboard'
 
 const ProjectUsage = () => {
     return (
-        <div className="min-h-screen bg-black flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl border border-gray-100 p-6 flex items-center justify-center h-full">
             <UsageDashboard />
         </div>
     )
