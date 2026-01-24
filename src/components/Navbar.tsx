@@ -15,6 +15,7 @@ const Navbar = () => {
         router.push("/auth/signIn")
 
     }
+    const buttonCss = "text-sm hover:cursor-pointer hover:bg-black hover:text-white px-4 py-2 rounded-2xl"
 
     return (
         <div>
@@ -25,25 +26,27 @@ const Navbar = () => {
                     <span className="text-xl font-bold tracking-tight">One-go</span>
                 </div>
 
-                <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-                    <Link href="/about" className="hover:text-black transition-colors">About</Link>
-                    <Link href="/features" className="hover:text-black transition-colors">Features</Link>
-                    <Link href="/pricing" className="hover:text-black transition-colors">Pricing</Link>
-                    <Link href="/subscription" className="hover:text-black transition-colors">Subscription</Link>
-                    <Link href="/contact" className="hover:text-black transition-colors">Contact</Link>
-                    <Link href="/dashboard/apiDocumentation" className="hover:text-black transition-colors underline decoration-2 underline-offset-4 decoration-indigo-500">API</Link>
+                <div className="hidden md:flex items-center  text-sm font-medium text-gray-600">
+                    <Link href="/about" className={buttonCss}>About</Link>
+                    <Link href="/features" className={buttonCss}>Features</Link>
+                    <Link href="/pricing" className={buttonCss}>Pricing</Link>
+                    <Link href="/subscription" className={buttonCss}>Subscription</Link>
+                    <Link href="/contact" className={buttonCss}>Contact</Link>
+                    <Link href="/dashboard/apiDocumentation" className={buttonCss}>API</Link>
+                    {
+                        isAuthenticated && (
+                            <Link href="/dashboard" className={buttonCss}>
+                                Dashboard
+                            </Link>
+                        )
+                    }
                 </div>
                 {
                     isAuthenticated ?
                         (
                             <>
-                                <li>
-                                    <Link href="/dashboard">
-                                        <button className="text-sm hover:cursor-pointer hover:bg-violet-300 px-4 py-2 rounded-2xl hover:text-black">Dashboard</button>
-                                    </Link>
-                                </li>
                                 <button className="bg-black text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-all">
-                                    Sign Up
+                                    Profile
                                 </button>
                             </>
 
