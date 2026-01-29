@@ -12,8 +12,8 @@ export const GenerationSidebar: React.FC<GenerationSidebarProps> = ({
     steps,
 }) => {
     return (
-        <div className="w-full bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 flex flex-col h-full">
-            <h3 className="text-xl font-bold mb-6 text-white bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+        <div className="w-full bg-white/5 text-black backdrop-blur-md border border-white/10 rounded-2xl p-6 flex flex-col h-full">
+            <h3 className="text-xl font-bold mb-6 text-black bg-clip-text text-transparent bg-gradient-to-r from-black to-gray-400">
                 Building Process
             </h3>
             <div className="relative border-l border-white/10 ml-3.5 space-y-8 pb-2">
@@ -32,10 +32,10 @@ export const GenerationSidebar: React.FC<GenerationSidebarProps> = ({
                             {/* Timeline Dot */}
                             <div
                                 className={`absolute -left-[11px] top-1 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${isCompleted
-                                        ? "bg-green-500 border-green-500"
-                                        : isCurrent
-                                            ? "bg-blue-600 border-blue-600 shadow-[0_0_10px_rgba(37,99,235,0.5)]"
-                                            : "bg-gray-900 border-gray-700"
+                                    ? "bg-green-500 border-green-500"
+                                    : isCurrent
+                                        ? "bg-blue-600 border-blue-600 shadow-[0_0_10px_rgba(37,99,235,0.5)]"
+                                        : "bg-gray-900 border-gray-700"
                                     }`}
                             >
                                 {isCompleted ? (
@@ -49,7 +49,7 @@ export const GenerationSidebar: React.FC<GenerationSidebarProps> = ({
 
                             {/* Text */}
                             <p
-                                className={`text-sm font-medium transition-colors duration-300 ${isCompleted || isCurrent ? "text-white" : "text-gray-500"
+                                className={`text-sm font-medium transition-colors duration-300 ${isCompleted || isCurrent ? "text-black" : "text-gray-500"
                                     }`}
                             >
                                 {step}

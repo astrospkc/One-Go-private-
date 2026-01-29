@@ -59,11 +59,11 @@ export default function WebsiteGeneratePage() {
     const isGenerationComplete = viewState === "preview";
 
     return (
-        <div className="min-h-screen bg-black text-white p-6 flex flex-col items-center justify-center relative overflow-hidden transition-colors duration-1000">
+        <div className="min-h-screen bg-white text-black p-6 flex flex-col items-center justify-center relative overflow-hidden transition-colors duration-1000">
             {/* Dynamic Background */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 opacity-20 pointer-events-none">
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-900 rounded-full blur-[120px]" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-900 rounded-full blur-[120px]" />
+                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%]  rounded-full blur-[120px]" />
+                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%]  rounded-full blur-[120px]" />
             </div>
 
             <AnimatePresence mode="wait">
@@ -78,7 +78,7 @@ export default function WebsiteGeneratePage() {
                             <motion.h1
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                className="text-5xl md:text-6xl py-4 font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400"
+                                className="text-5xl md:text-6xl py-4 font-extrabold tracking-tight text-black"
                             >
                                 Design Your Vision
                             </motion.h1>
@@ -127,13 +127,13 @@ export default function WebsiteGeneratePage() {
                             transition={{ delay: 0.3 }}
                             className="relative group w-full max-w-2xl mx-auto"
                         >
-                            <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl opacity-20 group-hover:opacity-40 transition duration-500 blur"></div>
-                            <div className="relative bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-2 transition-all duration-300 focus-within:bg-black/60 focus-within:border-white/20">
+                            {/* <div className="absolute -inset-0.5 bg-black rounded-2xl opacity-20 group-hover:opacity-40 transition duration-500"></div> */}
+                            <div className="relative  backdrop-blur-xl border border-white/10 rounded-2xl p-2 transition-all duration-300 focus-within:bg-gray-400/20 focus-within:border-white/20">
                                 <textarea
                                     value={prompt}
                                     onChange={(e) => setPrompt(e.target.value)}
                                     placeholder="Describe your design idea... e.g., 'A minimalist portfolio hero section with large typography and a dark theme.'"
-                                    className="w-full bg-transparent text-white placeholder-gray-500 p-4 text-lg outline-none resize-none h-32 rounded-xl"
+                                    className="w-full text-black placeholder-gray-500 p-4 text-lg outline-none resize-none h-32 rounded-xl"
                                 />
                                 <div className="flex justify-between items-center px-4 pb-2">
                                     <div className="flex gap-2">
@@ -168,7 +168,7 @@ export default function WebsiteGeneratePage() {
                                 <button
                                     className={`w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all ${isGenerationComplete
                                         ? "bg-white text-black hover:bg-gray-200"
-                                        : "bg-white/5 text-gray-500 cursor-not-allowed"
+                                        : "bg-white/5 text-black cursor-not-allowed"
                                         }`}
                                     disabled={!isGenerationComplete}
                                 >
@@ -177,8 +177,8 @@ export default function WebsiteGeneratePage() {
                                 </button>
                                 <button
                                     className={`w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all border ${isGenerationComplete
-                                        ? "border-white/20 text-white hover:bg-white/5"
-                                        : "border-white/5 text-gray-600 cursor-not-allowed"
+                                        ? "border-white/20 text-black hover:bg-white/5"
+                                        : "border-white/5 text-black cursor-not-allowed"
                                         }`}
                                     disabled={!isGenerationComplete}
                                 >
