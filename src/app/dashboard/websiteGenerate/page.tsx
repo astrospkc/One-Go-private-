@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, ArrowRight, Briefcase, Globe, PenTool, Layout, Save } from "lucide-react";
 import { GenerationSidebar } from "@/components/GenerationSidebar";
@@ -14,14 +14,19 @@ export default function WebsiteGeneratePage() {
     const [viewState, setViewState] = useState<"input" | "generating" | "preview">("input");
     const [currentStep, setCurrentStep] = useState(0);
 
-    const steps = [
-        "Analyzing your requirements...",
-        "Identifying key components...",
-        "Drafting layout structure...",
-        "Applying design system...",
-        "Refining typography and colors...",
-        "Finalizing preview..."
-    ];
+    const steps = useMemo(() =>
+        [
+            "Analyzing your requirements...",
+            "Identifying key components...",
+            "Drafting layout structure...",
+            "Applying design system...",
+            "Refining typography and colors...",
+            "Finalizing preview..."
+        ], []
+    )
+
+
+
 
     const collections = [
         { id: "All", label: "All", icon: Sparkles },
@@ -34,6 +39,7 @@ export default function WebsiteGeneratePage() {
         setViewState("generating");
         setCurrentStep(0);
     };
+
 
     // Simulate generation progress
     useEffect(() => {
@@ -54,7 +60,8 @@ export default function WebsiteGeneratePage() {
 
             return () => clearInterval(interval);
         }
-    }, [viewState]);
+    }, [viewState, steps])
+
 
     const isGenerationComplete = viewState === "preview";
 

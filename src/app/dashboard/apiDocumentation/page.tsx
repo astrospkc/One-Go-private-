@@ -1,9 +1,8 @@
 "use client"
 
 import SubscriptionBanner from '@/components/pricing/SubcriptionBanner';
-import NeonButton from '@/components/ui/NeonButton';
 import React, { useRef, useState } from 'react';
-import { ChevronDown, ChevronUp, Code, Database, Globe, Key, Layers, Link as LinkIcon, Image as ImageIcon, Copy, Check } from 'lucide-react';
+import { Code, Database, Globe, Key, Layers, Link as LinkIcon, Image as ImageIcon, Copy, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Expanded type definition for Routes
@@ -11,9 +10,9 @@ type Route = {
     method: string;
     path: string;
     desc: string;
-    body?: any;
-    params?: any;
-    response?: any;
+    body?: Record<string, unknown>;
+    params?: Record<string, unknown>;
+    response?: Record<string, unknown>;
 };
 
 type Section = {

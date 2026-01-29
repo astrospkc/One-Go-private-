@@ -27,6 +27,7 @@ import { usePaymentStore } from "@/store/paymentStore";
 import { paymentService } from "@/services/paymentService";
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from "react-hot-toast";
+import { SingleCollection } from "../../../types";
 
 const Dashboard = () => {
     const { user, token } = useAuthStore()
@@ -195,7 +196,7 @@ const Dashboard = () => {
 
                         {/* Recent Collections Grid could go here */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {collection?.slice(0, 3).map((col: any) => (
+                            {collection?.slice(0, 3).map((col: SingleCollection) => (
                                 <div key={col.id} className="p-4 rounded-2xl bg-white/60 border border-white/60 hover:border-indigo-200 hover:shadow-md transition-all cursor-pointer group">
                                     <div className="flex items-center gap-3 mb-2">
                                         <div className="p-2 bg-indigo-50 rounded-lg text-indigo-600 group-hover:bg-indigo-100 transition-colors">
