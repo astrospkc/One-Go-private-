@@ -35,9 +35,14 @@ const Navbar = () => {
                     <Link href="/dashboard/apiDocumentation" className={buttonCss}>API</Link>
                     {
                         isAuthenticated && (
-                            <Link href="/dashboard" className={buttonCss}>
-                                Dashboard
-                            </Link>
+                            <>
+                                <Link href="/dashboard" className={buttonCss}>
+                                    Dashboard
+                                </Link>
+                                <Link href="/dashboard/websiteGenerate" className={buttonCss}>
+                                    Portfolio Generate
+                                </Link>
+                            </>
                         )
                     }
                 </div>

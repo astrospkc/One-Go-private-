@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useLayoutEffect, Suspense } from "react";
 import toast from "react-hot-toast";
+import { Check } from "lucide-react";
 
 function PaymentSuccessContent() {
     const sp = useSearchParams()
@@ -26,72 +27,65 @@ function PaymentSuccessContent() {
             RazorpaySignature
         }
         const subscribe = async () => {
-            const response = await paymentService.subscriptionActive(token, queries)
-            if (response.success) {
-                console.log("subscribed")
+            if (token && RazorpayPaymentId) {
+                const response = await paymentService.subscriptionActive(token, queries)
+                if (response.success) {
+                    console.log("subscribed")
+                }
+                toast.success(response.message)
             }
-            toast.success(response.message)
         }
         subscribe()
     }, [token, sp])
 
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center bg-[#0b0b0e] text-white p-4">
+        <div className="flex min-h-screen flex-col items-center justify-center bg-white text-black font-sans p-4">
             <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
+                initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className="flex flex-col items-center max-w-md text-center"
+                className="flex flex-col items-center max-w-lg text-center p-8 bg-white"
             >
-                <div className="mb-8 rounded-full bg-green-500/10 p-8 ring-1 ring-green-500/20 shadow-[0_0_20px_rgba(34,197,94,0.2)]">
-                    <svg
-                        className="w-16 h-16 text-green-500"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={3}
+                <div className="mb-8 rounded-full bg-green-50 p-6 flex items-center justify-center">
+                    <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.2, type: "spring", stiffness: 200, damping: 20 }}
                     >
-                        <motion.path
-                            initial={{ pathLength: 0 }}
-                            animate={{ pathLength: 1 }}
-                            transition={{ duration: 0.6, ease: "easeInOut", delay: 0.2 }}
-                            d="M5 13l4 4L19 7"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        />
-                    </svg>
+                        <Check className="w-12 h-12 text-green-600" strokeWidth={3} />
+                    </motion.div>
                 </div>
 
                 <motion.h1
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4, duration: 0.5 }}
-                    className="mb-3 text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-emerald-600"
+                    transition={{ delay: 0.3, duration: 0.5 }}
+                    className="mb-3 text-3xl font-extrabold tracking-tight text-gray-900"
                 >
-                    Payment Successful!
+                    Payment Successful
                 </motion.h1>
 
                 <motion.p
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5, duration: 0.5 }}
-                    className="mb-10 text-lg text-gray-400"
+                    transition={{ delay: 0.4, duration: 0.5 }}
+                    className="mb-8 text-lg text-gray-500 max-w-sm mx-auto leading-relaxed"
                 >
-                    Thank you for subscribing. Your account has been successfully upgraded.
+                    Your subscription is now active. You have full access to all premium features.
                 </motion.p>
 
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.6, duration: 0.5 }}
+                    transition={{ delay: 0.5, duration: 0.5 }}
                 >
                     <Link
                         href="/dashboard"
-                        className="group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-purple-500 to-violet-600 px-8 font-medium text-white transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(139,92,246,0.3)]"
+                        className="group inline-flex h-12 items-center justify-center rounded-xl bg-black px-8 font-semibold text-white transition-all duration-200 hover:bg-gray-800 hover:scale-[1.02] shadow-sm"
                     >
-                        <span className="mr-2">Go to Dashboard</span>
+                        <span>Continue to Dashboard</span>
                         <svg
-                            className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                            className="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -112,7 +106,7 @@ function PaymentSuccessContent() {
 
 export default function PaymentSuccessPage() {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-white"><div className="w-6 h-6 border-2 border-gray-200 border-t-black rounded-full animate-spin"></div></div>}>
             <PaymentSuccessContent />
         </Suspense>
     );
