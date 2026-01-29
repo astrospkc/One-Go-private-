@@ -100,13 +100,13 @@ export default function PricingSection() {
                                 }
                             `}
                         >
-                            {p.highlight && (
+                            {/* {p.highlight && (
                                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                                     <span className="bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
                                         Most Popular
                                     </span>
                                 </div>
-                            )}
+                            )} */}
 
                             <h3 className="text-xl font-bold mb-2">{p.plan_name}</h3>
                             <p className={`text-sm mb-6 ${p.highlight ? "text-gray-400" : "text-gray-500"}`}>{p.about}</p>
