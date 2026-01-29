@@ -266,7 +266,7 @@ const ProjectShowCase = () => {
 
                             <h3 className="font-bold text-lg mb-2 relative z-10">Pro Tip</h3>
                             <p className="text-indigo-200 text-sm leading-relaxed relative z-10">
-                                Use the API endpoint to integrate this project's data directly into your frontend applications. Read the docs for more info.
+                                Use the API endpoint to integrate this project&apos;s data directly into your frontend applications. Read the docs for more info.
                             </p>
                             <Link href="/dashboard/apiDocumentation">
                                 <button className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">

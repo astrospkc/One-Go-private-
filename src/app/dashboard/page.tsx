@@ -26,6 +26,7 @@ import projectService from "@/services/projectService"
 import { usePaymentStore } from "@/store/paymentStore";
 import { paymentService } from "@/services/paymentService";
 import { motion, AnimatePresence } from 'framer-motion';
+import toast from "react-hot-toast";
 
 const Dashboard = () => {
     const { user, token } = useAuthStore()
@@ -74,6 +75,10 @@ const Dashboard = () => {
         },
         enabled: !!token
     })
+    if (collectionError || projectError) {
+        toast.error("Failed to fetch data")
+        router.push('/dashboard')
+    }
 
     useEffect(() => {
         if (collectionData) setCollection(collectionData);

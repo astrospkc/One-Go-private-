@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, ArrowRight, Briefcase, Globe, PenTool, Layout, Download, Save } from "lucide-react";
+import { Sparkles, ArrowRight, Briefcase, Globe, PenTool, Layout, Save } from "lucide-react";
 import { GenerationSidebar } from "@/components/GenerationSidebar";
 import { WebsitePreview } from "@/components/WebsitePreview";
 
